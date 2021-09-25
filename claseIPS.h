@@ -1,0 +1,12 @@
+//
+// Created by oscar on 24/09/2021.
+//
+
+#ifndef PROYECTOCIENCIAS_CLASEIPS_H
+#define PROYECTOCIENCIAS_CLASEIPS_H
+
+class IPS{
+
+};
+
+#endif //PROYECTOCIENCIAS_CLASEIPS_H

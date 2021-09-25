@@ -82,6 +82,15 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/claseIPS.h">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/clasePersona.h">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/listaSimple.h">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
 		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/main.cpp">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
