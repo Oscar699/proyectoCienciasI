@@ -8,93 +8,100 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug"/>
+				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug"/>
+				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ProyectoCiencias">
-				<Option output="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/ProyectoCiencias.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/backward"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../include"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include-fixed"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias"/>
-					<CompileFile command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="ProyectoCiencias/fast">
-				<Option output="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/ProyectoCiencias.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/x86_64-w64-mingw32"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++/backward"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../include"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include-fixed"/>
-					<Add directory="C:/Program Files (x86)/Dev-Cpp/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../x86_64-w64-mingw32/include"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias/fast"/>
-					<CompileFile command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug"/>
+				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/PROGRA~2/Dev-Cpp/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ProyectoCiencias">
+				<Option output="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ProyectoCiencias/fast">
+				<Option output="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/claseIPS.h">
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseEPS.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/cmake-build-debug/clasePersona.h">
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseIPS.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/listaSimple.h">
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseLaboratorios.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/main.cpp">
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseListaPersonas.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="C:/Users/oscar/CLionProjects/ProyectoCiencias/CMakeLists.txt">
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/clasePersona.h">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/listaSimple.h">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/main.cpp">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
