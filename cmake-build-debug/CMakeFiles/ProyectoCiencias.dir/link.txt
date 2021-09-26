@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/ProyectoCiencias.dir/main.cpp.o -o ProyectoCiencias 

@@ -306,7 +306,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
             delete p;
         }else{
             aux1 = cabeceraSexo[0];
-            aux2 = cabeceraSexo[0] -> getSigSexo();
+            aux2 = aux1->getSigEdad();
 
             while (aux2->getSigSexo() != NULL){
                 if ( aux2 == p )
@@ -330,7 +330,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
             delete p;
         }else{
             aux1 = cabeceraSexo[1];
-            aux2 = cabeceraSexo[1] -> getSigSexo();
+            aux2 = aux1->getSigEdad();
 
             while (aux2->getSigSexo() != NULL){
                 if ( aux2 == p )
@@ -339,7 +339,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 aux2 = aux2->getSigSexo();
             }
 
-            if ( aux2 == NULL ){
+            if (aux2->getSigSexo() == NULL ){
                 aux1->setSigSexo(NULL);
                 delete p;
             }else {
@@ -349,12 +349,351 @@ void ListaPersona::eliminarPersona(Persona persona) {
 
         }
 
-
     }
+    if(p->getEdad()<20){
+        if(cabeceraEdad[0] == p){
+            cabeceraEdad[0] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[0];
+            aux2 = aux1->getSigEdad();
 
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=20 && p->getEdad()<30){
+        if(cabeceraEdad[1] == p){
+            cabeceraEdad[1] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[1];
+            aux2 = aux1->getSigEdad();
 
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=30 && p->getEdad()<40){
+        if(cabeceraEdad[2] == p){
+            cabeceraEdad[2] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[2];
+            aux2 = aux1->getSigEdad();
 
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=40 && p->getEdad()<50){
+        if(cabeceraEdad[3] == p){
+            cabeceraEdad[3] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[3];
+            aux2 = aux1->getSigEdad();
 
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=50 && p->getEdad()<60){
+        if(cabeceraEdad[4] == p){
+            cabeceraEdad[4] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[4];
+            aux2 = aux1->getSigEdad();
+
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=60 && p->getEdad()<70){
+        if(cabeceraEdad[5] == p){
+            cabeceraEdad[5] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[5];
+            aux2 = aux1->getSigEdad();
+
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else if(p->getEdad()>=70 && p->getEdad()<80){
+        if(cabeceraEdad[6] == p){
+            cabeceraEdad[6] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[6];
+            aux2 = aux1->getSigEdad();
+
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }else{
+        if(cabeceraEdad[7] == p){
+            cabeceraEdad[7] = p->getSigEdad();
+            delete p;
+        }else{
+            aux1 = cabeceraEdad[7];
+            aux2 = aux1->getSigEdad();
+
+            while(aux2->getSigEdad() != NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigEdad();
+                }
+            }
+            if(aux2->getSigEdad() == NULL){
+                aux1->setSigEdad(NULL);
+                delete p;
+            }else{
+                aux1->setSigEdad(p->getSigEdad());
+                delete p;
+            }
+        }
+    }
+    if(p->getActivLab() == "ARTES"){
+        if(cabeceraActividad[0] == p){
+            cabeceraActividad[0] = p->getSigActivLab();
+            delete p;
+        }else{
+            aux1 = cabeceraActividad[0];
+            aux2 = aux1->getSigActivLab();
+
+            while(aux2->getSigActivLab()!=NULL){
+                if(aux2 = p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigActivLab();
+                }
+            }
+            if(aux2->getSigActivLab() == NULL){
+                aux1->setSigActivLab(NULL);
+                delete p;
+            }else{
+                aux1->setSigActivLab(p->getSigActivLab());
+                delete p;
+            }
+        }
+    }else if(p->getSigActivLab() == "TECNICO"){
+        if(cabeceraActividad[1] == p){
+            cabeceraActividad[1] = p->getSigActivLab();
+            delete p;
+        }else{
+            aux1 = cabeceraActividad[1];
+            aux2 = aux1->getSigActivLab();
+
+            while(aux2->getSigActivLab()!=NULL){
+                if(aux2 = p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigActivLab();
+                }
+            }
+            if(aux2->getSigActivLab() == NULL){
+                aux1->setSigActivLab(NULL);
+                delete p;
+            }else{
+                aux1->setSigActivLab(p->getSigActivLab());
+                delete p;
+            }
+        }
+    }else if(p->getSigActivLab() == "INGENIERO"){
+        if(cabeceraActividad[2] == p){
+            cabeceraActividad[2] = p->getSigActivLab();
+            delete p;
+        }else{
+            aux1 = cabeceraActividad[2];
+            aux2 = aux1->getSigActivLab();
+
+            while(aux2->getSigActivLab()!=NULL){
+                if(aux2 = p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigActivLab();
+                }
+            }
+            if(aux2->getSigActivLab() == NULL){
+                aux1->setSigActivLab(NULL);
+                delete p;
+            }else{
+                aux1->setSigActivLab(p->getSigActivLab());
+                delete p;
+            }
+        }
+    }else if(p->getSigActivLab() == "SOCIALES"){
+        if(cabeceraActividad[3] == p){
+            cabeceraActividad[3] = p->getSigActivLab();
+            delete p;
+        }else{
+            aux1 = cabeceraActividad[3];
+            aux2 = aux1->getSigActivLab();
+
+            while(aux2->getSigActivLab()!=NULL){
+                if(aux2 = p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigActivLab();
+                }
+            }
+            if(aux2->getSigActivLab() == NULL){
+                aux1->setSigActivLab(NULL);
+                delete p;
+            }else{
+                aux1->setSigActivLab(p->getSigActivLab());
+                delete p;
+            }
+        }
+    }else if(p->getSigActivLab() == "FILOSOFIA"){
+        if(cabeceraActividad[4] == p){
+            cabeceraActividad[4] = p->getSigActivLab();
+            delete p;
+        }else{
+            aux1 = cabeceraActividad[4];
+            aux2 = aux1->getSigActivLab();
+
+            while(aux2->getSigActivLab()!=NULL){
+                if(aux2 = p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigActivLab();
+                }
+            }
+            if(aux2->getSigActivLab() == NULL){
+                aux1->setSigActivLab(NULL);
+                delete p;
+            }else{
+                aux1->setSigActivLab(p->getSigActivLab());
+                delete p;
+            }
+        }
+    }
+    for(int i = 0; i<cabeceraPais.lista_size(); i++){
+        Persona *aux1;
+        Persona *aux2:
+        nodoP *aux;
+        aux = cabeceraPais.obtenerDato(i);
+        if(aux->clave == p->getPaisNac()){
+            aux->persona = p->getSigPaisNac();
+            cabeceraPais.modificar(aux, i);
+            delete p;
+        }else{
+            aux1 = aux->persona;
+            aux2 = aux1->setSigPaisNac();
+
+            while(aux2->getSigPaisNac() == NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigPaisNac();
+                }
+            }
+            if(aux2->getSigPaisNac() == NULL){
+                aux1->setSigPaisNac(NULL);
+                delete p;
+            }else{
+                aux1->setSigPaisNac(p->setSigPaisNac());
+                delete p;
+            }
+        }
+    }
 }
 
 #endif PROYECTOCIENCIAS_CLASELISTAPERSONAS_H

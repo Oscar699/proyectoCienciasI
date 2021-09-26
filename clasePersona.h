@@ -8,6 +8,7 @@
 #include <string>
 using namespace std;
 
+//Estructura para definir atributo fecha
 struct fecha{
     int dia;
     int mes;
@@ -15,6 +16,7 @@ struct fecha{
 };
 
 class Persona{
+    // Atributos
     string nombre;
     string apellido;
     string tipoId
@@ -35,6 +37,8 @@ class Persona{
 public:
     Persona();
     ~Persona();
+
+    //Setters
     void calcEdad(int, int, int);
     void setFechaNac(int, int, int);
 
@@ -131,7 +135,7 @@ public:
     void setSigEps(Persona *sigEps);
 
 private:
-
+    //Apuntadores cabeceras
     Persona *sigSexo;
     Persona *sigEdad;
     Persona *sigPaisNac;
@@ -139,21 +143,23 @@ private:
     Persona *sigActivLab;
     Persona *sigEps;
 };
-
+//Método para hallar la edad de una persona
 int Persona::calcEdad(int diaActual, int mesAtual, int anioActual) {
+    //Se setean los meses del año
     int month[] = { 31, 28, 31, 30, 31, 30, 31,
                     31, 30, 31, 30, 31 };
 
+    //Consigue los dias de nacido
     if (this->fechaNac.dia > diaActual) {
         diaActual = diaActual + month[this->fechaNac.mes - 1];
         mesAtual = mesAtual - 1;
     }
-
+    //Consigue los meses de nacido
     if (this->fechaNac.mes > mesAtual) {
         anioActual = anioActual - 1;
         mesAtual = mesAtual + 12;
     }
-
+    //Consigue los años de nacido
     this->edad = anioActual - this->fechaNac.anio;
 }
 
@@ -162,7 +168,7 @@ void Persona::setFechaNac(int diaNac, int mesNac, int anioNac) {
     this->fechaNac.mes = mesNac;
     this->fechaNac.anio = anioNac;
 }
-
+//Getters
 const string &Persona::getNombre() const {
     return nombre;
 }

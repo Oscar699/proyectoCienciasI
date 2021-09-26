@@ -4,104 +4,107 @@
 	<Project>
 		<Option title="ProyectoCiencias"/>
 		<Option makefile_is_custom="1"/>
-		<Option compiler="gcc"/>
+		<Option compiler="msvc8"/>
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option working_dir="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 all"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option working_dir="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ProyectoCiencias">
-				<Option output="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option output="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
-				<Option compiler="gcc"/>
+				<Option compiler="msvc8"/>
 				<Compiler>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/x86_64-redhat-linux"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 ProyectoCiencias"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="ProyectoCiencias/fast">
-				<Option output="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option output="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/ProyectoCiencias.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
-				<Option compiler="gcc"/>
+				<Option compiler="msvc8"/>
 				<Compiler>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/x86_64-redhat-linux"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/../../../../include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/11/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 ProyectoCiencias/fast"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 ProyectoCiencias/fast"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 edit_cache"/>
+					<CompileFile command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f &quot;C:\Users\Familia Garay\CLionProjects\proyectoCienciasI\cmake-build-debug\Makefile&quot; VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseEPS.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/arbolRN.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseIPS.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/claseEPS.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseLaboratorios.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/claseIPS.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/claseListaPersonas.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/claseLaboratorios.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/clasePersona.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/claseListaPersonas.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/listaSimple.h">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/clasePersona.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/main.cpp">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/listaSimple.h">
 			<Option target="ProyectoCiencias"/>
 		</Unit>
-		<Unit filename="/home/mile/CLionProjects/proyectoCienciasI/CMakeLists.txt">
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/main.cpp">
+			<Option target="ProyectoCiencias"/>
+		</Unit>
+		<Unit filename="C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
