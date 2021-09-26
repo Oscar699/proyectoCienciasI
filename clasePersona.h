@@ -33,6 +33,11 @@ class Persona{
     string activLab;
     string nombreEps;
 public:
+    Persona();
+    ~Persona();
+    void calcEdad(int, int, int);
+    void setFechaNac(int, int, int);
+
     const string &getNombre() const;
 
     void setNombre(const string &nombre);
@@ -133,14 +138,6 @@ private:
     Persona *sigCiudadRes;
     Persona *sigActivLab;
     Persona *sigEps;
-
-    public:
-        Persona();
-        ~Persona();
-        void calcEdad(int, int, int);
-        void setFechaNac(int, int, int);
-
-
 };
 
 int Persona::calcEdad(int diaActual, int mesAtual, int anioActual) {

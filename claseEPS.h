@@ -40,7 +40,7 @@ struct registroAfiliado{
     int sigLab;
 };
 
-class claseEPS(){
+class claseEPS{
     string nombre;
     int numAfiliados;
     nodoIps cabeceraIPS[20];
@@ -48,8 +48,21 @@ class claseEPS(){
     nodoV listaVacunas[6];
     int poscabIPS;
     int poscabCiudad;
-
 public:
+    const string &getNombre() const;
+
+    void setNombre(const string &nombre);
+
+    int getNumAfiliados() const;
+
+    void setNumAfiliados(int numAfiliados);
+
+    const nodoIps *getCabeceraIps() const;
+
+    const nodoIps *getCabeceraCiudad() const;
+
+    const nodoV *getListaVacunas() const;
+
     EPS(){
         poscabIPS = 0;
         for (int i = 0; i < 6; i++){
@@ -65,15 +78,29 @@ public:
     void eliminarCiudad();
 }
 
-void claseEPS::agregarIPS(IPS ips, int clave){
+void claseEPS::agregarIPS(IPS ips, int clave, string ciudad){
+    nodoCiudad *aux;
+    for (int i = 0; i < poscabCiudad; ++i) {
+        aux = poscabCiudad[i];
+        if (aux->nombreCiudad == ciudad){
+            if(aux->posIPS == -1){
+                aux->posIPS = poscabIPS;
+            }
+            nodoIps *nodoAux = cabeceraIPS[aux->posIPS];
+            while (nodoAux->sigCiudad != -1){
+                nodoAux = cabeceraIPS[nodoAux->sigCiudad];
+            }
+            nodoAux->sigCiudad = poscabIPS;
+        }
+    }
     nodoIps *nuevo = new nodoIps();
     nuevo->ips = ips;
     nuevo->clave = clave;
-    nuevo->sigCiudad = 0;
+    nuevo->sigCiudad = -1;
     cabeceraIps[poscabIPS] = nuevo;
 
-    if (cabeceraIPS.size>poscab){
-        poscabIPS++
+    if (poscabIPS < 20){
+        poscabIPS++;
     }
 }
 
@@ -86,10 +113,10 @@ void claseEPS::agregarCiudad(string n, int clave){
     nodoIps *nuevo = new nodoCiudad();
     nuevo->nombreCiudad = n;
     nuevo->clave = clave;
-    nuevo->posIPS = 0;
+    nuevo->posIPS = -1;
     cabeceraCiudad[poscabCiudad] = nuevo;
 
-    if (20>poscab){
+    if (poscab < 20){
         poscabCiudad++
     }
 }
@@ -97,6 +124,34 @@ void claseEPS::agregarCiudad(string n, int clave){
 void claseEPS::eliminarCiudad(){
     if(poscabCiudad > 0)
         poscabCiudad--;
+}
+
+const string &claseEPS::getNombre() const {
+    return nombre;
+}
+
+void claseEPS::setNombre(const string &nombre) {
+    claseEPS::nombre = nombre;
+}
+
+int claseEPS::getNumAfiliados() const {
+    return numAfiliados;
+}
+
+void claseEPS::setNumAfiliados(int numAfiliados) {
+    claseEPS::numAfiliados = numAfiliados;
+}
+
+const nodoIps *claseEPS::getCabeceraIps() const {
+    return cabeceraIPS;
+}
+
+const nodoIps *claseEPS::getCabeceraCiudad() const {
+    return cabeceraCiudad;
+}
+
+const nodoV *claseEPS::getListaVacunas() const {
+    return listaVacunas;
 }
 
 #endif PROYECTOCIENCIAS_EPS_H

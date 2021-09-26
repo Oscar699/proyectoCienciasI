@@ -17,6 +17,26 @@ class IPS{
     string direccion
     nodoV listaVacunas[6];
 public:
+    const string &getNombre() const {
+        return nombre;
+    }
+
+    void setNombre(const string &nombre) {
+        IPS::nombre = nombre;
+    }
+
+    const string &getDireccion() const {
+        return direccion;
+    }
+
+    void setDireccion(const string &direccion) {
+        IPS::direccion = direccion;
+    }
+
+    const nodoV *getListaVacunas() const {
+        return listaVacunas;
+    }
+
     IPS(){
         for (int i = 0; i < 6; i++){
             listaVacunas[i].indexLab = i;
