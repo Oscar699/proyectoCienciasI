@@ -14,7 +14,7 @@ struct nodoV{
 
 class IPS{
     string nombre;
-    string direccion
+    string direccion;
     nodoV listaVacunas[6];
 public:
     const string &getNombre() const {

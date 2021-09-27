@@ -10,7 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/main.cpp" "C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/ProyectoCiencias.dir/main.cpp.obj"
   )
-set(CMAKE_CXX_COMPILER_ID "MSVC")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH

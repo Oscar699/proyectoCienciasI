@@ -1,4 +1,5 @@
 #include <iostream>
+#include "claseEPS.h"
 
 using namespace std;
 

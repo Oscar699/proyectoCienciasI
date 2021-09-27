@@ -15,14 +15,14 @@ struct nodoIps{
     int sigCiudad;
 };
 
-struct nodoV{
+struct nodoVacEps{
     int indexLab;
     int numVacunas;
 };
 
 struct nodoCiudad{
     string nombreCiudad;
-    int claveAfiliado;
+    int clave;
     int posIPS;
 
 };
@@ -44,8 +44,8 @@ class claseEPS{
     string nombre;
     int numAfiliados;
     nodoIps cabeceraIPS[20];
-    nodoIps cabeceraCiudad[20];
-    nodoV listaVacunas[6];
+    nodoCiudad cabeceraCiudad[20];
+    nodoVacEps listaVacunas[6];
     int poscabIPS;
     int poscabCiudad;
 public:
@@ -59,45 +59,44 @@ public:
 
     const nodoIps *getCabeceraIps() const;
 
-    const nodoIps *getCabeceraCiudad() const;
+    const nodoCiudad *getCabeceraCiudad() const;
 
-    const nodoV *getListaVacunas() const;
+    const nodoVacEps *getListaVacunas() const;
 
-    EPS(){
+    claseEPS(){
         poscabIPS = 0;
         for (int i = 0; i < 6; i++){
             listaVacunas[i].indexLab = i;
             listaVacunas[i].numVacunas = 0;
-            listaVacunas[i].sigCiudad = 0;
         }
     }
-    ~EPS();
-    void agregarIPS(IPS ips, int clave);
+    ~claseEPS();
+    void agregarIPS(IPS ips, int clave, string ciudad);
     void eliminarIPS();
-    void agregarCiudad(IPS ips, int clave);
+    void agregarCiudad(int clave, string ciudad);
     void eliminarCiudad();
-}
+};
 
 void claseEPS::agregarIPS(IPS ips, int clave, string ciudad){
     nodoCiudad *aux;
     for (int i = 0; i < poscabCiudad; ++i) {
-        aux = poscabCiudad[i];
+        aux = &cabeceraCiudad[i];
         if (aux->nombreCiudad == ciudad){
             if(aux->posIPS == -1){
                 aux->posIPS = poscabIPS;
             }
-            nodoIps *nodoAux = cabeceraIPS[aux->posIPS];
+            nodoIps *nodoAux = &cabeceraIPS[aux->posIPS];
             while (nodoAux->sigCiudad != -1){
-                nodoAux = cabeceraIPS[nodoAux->sigCiudad];
+                nodoAux = &cabeceraIPS[nodoAux->sigCiudad];
             }
             nodoAux->sigCiudad = poscabIPS;
         }
     }
     nodoIps *nuevo = new nodoIps();
     nuevo->ips = ips;
-    nuevo->clave = clave;
+    nuevo->claveAfiliado = clave;
     nuevo->sigCiudad = -1;
-    cabeceraIps[poscabIPS] = nuevo;
+    cabeceraIPS[poscabIPS] = *nuevo;
 
     if (poscabIPS < 20){
         poscabIPS++;
@@ -109,15 +108,15 @@ void claseEPS::eliminarIPS(){
         poscabIPS--;
 }
 
-void claseEPS::agregarCiudad(string n, int clave){
-    nodoIps *nuevo = new nodoCiudad();
+void claseEPS::agregarCiudad(int clave, string n){
+    nodoCiudad *nuevo = new nodoCiudad();
     nuevo->nombreCiudad = n;
     nuevo->clave = clave;
     nuevo->posIPS = -1;
-    cabeceraCiudad[poscabCiudad] = nuevo;
+    cabeceraCiudad[poscabCiudad] = *nuevo;
 
-    if (poscab < 20){
-        poscabCiudad++
+    if (poscabCiudad < 20){
+        poscabCiudad++;
     }
 }
 
@@ -146,11 +145,11 @@ const nodoIps *claseEPS::getCabeceraIps() const {
     return cabeceraIPS;
 }
 
-const nodoIps *claseEPS::getCabeceraCiudad() const {
+const nodoCiudad *claseEPS::getCabeceraCiudad() const {
     return cabeceraCiudad;
 }
 
-const nodoV *claseEPS::getListaVacunas() const {
+const nodoVacEps *claseEPS::getListaVacunas() const {
     return listaVacunas;
 }
 

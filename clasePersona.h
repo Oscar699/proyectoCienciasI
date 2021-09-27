@@ -19,7 +19,7 @@ class Persona{
     // Atributos
     string nombre;
     string apellido;
-    string tipoId
+    string tipoId;
     string numId;
     char sexo;
     string telCelular;
@@ -144,7 +144,7 @@ private:
     Persona *sigEps;
 };
 //Método para hallar la edad de una persona
-int Persona::calcEdad(int diaActual, int mesAtual, int anioActual) {
+void Persona::calcEdad(int diaActual, int mesAtual, int anioActual) {
     //Se setean los meses del año
     int month[] = { 31, 28, 31, 30, 31, 30, 31,
                     31, 30, 31, 30, 31 };

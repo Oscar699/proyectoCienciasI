@@ -2,8 +2,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ProyectoCiencias.dir/main.cpp.obj"
   "ProyectoCiencias.exe"
   "ProyectoCiencias.exe.manifest"
-  "ProyectoCiencias.lib"
   "ProyectoCiencias.pdb"
+  "libProyectoCiencias.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

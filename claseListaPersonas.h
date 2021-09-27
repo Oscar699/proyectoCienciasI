@@ -10,6 +10,8 @@ using namespace std;
 #ifndef PROYECTOCIENCIAS_CLASELISTAPERSONAS_H
 #define PROYECTOCIENCIAS_CLASELISTAPERSONAS_H
 
+//Creación de estructuras base
+
 struct nodoP{
     string clave;
     Persona *persona;
@@ -25,6 +27,8 @@ struct nodoEps{
     claseEPS *eps;
     Persona *persona;
 };
+
+//Creación de
 
 class ListaPersona{
     Lista<Persona> personas;
@@ -300,7 +304,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
     Persona *aux1;
     Persona *aux2;
     Persona *p = &persona;
-    if (p->getSexo() == 'M'){
+    if (p->getSexo() == 'M'){ //Borrado en Cabecera Sexo
         if(cabeceraSexo[0] == p){
             cabeceraSexo[0] = p->getSigSexo();
             delete p;
@@ -324,7 +328,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
             }
         }
 
-    }else{
+    }else{ //Borrado en Cabecera Sexo
         if(cabeceraSexo[1] == p){
             cabeceraSexo[1] =p->getSigSexo();
             delete p;
@@ -350,7 +354,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
         }
 
     }
-    if(p->getEdad()<20){
+    if(p->getEdad()<20){ //Borrado en Cabecera Edad
         if(cabeceraEdad[0] == p){
             cabeceraEdad[0] = p->getSigEdad();
             delete p;
@@ -374,7 +378,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=20 && p->getEdad()<30){
+    }else if(p->getEdad()>=20 && p->getEdad()<30){ //Borrado en Cabecera Edad
         if(cabeceraEdad[1] == p){
             cabeceraEdad[1] = p->getSigEdad();
             delete p;
@@ -398,7 +402,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=30 && p->getEdad()<40){
+    }else if(p->getEdad()>=30 && p->getEdad()<40){ //Borrado en Cabecera Edad
         if(cabeceraEdad[2] == p){
             cabeceraEdad[2] = p->getSigEdad();
             delete p;
@@ -422,7 +426,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=40 && p->getEdad()<50){
+    }else if(p->getEdad()>=40 && p->getEdad()<50){ //Borrado en Cabecera Edad
         if(cabeceraEdad[3] == p){
             cabeceraEdad[3] = p->getSigEdad();
             delete p;
@@ -446,7 +450,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=50 && p->getEdad()<60){
+    }else if(p->getEdad()>=50 && p->getEdad()<60){ //Borrado en Cabecera Edad
         if(cabeceraEdad[4] == p){
             cabeceraEdad[4] = p->getSigEdad();
             delete p;
@@ -470,7 +474,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=60 && p->getEdad()<70){
+    }else if(p->getEdad()>=60 && p->getEdad()<70){ //Borrado en Cabecera Edad
         if(cabeceraEdad[5] == p){
             cabeceraEdad[5] = p->getSigEdad();
             delete p;
@@ -494,7 +498,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getEdad()>=70 && p->getEdad()<80){
+    }else if(p->getEdad()>=70 && p->getEdad()<80){ //Borrado en Cabecera Edad
         if(cabeceraEdad[6] == p){
             cabeceraEdad[6] = p->getSigEdad();
             delete p;
@@ -518,7 +522,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else{
+    }else{ //Borrado en Cabecera Edad
         if(cabeceraEdad[7] == p){
             cabeceraEdad[7] = p->getSigEdad();
             delete p;
@@ -543,7 +547,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
             }
         }
     }
-    if(p->getActivLab() == "ARTES"){
+    if(p->getActivLab() == "ARTES"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[0] == p){
             cabeceraActividad[0] = p->getSigActivLab();
             delete p;
@@ -567,7 +571,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "TECNICO"){
+    }else if(p->getSigActivLab() == "TECNICO"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[1] == p){
             cabeceraActividad[1] = p->getSigActivLab();
             delete p;
@@ -591,7 +595,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "INGENIERO"){
+    }else if(p->getSigActivLab() == "INGENIERO"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[2] == p){
             cabeceraActividad[2] = p->getSigActivLab();
             delete p;
@@ -615,7 +619,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "SOCIALES"){
+    }else if(p->getSigActivLab() == "SOCIALES"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[3] == p){
             cabeceraActividad[3] = p->getSigActivLab();
             delete p;
@@ -639,7 +643,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "FILOSOFIA"){
+    }else if(p->getSigActivLab() == "FILOSOFIA"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[4] == p){
             cabeceraActividad[4] = p->getSigActivLab();
             delete p;
@@ -664,7 +668,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
             }
         }
     }
-    for(int i = 0; i<cabeceraPais.lista_size(); i++){
+    for(int i = 0; i<cabeceraPais.lista_size(); i++){  //Borrado en Cabecera Pais
         Persona *aux1;
         Persona *aux2:
         nodoP *aux;
