@@ -78,6 +78,7 @@ public:
     void agregarCiudad(int clave, string ciudad);
     void eliminarCiudad();
     void agregarRegistro(Persona p, int clave_ciu , IPS ips);
+    void atender();
 };
 
 void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips)  {
@@ -95,7 +96,11 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips)  {
     registro->fechaDosis.mes = 0;
     registro->fechaDosis.anio = 0;
 
-    arbolAfiliados.insertarNodo(p.)
+    arbolAfiliados.insertarNodo(p.getNumId(),*registro);
+}
+
+void claseEPS::atender() {
+    
 }
 
 void claseEPS::agregarIPS(IPS ips, int clave, string ciudad){
