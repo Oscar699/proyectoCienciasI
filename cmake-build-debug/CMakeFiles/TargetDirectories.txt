@@ -1,3 +1,3 @@
-C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/ProyectoCiencias.dir
-C:/Users/Familia Garay/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/mile/CLionProjects/proyectoCienciasI/cmake-build-debug/CMakeFiles/ProyectoCiencias.dir

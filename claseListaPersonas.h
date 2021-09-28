@@ -17,12 +17,6 @@ struct nodoP{
     Persona *persona;
 };
 
-struct nodoCiudad{
-    int id;
-    string nombre;
-    Persona *persona;
-};
-
 struct nodoEps{
     claseEPS *eps;
     Persona *persona;
@@ -32,10 +26,10 @@ struct nodoEps{
 
 class ListaPersona{
     Lista<Persona> personas;
-    cabeceraSexo[2]; // 0 ->M  1-> F
-    cabeceraEdad[8];
-    cabeceraActividad[5];
-    nodoEps cabeceraEPS[20];
+    Persona *cabeceraSexo[2]; // 0 ->M  1-> F
+    Persona *cabeceraEdad[8];
+    Persona *cabeceraActividad[5];
+    nodoEps *cabeceraEPS[20];
     Lista<nodoP> cabeceraPais;
     Lista<nodoP> cabeceraCiudad;
     int  poscabEPS;
@@ -44,7 +38,7 @@ public:
     ListaPersona(){
         poscabEPS = 0;
         for (int i=0; i<2; i++){
-            cabeceraSexo[i] = NULL
+            cabeceraSexo[i] = NULL;
         }
         for (int i= 0; i< 8; i++){
             cabeceraEdad[i] = NULL;
@@ -61,9 +55,9 @@ public:
 
 void ListaPersona::agregarEPS(claseEPS eps) {
     nodoEps *nuevo = new nodoEps;
-    nodoEps->eps = eps;
-    nodoEps->persona = NULL;
-    cabeceraEPS[poscabEPS] = nodoEps;
+    nuevo->eps = &eps;
+    nuevo->persona = NULL;
+    cabeceraEPS[poscabEPS] = nuevo;
     if( poscabEPS < 20)
         poscabEPS++;
 
@@ -76,7 +70,7 @@ void ListaPersona::quitarIPS() {
 
 void ListaPersona::agregarPersona(Persona p) {
     Persona *aux;
-    nodoEps *nodoEps
+    nodoEps *nodoEps;
     nodoP *nodo;
 
     p.setSigActivLab(NULL);
@@ -200,7 +194,7 @@ void ListaPersona::agregarPersona(Persona p) {
             cabeceraActividad[0] = &p;
         } else {
             aux = cabeceraActividad[0];
-            while (aux->getActivLab() != NULL) {
+            while (aux->getSigActivLab() != NULL) {
                 aux = aux->getSigActivLab();
             }
             aux->setSigEdad(&p);
@@ -210,7 +204,7 @@ void ListaPersona::agregarPersona(Persona p) {
             cabeceraActividad[1] = &p;
         } else {
             aux = cabeceraActividad[0];
-            while (aux->getActivLab() != NULL) {
+            while (aux->getSigActivLab() != NULL) {
                 aux = aux->getSigActivLab();
             }
             aux->setSigEdad(&p);
@@ -220,7 +214,7 @@ void ListaPersona::agregarPersona(Persona p) {
             cabeceraActividad[2] = &p;
         } else {
             aux = cabeceraActividad[0];
-            while (aux->getActivLab() != NULL) {
+            while (aux->getSigActivLab() != NULL) {
                 aux = aux->getSigActivLab();
             }
             aux->setSigEdad(&p);
@@ -230,7 +224,7 @@ void ListaPersona::agregarPersona(Persona p) {
             cabeceraActividad[3] = &p;
         } else {
             aux = cabeceraActividad[0];
-            while (aux->getActivLab() != NULL) {
+            while (aux->getSigActivLab() != NULL) {
                 aux = aux->getSigActivLab();
             }
             aux->setSigEdad(&p);
@@ -240,7 +234,7 @@ void ListaPersona::agregarPersona(Persona p) {
             cabeceraActividad[4] = &p;
         } else {
             aux = cabeceraActividad[0];
-            while (aux->getActivLab() != NULL) {
+            while (aux->getSigActivLab() != NULL) {
                 aux = aux->getSigActivLab();
             }
             aux->setSigEdad(&p);
@@ -248,10 +242,12 @@ void ListaPersona::agregarPersona(Persona p) {
     }
 
     for (int i = 0; i < cabeceraPais.lista_size(); ++i) {
-        nodo = cabeceraPais.obtenerDato(i);
+        nodoP nodoAux =cabeceraPais.obtenerDato(i);
+        nodo = &nodoAux;
         if (p.getPaisNac() == nodo->clave){
             if (nodo->persona == NULL){
                 nodo->persona = &p;
+                cabeceraPais.modificar(*nodo,i);
             } else{
                 aux = nodo->persona;
                 while (aux->getSigPaisNac() != NULL){
@@ -264,14 +260,16 @@ void ListaPersona::agregarPersona(Persona p) {
     }
 
     for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoP *nodo = cabeceraCiudad.obtenerDato(i);
+        nodoP nodoAux =cabeceraCiudad.obtenerDato(i);
+        nodoP *nodo = &nodoAux;
         if (p.getCiudadRes() == nodo->clave){
             if (nodo->persona == NULL){
                 nodo->persona = &p;
+                cabeceraCiudad.modificar(*nodo,i);
             } else{
                 aux = nodo->persona;
-                while (aux->getCiudadRes() != NULL){
-                    aux = aux->getCiudadRes();
+                while (aux->getSigCiudadRes() != NULL){
+                    aux = aux->getSigCiudadRes();
                 }
                 aux->setSigCiudadRes(&p);
             }
@@ -281,7 +279,7 @@ void ListaPersona::agregarPersona(Persona p) {
 
     for (int i = 0; i < poscabEPS; ++i) {
         nodoEps = cabeceraEPS[i];
-        if (p.getNombreEps() == nodo->eps->getNombre()){
+        if (p.getNombreEps() == nodo->persona->getNombreEps()){
             if (nodoEps->persona == NULL){
                 nodoEps->persona = &p;
             } else{
@@ -571,7 +569,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "TECNICO"){ //Borrado en Cabecera ActLaboral
+    }else if(p->getActivLab() == "TECNICO"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[1] == p){
             cabeceraActividad[1] = p->getSigActivLab();
             delete p;
@@ -595,7 +593,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "INGENIERO"){ //Borrado en Cabecera ActLaboral
+    }else if(p->getActivLab() == "INGENIERO"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[2] == p){
             cabeceraActividad[2] = p->getSigActivLab();
             delete p;
@@ -619,7 +617,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "SOCIALES"){ //Borrado en Cabecera ActLaboral
+    }else if(p->getActivLab() == "SOCIALES"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[3] == p){
             cabeceraActividad[3] = p->getSigActivLab();
             delete p;
@@ -643,7 +641,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }
         }
-    }else if(p->getSigActivLab() == "FILOSOFIA"){ //Borrado en Cabecera ActLaboral
+    }else if(p->getActivLab() == "FILOSOFIA"){ //Borrado en Cabecera ActLaboral
         if(cabeceraActividad[4] == p){
             cabeceraActividad[4] = p->getSigActivLab();
             delete p;
@@ -670,16 +668,17 @@ void ListaPersona::eliminarPersona(Persona persona) {
     }
     for(int i = 0; i<cabeceraPais.lista_size(); i++){  //Borrado en Cabecera Pais
         Persona *aux1;
-        Persona *aux2:
+        Persona *aux2;
         nodoP *aux;
-        aux = cabeceraPais.obtenerDato(i);
+        nodoP nodoAUx = cabeceraPais.obtenerDato(i);
+        aux = &nodoAUx;
         if(aux->clave == p->getPaisNac()){
             aux->persona = p->getSigPaisNac();
-            cabeceraPais.modificar(aux, i);
+            cabeceraPais.modificar(*aux, i);
             delete p;
         }else{
             aux1 = aux->persona;
-            aux2 = aux1->setSigPaisNac();
+            aux2 = aux1->getSigPaisNac();
 
             while(aux2->getSigPaisNac() == NULL){
                 if(aux2 == p){
@@ -693,7 +692,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 aux1->setSigPaisNac(NULL);
                 delete p;
             }else{
-                aux1->setSigPaisNac(p->setSigPaisNac());
+                aux1->setSigPaisNac(p->getSigPaisNac());
                 delete p;
             }
         }

@@ -31,7 +31,7 @@ struct registroAfiliado{
     Persona *persona;
     string nombreCiudad;
     int sigCiudad;
-    fecha fecha;
+    fecha fechaDosis;
     int posLab;
     int posIPS;
     char estado[2];

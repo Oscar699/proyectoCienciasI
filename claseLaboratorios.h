@@ -8,13 +8,13 @@
 using namespace std;
 
 
-struct nodoV{
+struct nodoVacLab{
     string nombreLab;
     int numDosis;
 };
 
 class claseLaboratorios {
-    nodoV listaLab[6];
+    nodoVacLab listaLab[6];
 
 public:
     claseLaboratorios(){
