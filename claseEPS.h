@@ -4,6 +4,7 @@
 #include "claseIPS.h"
 #include "clasePersona.h"
 #include <string>
+#include "arbolRN.h"
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_EPS_H
@@ -29,12 +30,12 @@ struct nodoCiudad{
 
 struct registroAfiliado{
     Persona *persona;
-    string nombreCiudad;
+    int  claveCiu;
     int sigCiudad;
     fecha fechaDosis;
     int posLab;
-    int posIPS;
-    char estado[2];
+    IPS *ips;
+    string estado;
     int sigIPS;
     int sigDosis;
     int sigLab;
@@ -48,6 +49,7 @@ class claseEPS{
     nodoVacEps listaVacunas[6];
     int poscabIPS;
     int poscabCiudad;
+    ArbolRN<registroAfiliado> arbolAfiliados;
 public:
     const string &getNombre() const;
 
@@ -75,7 +77,26 @@ public:
     void eliminarIPS();
     void agregarCiudad(int clave, string ciudad);
     void eliminarCiudad();
+    void agregarRegistro(Persona p, int clave_ciu , IPS ips);
 };
+
+void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips)  {
+    registroAfiliado *registro = new registroAfiliado;
+    registro->persona = &p;
+    registro->ips = &ips;
+    registro->claveCiu = clave_ciu;
+    registro->estado = "SA";
+    registro->sigCiudad= -1;
+    registro->sigDosis = -1;
+    registro->sigIPS = -1;
+    registro->sigLab = -1;
+    registro->posLab = -1;
+    registro->fechaDosis.dia = 0;
+    registro->fechaDosis.mes = 0;
+    registro->fechaDosis.anio = 0;
+
+    arbolAfiliados.insertarNodo(p.)
+}
 
 void claseEPS::agregarIPS(IPS ips, int clave, string ciudad){
     nodoCiudad *aux;

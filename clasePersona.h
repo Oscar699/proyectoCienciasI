@@ -35,8 +35,6 @@ class Persona{
     string activLab;
     string nombreEps;
 public:
-    Persona();
-    ~Persona();
 
     //Setters
     void calcEdad(int, int, int);

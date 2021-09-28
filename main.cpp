@@ -3,6 +3,7 @@
 #include "claseLaboratorios.h"
 #include "claseListaPersonas.h"
 
+
 using namespace std;
 
 int main() {

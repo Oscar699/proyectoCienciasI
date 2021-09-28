@@ -17,6 +17,13 @@ struct nodoP{
     Persona *persona;
 };
 
+struct nodoCiudadListaP{
+    string nombreCiudad;
+    int clave;
+    Persona *persona;
+
+};
+
 struct nodoEps{
     claseEPS *eps;
     Persona *persona;
@@ -31,7 +38,7 @@ class ListaPersona{
     Persona *cabeceraActividad[5];
     nodoEps *cabeceraEPS[20];
     Lista<nodoP> cabeceraPais;
-    Lista<nodoP> cabeceraCiudad;
+    Lista<nodoCiudadListaP> cabeceraCiudad;
     int  poscabEPS;
 
 public:
@@ -260,9 +267,9 @@ void ListaPersona::agregarPersona(Persona p) {
     }
 
     for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoP nodoAux =cabeceraCiudad.obtenerDato(i);
-        nodoP *nodo = &nodoAux;
-        if (p.getCiudadRes() == nodo->clave){
+        nodoCiudadListaP nodoAux =cabeceraCiudad.obtenerDato(i);
+        nodoCiudadListaP *nodo = &nodoAux;
+        if (p.getCiudadRes() == nodo->nombreCiudad){
             if (nodo->persona == NULL){
                 nodo->persona = &p;
                 cabeceraCiudad.modificar(*nodo,i);
@@ -667,8 +674,6 @@ void ListaPersona::eliminarPersona(Persona persona) {
         }
     }
     for(int i = 0; i<cabeceraPais.lista_size(); i++){  //Borrado en Cabecera Pais
-        Persona *aux1;
-        Persona *aux2;
         nodoP *aux;
         nodoP nodoAUx = cabeceraPais.obtenerDato(i);
         aux = &nodoAUx;
@@ -693,6 +698,61 @@ void ListaPersona::eliminarPersona(Persona persona) {
                 delete p;
             }else{
                 aux1->setSigPaisNac(p->getSigPaisNac());
+                delete p;
+            }
+        }
+    }
+
+    for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
+        nodoCiudadListaP *aux;
+        nodoCiudadListaP nodoAUx = cabeceraCiudad.obtenerDato(i);
+        aux = &nodoAUx;
+        if(aux->nombreCiudad == p->getCiudadRes()){
+            aux->persona = p->getSigCiudadRes();
+            cabeceraCiudad.modificar(*aux, i);
+            delete p;
+        }else{
+            aux1 = aux->persona;
+            aux2 = aux1->getSigCiudadRes();
+
+            while(aux2->getSigCiudadRes() == NULL){
+                if(aux2 == p){
+                    break;
+                }else{
+                    aux1 = aux2;
+                    aux2 = aux2->getSigCiudadRes();
+                }
+            }
+            if(aux2->getSigCiudadRes() == NULL){
+                aux1->setSigCiudadRes(NULL);
+                delete p;
+            }else{
+                aux1->setSigCiudadRes(p->getSigPaisNac());
+                delete p;
+            }
+        }
+    }
+
+    for (int i = 0; i < poscabEPS; ++i) {
+        nodoEps *eps = cabeceraEPS[i];
+        if (eps->persona == p){
+            eps->persona = p->getSigEps();
+            cabeceraEPS[i] = eps;
+        } else{
+            aux1 = eps->persona;
+            aux2 = aux1->getSigEps();
+            while (aux2->getSigEps() != NULL){
+                if (aux2 == p){
+                    break;
+                }
+                aux1 = aux2;
+                aux2 = aux2->getSigEps();
+            }
+            if (aux2->getSigEps() == NULL){
+                aux1->setSigEps(NULL);
+                delete p;
+            } else{
+                aux1->setSigEps(p->getSigEps());
                 delete p;
             }
         }
