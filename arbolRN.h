@@ -5,6 +5,7 @@
 #ifndef PROYECTOCIENCIAS_ARBOLRN_H
 #define PROYECTOCIENCIAS_ARBOLRN_H
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -13,7 +14,7 @@ using namespace std;
 
 template <class T>
 struct Nodo {
-    int clave;
+    string clave;
     bool color;
     T info;
     bool nulo;
@@ -29,24 +30,24 @@ public:
         raiz->padre = raiz;
     }
     inline bool arbolVacio();
-    Nodo<T> *ins_arbol (int);
-    Nodo<T> *buscar_nodo(int, Nodo<T> *, Nodo<T> *);
-    Nodo<T> *buscar_arbol (int, Nodo<T> *, Nodo<T> *);
+    Nodo<T> *ins_arbol (string);
+    Nodo<T> *buscar_nodo(string, Nodo<T> *, Nodo<T> *);
+    Nodo<T> *buscar_arbol (string, Nodo<T> *, Nodo<T> *);
     void crearNulos(Nodo<T> *);
-    void insertarNodo(int, T);
+    void insertarNodo(string, T);
     void revisarCasoInsercion(Nodo<T> *);
     Nodo<T> *insertarCaso1(Nodo<T> *, Nodo<T> *);
     Nodo<T> *insertarCaso2(Nodo<T> *, Nodo<T> *, bool);
     Nodo<T> *insertarCaso3(Nodo<T> *, Nodo<T> *, bool);
     void rotDer(Nodo<T> *, Nodo<T> *);
     void rotIzq(Nodo<T> *, Nodo<T> *);
-    void eliminarNodo(int);
+    void eliminarNodo(string);
     Nodo<T> *buscarRemplazo(Nodo<T> *);
     void ajustarSupresionRN(Nodo<T> *);
     Nodo<T> *raiz_arbol( ) {return raiz;}
     void inorden(Nodo<T> *);
     void destruir (Nodo<T> *p);
-    T * obtenerInfo(int);
+    T * obtenerInfo(string);
     ~ArbolRN( );
 };
 
@@ -56,7 +57,7 @@ inline bool ArbolRN<T>::arbolVacio(){
 }
 
 template <class T>
-Nodo<T> *ArbolRN<T>::buscar_arbol(int clave, Nodo<T> *p, Nodo<T> *q){
+Nodo<T> *ArbolRN<T>::buscar_arbol(string clave, Nodo<T> *p, Nodo<T> *q){
     if (p->nulo) return q;
     if (clave < p->clave){
         q=p;
@@ -84,7 +85,7 @@ void ArbolRN<T>::crearNulos(Nodo<T> *n) {
 }
 
 template <class T>
-Nodo<T> *ArbolRN<T>:: ins_arbol(int clave){
+Nodo<T> *ArbolRN<T>:: ins_arbol(string clave){
     Nodo<T> *q;
     if (arbolVacio()){
         raiz->clave = clave;
@@ -114,7 +115,7 @@ Nodo<T> *ArbolRN<T>:: ins_arbol(int clave){
 }
 
 template <class T>
-void ArbolRN<T>::insertarNodo(int clave, T info){
+void ArbolRN<T>::insertarNodo(string clave, T info){
     Nodo<T> *x;
     x = ins_arbol(clave);
     x->info = info;
@@ -224,7 +225,7 @@ void ArbolRN<T>::rotDer(Nodo<T> *p, Nodo<T> *x) {
 }
 
 template <class T>
-void ArbolRN<T>::eliminarNodo(int clave) {
+void ArbolRN<T>::eliminarNodo(string clave) {
     Nodo<T> *x;
     x = buscar_nodo(clave, raiz, NULL);
     x = buscarRemplazo(x);
@@ -232,7 +233,7 @@ void ArbolRN<T>::eliminarNodo(int clave) {
 }
 
 template <class T>
-Nodo<T> *ArbolRN<T>::buscar_nodo(int clave, Nodo<T> *p, Nodo<T> *q) {
+Nodo<T> *ArbolRN<T>::buscar_nodo(string clave, Nodo<T> *p, Nodo<T> *q) {
     if(p == NULL){
         return q;
     }else if(p->nulo){
@@ -356,7 +357,7 @@ void ArbolRN<T>::inorden(Nodo<T> *p){
 }
 
 template <class T>
-T *ArbolRN<T>::obtenerInfo(int clave){
+T *ArbolRN<T>::obtenerInfo(string clave){
     Nodo<T> *aux = buscar_nodo(clave, raiz, NULL);
     if(aux!= NULL){
         return &(aux->info);
