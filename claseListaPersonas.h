@@ -29,7 +29,7 @@ struct nodoEps{
     Persona *persona;
 };
 
-//Creación de
+//Definición de la clase
 
 class ListaPersona{
     Lista<Persona> personas;

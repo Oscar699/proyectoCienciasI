@@ -5,6 +5,7 @@
 #include "clasePersona.h"
 #include <string>
 #include "arbolRN.h"
+#include <stdlib.h>
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_EPS_H
@@ -78,8 +79,16 @@ public:
     void agregarCiudad(int clave, string ciudad);
     void eliminarCiudad();
     void agregarRegistro(Persona p, int clave_ciu , IPS ips);
-    void atender();
+    void fechaAleatoria();
+
 };
+
+void claseEPS::fechaAleatoria() {
+    int dia, mes, anio;
+    dia = rand() % 32 + 1;
+    mes = rand() % 13 + 1;
+    mes = rand() % 13 + 1;
+}
 
 void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips)  {
     registroAfiliado *registro = new registroAfiliado;
@@ -97,11 +106,10 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips)  {
     registro->fechaDosis.anio = 0;
 
     arbolAfiliados.insertarNodo(p.getNumId(),*registro);
+
 }
 
-void claseEPS::atender() {
-    
-}
+
 
 void claseEPS::agregarIPS(IPS ips, int clave, string ciudad){
     nodoCiudad *aux;
