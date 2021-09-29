@@ -281,7 +281,6 @@ void ListaPersona::agregarPersona(Persona p) {
                 aux->setSigCiudadRes(&p);
             }
         }
-
     }
 
     for (int i = 0; i < poscabEPS; ++i) {
@@ -759,4 +758,4 @@ void ListaPersona::eliminarPersona(Persona persona) {
     }
 }
 
-#endif PROYECTOCIENCIAS_CLASELISTAPERSONAS_H
+#endif //PROYECTOCIENCIAS_CLASELISTAPERSONAS_H

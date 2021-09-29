@@ -43,8 +43,8 @@ public:
             listaVacunas[i].numVacunas = 0;
         }
     }
-    ~IPS();
+    //~IPS();
 
 };
 
-#endif PROYECTOCIENCIAS_CLASEIPS_H
+#endif //PROYECTOCIENCIAS_CLASEIPS_H

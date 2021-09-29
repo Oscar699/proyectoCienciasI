@@ -28,6 +28,7 @@ public:
     ArbolRN(){
         raiz = new Nodo<T>;
         raiz->padre = raiz;
+        raiz->hijoIzq = raiz->hijoDer = NULL;
     }
     inline bool arbolVacio();
     Nodo<T> *ins_arbol (string);
@@ -378,4 +379,4 @@ void ArbolRN<T>::destruir(Nodo<T> *p){
 template <class T>
 ArbolRN<T>::~ArbolRN( ) {destruir(raiz);}
 
-#endif PROYECTOCIENCIAS_ARBOLRN_H
+#endif //PROYECTOCIENCIAS_ARBOLRN_H

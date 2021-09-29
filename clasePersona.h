@@ -351,4 +351,4 @@ void Persona::setSigEps(Persona *sigEps) {
     Persona::sigEps = sigEps;
 }
 
-#endif PROYECTOCIENCIAS_CLASEPERSONA_H
+#endif //PROYECTOCIENCIAS_CLASEPERSONA_H
