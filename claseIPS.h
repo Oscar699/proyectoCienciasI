@@ -2,6 +2,7 @@
 // Created by oscar on 24/09/2021.
 //
 #include <string>
+#include <cstdlib>
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_CLASEIPS_H
@@ -43,8 +44,25 @@ public:
             listaVacunas[i].numVacunas = 0;
         }
     }
+
+    int distribuirVacunas(int, int);
+
     //~IPS();
 
 };
+
+// Toma un número aleatorio de vacunas de un numero total de vacunas ingresadas, devolviendo el total de vacunas menos las vacunas tomadas
+int IPS::distribuirVacunas(int indexLab, int numVacunas) {
+    int numVacunasTomadas;
+    if(numVacunas != 0){
+        srand(time(NULL));
+        numVacunasTomadas = rand() % numVacunas + 1;
+    }else{
+        numVacunasTomadas = 0;
+    }
+    listaVacunas[indexLab].numVacunas = numVacunasTomadas;
+
+    return numVacunas - numVacunasTomadas;
+}
 
 #endif //PROYECTOCIENCIAS_CLASEIPS_H
