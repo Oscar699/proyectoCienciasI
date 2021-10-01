@@ -96,8 +96,11 @@ void claseEPS::imprimirCabeceraIPS(){
     for(int i=0; i<poscabIPS; i++){
         nodoIps *aux = &cabeceraIPS[i];
         registroAfiliado *regAux = arbolAfiliados.obtenerInfo( aux->claveAfiliado);
-        cout<<aux->ips.getNombre()<<endl;
-        cout<<regAux->persona->getNombre()<<endl;
+        while(regAux != NULL){
+            cout<<aux->ips.getNombre()<<endl;
+            cout<<regAux->persona->getNombre()<<endl;
+            regAux = arbolAfiliados.obtenerInfo(regAux->sigIPS);
+        }
     }
 }
 
@@ -189,7 +192,7 @@ bool claseEPS::compararFechas(fecha fechaAfiliado1, fecha fechaAfiliado2) {
     }
 }
 
-void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaActual)  {
+void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaActual){
     if(arbolAfiliados.obtenerInfo(p.getNumId()) == NULL ){
         registroAfiliado *registroAux, *registroAuxSig, *registro = new registroAfiliado;
         registro->persona = &p;
@@ -224,16 +227,20 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaA
                 nodoAux->claveAfiliado = p.getNumId();
             }else{
                 registroAux = arbolAfiliados.obtenerInfo(nodoAux->claveAfiliado);
-                registroAuxSig = arbolAfiliados.obtenerInfo(registroAux->sigIPS);
-                while(registroAuxSig->sigIPS != ""){
-                    if(!compararFechas(registroAuxSig->fechaDosis, registro->fechaDosis)){
-                        registro->sigIPS = registroAuxSig->sigIPS;
-                        registroAux->sigIPS = registro->persona->getNumId();
+                if(numAfiliados > 1){
+                    registroAuxSig = arbolAfiliados.obtenerInfo(registroAux->sigIPS);
+                    while (registroAuxSig->sigIPS != "") {
+                        if (!compararFechas(registroAuxSig->fechaDosis, registro->fechaDosis)) {
+                            registro->sigIPS = registroAuxSig->sigIPS;
+                            registroAux->sigIPS = registro->persona->getNumId();
+                        }
+                        registroAux = registroAuxSig;
+                        registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
                     }
-                    registroAux = registroAuxSig;
-                    registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
+                    registroAuxSig->sigIPS = p.getNumId();
+                }else{
+                    registroAux->sigIPS = p.getNumId();
                 }
-                registroAuxSig->sigIPS = p.getNumId();
             }
         }
 

@@ -28,7 +28,8 @@ public:
     ArbolRN(){
         raiz = new Nodo<T>;
         raiz->padre = raiz;
-        raiz->hijoIzq = raiz->hijoDer = NULL;
+        raiz->clave = "-1";
+        crearNulos(raiz);
     }
     inline bool arbolVacio();
     Nodo<T> *ins_arbol (string);
@@ -234,7 +235,7 @@ void ArbolRN<T>::eliminarNodo(string clave) {
 }
 
 template <class T>
-Nodo<T> *ArbolRN<T>::buscar_nodo(string clave, Nodo<T> *p, Nodo<T> *q) {
+Nodo<T> *ArbolRN<T>::buscar_nodo(string clave, Nodo<T> *p, Nodo<T> *q){
     if(p == NULL){
         return q;
     }else if(p->nulo){
@@ -352,7 +353,7 @@ template <class T>
 void ArbolRN<T>::inorden(Nodo<T> *p){
     if (!p->nulo){
         inorden(p->hijoIzq);
-        cout<<p->clave<<" "<<p->color<<" Info->"<<p->info<<endl;
+        cout<<p->clave<<" "<<p->color<<endl;
         inorden(p->hijoDer);
     }
 }

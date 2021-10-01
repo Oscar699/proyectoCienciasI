@@ -68,7 +68,7 @@ int main() {
 
     test.calcularFechaActual();
     testEps.agregarRegistro(testPersona1, 0, testIPS1, test.getFechaActual());
-    testEps.agregarRegistro(testPersona2, 1, testIPS2, test.getFechaActual());
+    testEps.agregarRegistro(testPersona2, 1, testIPS1, test.getFechaActual());
 
     testEps.agregarCargamentoVacunas(0, 1000);
     testEps.agregarCargamentoVacunas(1, 1200);
@@ -77,6 +77,9 @@ int main() {
 
     testIPS1 = testEps.getCabeceraIps()[0].ips;
     testIPS2 = testEps.getCabeceraIps()[1].ips;
+
+
+    testEps.imprimirCabeceraIPS();
 
 
     ofstream archsalida1("personaTest.csv", ios::out|ios::trunc);
@@ -131,7 +134,6 @@ int main() {
         exit(1);
     }*/
 
-    testEps.imprimirCabeceraIPS();
     cout << "Hello, World!" << endl; // Texto para saber que algo hace xd
 
     system("PAUSE");
