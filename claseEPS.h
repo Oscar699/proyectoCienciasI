@@ -212,44 +212,25 @@ void claseEPS::imprimirCabeceraIPS(){
 fecha claseEPS::generarFechaAleatoria(fecha rangoInferior, fecha rangoSuperior) {
     fecha resultado;
     srand(time(NULL)+rand());
+    int random, rangInfDias = 0, rangSupDias = 0, month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    int month[] = { 31, 28, 31, 30, 31, 30, 31,
-                    31, 30, 31, 30, 31};
-
-    resultado.mes = abs(rangoSuperior.mes - rangoInferior.mes);
-    if(resultado.mes != 0){
-        resultado.mes = rand() % resultado.mes + 1;
-        resultado.mes = resultado.mes + rangoInferior.mes;
-    }else{
-        resultado.mes = rangoSuperior.mes;
+    rangInfDias += rangoInferior.dia;
+    for(int i=0; i<rangoInferior.mes-1; i++){
+        rangInfDias += month[i];
     }
+    rangInfDias += rangoInferior.anio*365;
 
-    resultado.dia = abs(rangoSuperior.dia - rangoInferior.dia);
-    if(resultado.dia != 0){
-        resultado.dia = rand() % resultado.dia + 1;
-        resultado.dia = (resultado.dia + rangoInferior.dia) % month[resultado.mes - 1];
-        if(resultado.dia == 0) resultado.dia + 1;
-    }else{
-        resultado.dia = rangoSuperior.dia;
+    rangSupDias += rangoSuperior.dia;
+    for(int i=0; i<rangoSuperior.mes-1; i++){
+        rangSupDias += month[i];
     }
+    rangSupDias += rangoSuperior.anio*365;
 
-    if(resultado.dia > month[resultado.mes - 1]){
-        resultado.dia = resultado.dia % month[resultado.mes - 1];
-        resultado.mes++;
-    }
-    resultado.anio = abs(rangoSuperior.anio - rangoInferior.anio);
-    if(resultado.anio != 0){
-        resultado.anio = rand() % resultado.anio + rangoSuperior.anio;
-    }else{
-        resultado.anio = rangoSuperior.anio;
-    }
+    random = abs(rangSupDias - rangInfDias);
 
-    if(resultado.mes > 12){
-        resultado.mes = 1;
-        resultado.anio++;
-    }
+    random = rand() % random + 1;
 
-    //cout<<resultado.dia<<'/'<<resultado.mes<<'/'<<resultado.anio<<endl;
+    resultado = agregarTiempoFecha(rangoInferior, random);
     return resultado;
 }
 
@@ -307,8 +288,8 @@ void  claseEPS::agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fech
         registro->sigIPS = "";
         registro->sigLab = "";
         registro->posLab = -1;
-        registro->fechaDosis = fechaActual;
-        //registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 28));
+        //registro->fechaDosis = fechaActual;
+        registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 11));
 
         nodoIps* nodoAux;
         nodoCiudad* nodoCiudadAux;
