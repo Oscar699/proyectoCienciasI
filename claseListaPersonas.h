@@ -5,6 +5,7 @@
 #include <string>
 #include "listaSimple.h"
 #include "claseEPS.h"
+
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_CLASELISTAPERSONAS_H
@@ -41,6 +42,8 @@ class ListaPersona{
     Lista<nodoCiudadListaP> cabeceraCiudad;
     int  poscabEPS;
 
+
+
 public:
     ListaPersona(){
         poscabEPS = 0;
@@ -58,10 +61,14 @@ public:
     void quitarIPS();
     void agregarPersona(Persona p);
     void eliminarPersona(Persona p);
+    void atender(fecha);
     Persona *obtenerPersona(int pos){
         return personas.obtenerDato(pos);
     }
 };
+
+void ListaPersona::atender(fecha f) {
+}
 
 void ListaPersona::agregarEPS(claseEPS eps) {
     nodoEps *nuevo = new nodoEps;

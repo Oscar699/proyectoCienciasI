@@ -5,17 +5,19 @@
 #ifndef PROYECTOCIENCIAS_CLASESIMULACION_H
 #define PROYECTOCIENCIAS_CLASESIMULACION_H
 
-#include "clasePersona.h"
+#include "claseListaPersonas.h"
 #include <ctime>
 
 class Simulacion{
     fecha FechaActual;
+    ListaPersona listaPersonas;
 public:
     const fecha &getFechaActual() const;
 
     void calcularFechaActual();
     bool compararFechas(fecha, fecha);
     fecha agregarTiempoFecha(fecha, int);
+    void atender(fecha);
 
 };
 
