@@ -58,6 +58,9 @@ public:
     void quitarIPS();
     void agregarPersona(Persona p);
     void eliminarPersona(Persona p);
+    Persona *obtenerPersona(int pos){
+        return personas.obtenerDato(pos);
+    }
 };
 
 void ListaPersona::agregarEPS(claseEPS eps) {
@@ -249,8 +252,7 @@ void ListaPersona::agregarPersona(Persona p) {
     }
 
     for (int i = 0; i < cabeceraPais.lista_size(); ++i) {
-        nodoP nodoAux =cabeceraPais.obtenerDato(i);
-        nodo = &nodoAux;
+        nodo = cabeceraPais.obtenerDato(i);
         if (p.getPaisNac() == nodo->clave){
             if (nodo->persona == NULL){
                 nodo->persona = &p;
@@ -267,8 +269,7 @@ void ListaPersona::agregarPersona(Persona p) {
     }
 
     for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP nodoAux =cabeceraCiudad.obtenerDato(i);
-        nodoCiudadListaP *nodo = &nodoAux;
+        nodoCiudadListaP *nodo =cabeceraCiudad.obtenerDato(i);
         if (p.getCiudadRes() == nodo->nombreCiudad){
             if (nodo->persona == NULL){
                 nodo->persona = &p;
@@ -298,10 +299,9 @@ void ListaPersona::agregarPersona(Persona p) {
         }
 
     }
-    delete aux;
+    /*delete aux;
     delete nodo;
-    delete nodoEps;
-
+    delete nodoEps;*/
 }
 
 void ListaPersona::eliminarPersona(Persona persona) {
@@ -673,9 +673,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
         }
     }
     for(int i = 0; i<cabeceraPais.lista_size(); i++){  //Borrado en Cabecera Pais
-        nodoP *aux;
-        nodoP nodoAUx = cabeceraPais.obtenerDato(i);
-        aux = &nodoAUx;
+        nodoP *aux = cabeceraPais.obtenerDato(i);;
         if(aux->clave == p->getPaisNac()){
             aux->persona = p->getSigPaisNac();
             cabeceraPais.modificar(*aux, i);
@@ -703,9 +701,7 @@ void ListaPersona::eliminarPersona(Persona persona) {
     }
 
     for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP *aux;
-        nodoCiudadListaP nodoAUx = cabeceraCiudad.obtenerDato(i);
-        aux = &nodoAUx;
+        nodoCiudadListaP *aux = cabeceraCiudad.obtenerDato(i);
         if(aux->nombreCiudad == p->getCiudadRes()){
             aux->persona = p->getSigCiudadRes();
             cabeceraCiudad.modificar(*aux, i);

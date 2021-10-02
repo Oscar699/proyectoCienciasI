@@ -3,9 +3,11 @@
 //
 #include "claseIPS.h"
 #include "clasePersona.h"
-#include <string>
 #include "arbolRN.h"
+#include <string>
 #include <cstdlib>
+#include <iomanip>
+#include <fstream>
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_EPS_H
@@ -20,6 +22,7 @@ struct nodoIps{
 struct nodoVacEps{
     int indexLab;
     int numVacunas;
+    string claveAfiliado;
 };
 
 struct nodoCiudad{
@@ -44,12 +47,12 @@ struct registroAfiliado{
 
 class claseEPS{
     string nombre;
-    int numAfiliados;
     nodoIps cabeceraIPS[20];
     nodoCiudad cabeceraCiudad[20];
     nodoVacEps listaVacunas[6];
     int poscabIPS;
     int poscabCiudad;
+    int numAfiliados;
     ArbolRN<registroAfiliado> arbolAfiliados;
 public:
     const string &getNombre() const;
@@ -68,9 +71,12 @@ public:
 
     claseEPS(){
         poscabIPS = 0;
+        poscabCiudad = 0;
+        numAfiliados = 0;
         for (int i = 0; i < 6; i++){
             listaVacunas[i].indexLab = i;
             listaVacunas[i].numVacunas = 0;
+            listaVacunas[i].claveAfiliado = "";
         }
     }
     //~claseEPS();
@@ -78,14 +84,18 @@ public:
     void eliminarIPS();
     void agregarCiudad(int clave, string n);
     void eliminarCiudad();
-    void agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaActual);
+    void agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fechaActual);
+    void vacunar();
     void agregarCargamentoVacunas(int, int);
     void repartirVacunas();
+    int calcularAfiliados();
 
     fecha generarFechaAleatoria(fecha, fecha);
     fecha agregarTiempoFecha(fecha, int);
     bool compararFechas(fecha, fecha);
-
+    inline bool verificarFechasIguales(fecha fecha1, fecha fecha2){
+        return (fecha1.dia == fecha2.dia && fecha1.mes == fecha2.mes && fecha1.anio == fecha2.anio);
+    }
     void imprimirCabeceraIPS();
     void imprirCabeceraCiudad();
 
@@ -97,8 +107,8 @@ void claseEPS::imprimirCabeceraIPS(){
         nodoIps *aux = &cabeceraIPS[i];
         registroAfiliado *regAux = arbolAfiliados.obtenerInfo( aux->claveAfiliado);
         while(regAux != NULL){
-            cout<<aux->ips.getNombre()<<endl;
-            cout<<regAux->persona->getNombre()<<endl;
+            cout<<aux->ips.getNombre()<<setw(10)<<regAux->persona->getNombre()<<setw(10)<<regAux->persona->getNumId()
+            <<setw(5)<<regAux->fechaDosis.dia<<"/"<<regAux->fechaDosis.mes<<"/"<<regAux->fechaDosis.anio<<endl;
             regAux = arbolAfiliados.obtenerInfo(regAux->sigIPS);
         }
     }
@@ -107,7 +117,7 @@ void claseEPS::imprimirCabeceraIPS(){
 //Genera aleatoriamente una fecha de vacunacion teniendo en cuenta un rango inferior y un rango superior de fechas
 fecha claseEPS::generarFechaAleatoria(fecha rangoInferior, fecha rangoSuperior) {
     fecha resultado;
-    srand(time(NULL));
+    srand(time(NULL)+rand());
 
     int month[] = { 31, 28, 31, 30, 31, 30, 31,
                     31, 30, 31, 30, 31};
@@ -192,11 +202,11 @@ bool claseEPS::compararFechas(fecha fechaAfiliado1, fecha fechaAfiliado2) {
     }
 }
 
-void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaActual){
-    if(arbolAfiliados.obtenerInfo(p.getNumId()) == NULL ){
-        registroAfiliado *registroAux, *registroAuxSig, *registro = new registroAfiliado;
-        registro->persona = &p;
-        registro->ips = &ips;
+void  claseEPS::agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fechaActual){
+    if(arbolAfiliados.obtenerInfo(p->getNumId()) == NULL ){
+        registroAfiliado *registroAux = new registroAfiliado, *registroAuxSig = new registroAfiliado, *registro = new registroAfiliado;
+        registro->persona = p;
+        registro->ips = ips;
         registro->claveCiu = clave_ciu;
         registro->estado = "SA";
         registro->sigCiudad= "";
@@ -204,7 +214,8 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaA
         registro->sigIPS = "";
         registro->sigLab = "";
         registro->posLab = -1;
-        registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 5));
+        registro->fechaDosis = fechaActual;
+        //registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 28));
 
         nodoIps* nodoAux;
         nodoCiudad* nodoCiudadAux;
@@ -212,34 +223,46 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaA
         // Arregla cabecera por IPS
         for(int i=0; i<poscabIPS; i++){
             nodoAux = &cabeceraIPS[i];
-            if(nodoAux->ips.getNombre() == ips.getNombre()){
+            if(nodoAux->ips.getNombre() == ips->getNombre()){
+                nodoAux->ips.setNumAfiliados(nodoAux->ips.getNumAfiliados() + 1);
                 break;
             }
         }
 
         if(nodoAux->claveAfiliado == ""){
-            nodoAux->claveAfiliado = p.getNumId();
+            nodoAux->claveAfiliado = p->getNumId();
         }else{
             // Agrega el registro a la cabecera por IPS y la ordena de menor a mayor por la fecha
             registroAux = arbolAfiliados.obtenerInfo(nodoAux->claveAfiliado);
             if(!compararFechas(registroAux->fechaDosis, registro->fechaDosis)){
                 registro->sigIPS = registroAux->persona->getNumId();
-                nodoAux->claveAfiliado = p.getNumId();
+                nodoAux->claveAfiliado = p->getNumId();
             }else{
-                registroAux = arbolAfiliados.obtenerInfo(nodoAux->claveAfiliado);
                 if(numAfiliados > 1){
                     registroAuxSig = arbolAfiliados.obtenerInfo(registroAux->sigIPS);
                     while (registroAuxSig->sigIPS != "") {
                         if (!compararFechas(registroAuxSig->fechaDosis, registro->fechaDosis)) {
                             registro->sigIPS = registroAuxSig->sigIPS;
                             registroAux->sigIPS = registro->persona->getNumId();
+                        }else if(verificarFechasIguales(registroAuxSig->fechaDosis, registro->fechaDosis)){
+                            int cont = 0;
+                            while(cont < 20 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis)){
+                                if(registroAuxSig->sigIPS == "") break;
+                                registroAux = registroAuxSig;
+                                registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
+                                cont++;
+                            }
+                            if(cont == 20){
+                                registro->fechaDosis = registroAuxSig->fechaDosis;
+                            }
+                        }else{
+                            registroAux = registroAuxSig;
+                            registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
                         }
-                        registroAux = registroAuxSig;
-                        registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
                     }
-                    registroAuxSig->sigIPS = p.getNumId();
+                    registroAuxSig->sigIPS = p->getNumId();
                 }else{
-                    registroAux->sigIPS = p.getNumId();
+                    registroAux->sigIPS = p->getNumId();
                 }
             }
         }
@@ -254,15 +277,15 @@ void  claseEPS::agregarRegistro(Persona p, int clave_ciu , IPS ips, fecha fechaA
 
         // Agrega el registro a la cabecera por ciudad
         if(nodoCiudadAux->claveAfiliado == ""){
-            nodoCiudadAux->claveAfiliado = p.getNumId();
+            nodoCiudadAux->claveAfiliado = p->getNumId();
         }else{
             registroAux = arbolAfiliados.obtenerInfo(nodoCiudadAux->claveAfiliado);
             while(registroAux->sigCiudad != ""){
                 registroAux = arbolAfiliados.obtenerInfo(registroAux->sigCiudad);
             }
-            registroAux->sigCiudad = p.getNumId();
+            registroAux->sigCiudad = p->getNumId();
         }
-        arbolAfiliados.insertarNodo(p.getNumId(),*registro);
+        arbolAfiliados.insertarNodo(p->getNumId(),*registro);
         numAfiliados++;
     }else{
         cout<<"La cedula ingresada ya ha sido registrada con anterioridad, por favor ingrese otra"<<endl;

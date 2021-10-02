@@ -27,7 +27,7 @@ public:
     }
     bool lista_vacia();
     int lista_size();
-    T obtenerDato(int pos);
+    T *obtenerDato(int pos);
     bool eliminar(int pos);
     void insertar_final(T nuevaInfo);
     void insertar_inicio(T nuevaInfo);
@@ -110,9 +110,9 @@ void Lista<T>::insertar_pos(T nuevaInfo, int pos){
 }
 
 template<class T>
-T Lista<T>::obtenerDato(int pos){
+T *Lista<T>::obtenerDato(int pos){
     if(!lista_vacia()){
-        T dato;
+        T *dato;
         int posicionActual = 0;
         nodo<T> *nodoDato = cabeza;
         if(pos < size && pos>= 0){
@@ -120,16 +120,13 @@ T Lista<T>::obtenerDato(int pos){
                 nodoDato = nodoDato->sig;
                 posicionActual++;
             }
-            dato = nodoDato->info;
+            dato = &nodoDato->info;
 
         }
         else{
             dato = obtenerDato(size-1);
         }
         return dato;
-    }
-    else{
-
     }
 }
 

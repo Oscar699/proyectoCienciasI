@@ -17,6 +17,8 @@ class IPS{
     string nombre;
     string direccion;
     nodoV listaVacunas[6];
+    int numAfiliados;
+
 public:
     const string &getNombre() const {
         return nombre;
@@ -38,7 +40,12 @@ public:
         return listaVacunas;
     }
 
+    int getNumAfiliados() const;
+
+    void setNumAfiliados(int numAfiliados);
+
     IPS(){
+        numAfiliados = 0;
         for (int i = 0; i < 6; i++){
             listaVacunas[i].indexLab = i;
             listaVacunas[i].numVacunas = 0;
@@ -63,6 +70,14 @@ int IPS::distribuirVacunas(int indexLab, int numVacunas) {
     listaVacunas[indexLab].numVacunas = numVacunasTomadas;
 
     return numVacunas - numVacunasTomadas;
+}
+
+int IPS::getNumAfiliados() const {
+    return numAfiliados;
+}
+
+void IPS::setNumAfiliados(int numAfiliados) {
+    IPS::numAfiliados = numAfiliados;
 }
 
 #endif //PROYECTOCIENCIAS_CLASEIPS_H

@@ -37,6 +37,8 @@ class Persona{
 public:
 
     //Setters
+
+
     void calcEdad(int, int, int);
     void setFechaNac(int, int, int);
 
