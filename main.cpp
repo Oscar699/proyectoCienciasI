@@ -8,7 +8,6 @@
 #include "clasePersona.h"
 #include "claseSimulacion.h"
 
-// Cambio de rama
 
 
 using namespace std;
@@ -24,7 +23,6 @@ int main() {
     testIPS1.setDireccion("Calle 11");
     testIPS2.setNombre("ipsTest2");
     testIPS2.setDireccion("Calle 21");
-
 
     testEps.setNombre("testEps");
     testEps.setNumAfiliados(0);
@@ -68,8 +66,12 @@ int main() {
     testPersona2.setNombreEps(testEps.getNombre());
 
     test.calcularFechaActual();
-    //testEps.agregarRegistro(&testPersona1, 0, &testIPS1, test.getFechaActual());
-    //testEps.agregarRegistro(&testPersona2, 1, &testIPS2, test.getFechaActual());
+    fecha testFecha1, testFecha2;
+    testFecha1.dia = 25;
+    testFecha1.mes = 12;
+    testFecha1.anio = 2021;
+    testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1);
+    testEps.agregarRegistro(&testPersona2, 1, &testIPS2, testFecha1);
 
     testEps.agregarCargamentoVacunas(0, 1000);
     testEps.agregarCargamentoVacunas(1, 1200);
@@ -135,7 +137,7 @@ int main() {
         exit(1);
     }
 
-    ListaPersona listaTest;
+    /*ListaPersona listaTest;
     int edad, dia, mes, anio;
     string nombre, apellido, tipoId, numId, telCelular, telFijo, email, ciudadNac, paisNac, ciudadRes, direc, barrio, activLab, nombreEps;
     char sexo;
@@ -183,7 +185,7 @@ int main() {
         testPersona3.setNombreEps(nombreEps);
         listaTest.agregarPersona(testPersona3);
         testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, fechaActual);
-    }
+    }*/
 
     archEntrada.close();
 
