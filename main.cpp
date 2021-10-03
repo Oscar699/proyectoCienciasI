@@ -82,8 +82,6 @@ int main() {
     testIPS1 = testEps.getCabeceraIps()[0].ips;
     testIPS2 = testEps.getCabeceraIps()[1].ips;
 
-
-
     ofstream archsalida1("personaTest.csv", ios::out|ios::trunc);
     ofstream archsalida2("IPSTest.csv", ios::out|ios::trunc);
     ofstream archsalida3("EPSTest.csv", ios::out|ios::trunc);
@@ -183,14 +181,16 @@ int main() {
         archEntrada>>nombreEps;
         testPersona3.setNombreEps(nombreEps);
         listaTest.agregarPersona(testPersona3);
-        testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, fechaActual);
+        testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, fechaActual, "CP", true);
     }
-
+    testEps.vacunar(1,10,2021);
     testEps.imprimirCabeceraIPS();
+
 
     archEntrada.close();
 
     cout << "Hello, World!" << endl; // Texto para saber que algo hace xd
+
 
     return 0;
 }
