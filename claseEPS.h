@@ -161,7 +161,7 @@ void claseEPS::vacunar(int dia, int mes, int anio) {
             if (ips_aux->claveAfiliado != "") {
                 registroAfiliado *registro = arbolAfiliados.obtenerInfo(ips_aux->claveAfiliado);
                 registroAfiliado *registro_aux;
-                while (registro->sigIPS != ""){
+                while (registro->sigIPS != ""){ // Mientras la IPS tenga mas afiliados
                     if (verificarFechasIguales(f, registro->fechaDosis)) {
                         if (registro->estado == "CP") {
                             do {
@@ -219,7 +219,7 @@ void claseEPS::vacunar(int dia, int mes, int anio) {
                         }
                         registro = arbolAfiliados.obtenerInfo(registro->sigIPS);
                     }else{
-                        break;
+                        break; // Al estar ordenada la cabecera, los siguientes afiliados tienen otras fechas. "Por hoy no se vacuna mas".
                     }
                 }
             }
