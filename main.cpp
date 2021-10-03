@@ -70,8 +70,8 @@ int main() {
     testFecha1.dia = 25;
     testFecha1.mes = 12;
     testFecha1.anio = 2021;
-    testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1);
-    testEps.agregarRegistro(&testPersona2, 1, &testIPS2, testFecha1);
+    //testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1);
+    //testEps.agregarRegistro(&testPersona2, 1, &testIPS2, testFecha1);
 
     testEps.agregarCargamentoVacunas(0, 1000);
     testEps.agregarCargamentoVacunas(1, 1200);
@@ -81,8 +81,6 @@ int main() {
     testIPS1 = testEps.getCabeceraIps()[0].ips;
     testIPS2 = testEps.getCabeceraIps()[1].ips;
 
-
-    testEps.imprimirCabeceraIPS();
 
 
     ofstream archsalida1("personaTest.csv", ios::out|ios::trunc);
@@ -137,7 +135,7 @@ int main() {
         exit(1);
     }
 
-    /*ListaPersona listaTest;
+    ListaPersona listaTest;
     int edad, dia, mes, anio;
     string nombre, apellido, tipoId, numId, telCelular, telFijo, email, ciudadNac, paisNac, ciudadRes, direc, barrio, activLab, nombreEps;
     char sexo;
@@ -185,7 +183,9 @@ int main() {
         testPersona3.setNombreEps(nombreEps);
         listaTest.agregarPersona(testPersona3);
         testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, fechaActual);
-    }*/
+    }
+
+    testEps.imprimirCabeceraIPS();
 
     archEntrada.close();
 
