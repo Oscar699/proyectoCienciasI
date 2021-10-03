@@ -374,7 +374,8 @@ void ArbolRN<T>::destruir(Nodo<T> *p){
         destruir(p->hijoIzq);
         destruir(p->hijoDer);
         delete p;
-        cout<<"Nodo destruido..."<< endl;}
+        //cout<<"Nodo destruido..."<< endl;
+    }
 }
 
 template <class T>
