@@ -195,8 +195,8 @@ void  claseEPS::agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fech
         registro->sigIPS = "";
         registro->sigLab = "";
         registro->posLab = -1;
-        //registro->fechaDosis = fechaActual;
-        registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 11));
+        registro->fechaDosis = fechaActual;
+        //registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 11));
 
         nodoIps* nodoAux;
         nodoCiudad* nodoCiudadAux;
@@ -221,20 +221,21 @@ void  claseEPS::agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fech
             }else{
                 if(numAfiliados > 1){
                     registroAuxSig = arbolAfiliados.obtenerInfo(registroAux->sigIPS);
-                    while (registroAuxSig->sigIPS != "") {
+                    int cont = 1;
+                    while (registroAuxSig->sigIPS != "" ) {
                         if (!compararFechas(registroAuxSig->fechaDosis, registro->fechaDosis)) {
                             registro->sigIPS = registroAuxSig->sigIPS;
                             registroAux->sigIPS = registro->persona->getNumId();
                         }else if(verificarFechasIguales(registroAuxSig->fechaDosis, registro->fechaDosis)){
-                            int cont = 0;
                             while(cont < 20 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis)){
+                                cont++;
                                 if(registroAuxSig->sigIPS == "") break;
                                 registroAux = registroAuxSig;
                                 registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
-                                cont++;
                             }
                             if(cont == 20){
-                                registro->fechaDosis = registroAuxSig->fechaDosis;
+                                registro->fechaDosis = agregarTiempoFecha(registro->fechaDosis, 7);
+                                cont = 0;
                             }
                         }else{
                             registroAux = registroAuxSig;
