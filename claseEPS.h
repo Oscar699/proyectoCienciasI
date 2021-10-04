@@ -100,7 +100,7 @@ public:
 
     void agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaActual, string estado, bool tipo_insercion);
 
-    void vacunar(int dia, int mes, int anio);
+    void vacunar(fecha);
 
     void agregarCargamentoVacunas(int, int);
 
@@ -142,15 +142,11 @@ bool claseEPS::existenciaVacunas() {
         vac_aux = &listaVacunas[i];
         contador = contador + vac_aux->numVacunas;
     }
-    return contador > 0;
+    return (contador > 0);
 }
 
 //metodo vacunar
-void claseEPS::vacunar(int dia, int mes, int anio) {
-    fecha f;
-    f.dia = dia;
-    f.mes = mes;
-    f.anio = anio;
+void claseEPS::vacunar(fecha f) {
     // Iteraa sobre la cabecera de ciudades
     for (int i = 0; i < poscabCiudad; ++i) {
         nodoCiudad *ciudad_aux = &cabeceraCiudad[i];
@@ -170,8 +166,9 @@ void claseEPS::vacunar(int dia, int mes, int anio) {
                                 pos = rand() % 5;
                                 vac_aux = &listaVacunas[pos];
                             } while (vac_aux->numVacunas == 0 && existenciaVacunas());
+                            if(!existenciaVacunas()) break;
                             if (pos == 2) {
-                                vac_aux->numVacunas = vac_aux->numVacunas--;
+                                vac_aux->numVacunas = vac_aux->numVacunas-1;
                                 registro->estado = "V";
                                 registro->posLab = vac_aux->indexLab;
 
@@ -360,7 +357,7 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
             // Agrega el registro a la cabecera por IPS y la ordena de menor a mayor por la fecha
             registroAux = arbolAfiliados.obtenerInfo(nodoAux->claveAfiliado);
             if (!compararFechas(registroAux->fechaDosis, registro->fechaDosis)) {
-                registro->sigIPS = registroAux->persona->getNumId();
+                registro->sigIPS = registroAux->clave;
                 nodoAux->claveAfiliado = clave;
             } else {
                 if (numAfiliados > 1) {
@@ -371,13 +368,13 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
                             registro->sigIPS = registroAuxSig->clave;
                             break;
                         } else if (verificarFechasIguales(registroAuxSig->fechaDosis, registro->fechaDosis)) {
-                            while (cont < 20 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis) ) {
+                            while (cont < 2 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis) ) {
                                 cont++;
                                 registroAux = registroAuxSig;
                                 registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
                                 if(registroAuxSig == NULL) break;
                             }
-                            if (cont == 20) {
+                            if (cont == 2) {
                                 registro->fechaDosis = agregarTiempoFecha(registro->fechaDosis, 7);
                                 cont = 0;
                             }

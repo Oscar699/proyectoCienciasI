@@ -104,8 +104,9 @@ void Simulacion::mainSimulado() {
     testFecha1.dia = 24;
     //testEps.agregarRegistro(&testPersona2, 0, &testIPS1, testFecha1, "CP", true);
 
-    testEps.agregarCargamentoVacunas(0, 1000);
-    testEps.agregarCargamentoVacunas(1, 1200);
+    //testEps.agregarCargamentoVacunas(0, 17);
+    //testEps.agregarCargamentoVacunas(1, 18);
+    testEps.agregarCargamentoVacunas(2, 1000);
 
     testEps.repartirVacunas();
 
@@ -211,10 +212,14 @@ void Simulacion::mainSimulado() {
         testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, this->FechaActual, "CP", true);
     }
 
-    testEps.vacunar(3,10,2021);
-    //testEps.imprimirCabeceraIPS();
-    testEps.vacunar(31, 10, 2021);
+    testFecha1 = FechaActual;
+    testFecha2 = testEps.agregarTiempoFecha(testFecha1, 60);
+    while(testEps.compararFechas(testFecha1, testFecha2)){
+        testEps.vacunar(testFecha1);
+        testFecha1 = testEps.agregarTiempoFecha(testFecha1, 1);
+    }
     testEps.imprimirCabeceraIPS();
+
 
     archEntrada.close();
     cout << "Hello, World!" << endl; // Texto para saber que algo hace xd

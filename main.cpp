@@ -72,7 +72,7 @@ void modificarInformacion(Simulacion &testSimulacion){
         cin>>opcionUsuario;
         switch (opcionUsuario) {
             case '1':
-                while(opcionUsuario != '4'){
+                while(opcionUsuario != '4'){ // Cambiar esto al menu general de esta parte
                     cout<<"Elija el tipo de modificacion que quiera realizar:"<<endl;
                     cout<<"1-> Añadir a una persona"<<endl;
                     cout<<"2-> Modificar a una persona"<<endl;
