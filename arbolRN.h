@@ -25,8 +25,10 @@ struct Nodo {
 template <class T>
 class ArbolRN{
     Nodo<T> *raiz;
+    int numNodos;
 public:
     ArbolRN(){
+        numNodos = 0;
         raiz = new Nodo<T>;
         raiz->padre = raiz;
         raiz->nulo = true;
@@ -53,7 +55,7 @@ public:
     void inorden(Nodo<T> *);
     void destruir (Nodo<T> *p);
     T * obtenerInfo(string);
-    Lista<string> obtenerClavesArbol();
+    void obtenerClavesArbol(Nodo<T> *p, string *arrClaves, int &pos);
     ~ArbolRN( );
 };
 
@@ -125,6 +127,7 @@ void ArbolRN<T>::insertarNodo(string clave, T info){
     Nodo<T> *x;
     x = ins_arbol(clave);
     x->info = info;
+    numNodos++;
     revisarCasoInsercion(x);
 }
 
@@ -363,8 +366,12 @@ void ArbolRN<T>::inorden(Nodo<T> *p) {
 }
 
 template<class T>
-Lista<string> ArbolRN<T>::obtenerClavesArbol() {
-
+void ArbolRN<T>::obtenerClavesArbol(Nodo<T> *p, string *arrClaves, int &pos) {
+    if(!p->nulo){
+        obtenerClavesArbol(p->hijoIzq, arrClaves, ++pos);
+        arrClaves[pos] = p->clave;
+        obtenerClavesArbol(p->hijoDer, arrClaves, ++pos);
+    }
 }
 
 

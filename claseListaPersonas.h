@@ -77,6 +77,8 @@ public:
         }
     }
 
+    string* obtenerClaves();
+
 };
 
 void ListaPersona::atender(fecha f) {
@@ -817,8 +819,13 @@ void ListaPersona::imprimirCabeceras() {
             cout<<subCont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getNumId()<<endl;
             aux = aux->getSigEps();
         }
-
     }
+}
+
+string* ListaPersona::obtenerClaves() {
+    int pos = 0;
+    string *arrClaves;
+    personas.obtenerClavesArbol(personas.raiz_arbol(), arrClaves, pos);
 }
 
 #endif //PROYECTOCIENCIAS_CLASELISTAPERSONAS_H
