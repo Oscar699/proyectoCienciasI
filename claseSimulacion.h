@@ -13,7 +13,7 @@ class Simulacion{
     string caracteristica;
     ListaPersona listaPersonas;
 public:
-    Simulacion(){
+    Simulacion(){ // Temporal
         caracteristica = "Np hay cambios";
         calcularFechaActual();
     }
@@ -24,8 +24,6 @@ public:
     void setCaracteristica(const string &caracteristica);
 
     void calcularFechaActual();
-    bool compararFechas(fecha, fecha);
-    fecha agregarTiempoFecha(fecha, int);
     void atender(fecha);
     void mainSimulado();
 
@@ -102,8 +100,9 @@ void Simulacion::mainSimulado() {
     testFecha1.dia = 25;
     testFecha1.mes = 12;
     testFecha1.anio = 2021;
-    //testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1);
-    //testEps.agregarRegistro(&testPersona2, 1, &testIPS2, testFecha1);
+    //testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1, "CP", true);
+    testFecha1.dia = 24;
+    //testEps.agregarRegistro(&testPersona2, 0, &testIPS1, testFecha1, "CP", true);
 
     testEps.agregarCargamentoVacunas(0, 1000);
     testEps.agregarCargamentoVacunas(1, 1200);
@@ -213,9 +212,12 @@ void Simulacion::mainSimulado() {
     }
 
     testEps.vacunar(3,10,2021);
+    //testEps.imprimirCabeceraIPS();
+    testEps.vacunar(31, 10, 2021);
     testEps.imprimirCabeceraIPS();
 
     archEntrada.close();
+    cout << "Hello, World!" << endl; // Texto para saber que algo hace xd
 }
 
 const string &Simulacion::getCaracteristica() const {
@@ -224,6 +226,10 @@ const string &Simulacion::getCaracteristica() const {
 
 void Simulacion::setCaracteristica(const string &caracteristica) {
     Simulacion::caracteristica = caracteristica;
+}
+
+void Simulacion::atender(fecha fechaA ) {
+
 }
 
 #endif //PROYECTOCIENCIAS_CLASESIMULACION_H
