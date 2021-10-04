@@ -8,6 +8,8 @@
 #include "clasePersona.h"
 #include "claseSimulacion.h"
 
+// Creando rama
+
 using namespace std;
 
 void cambiarCaracteristcia(Simulacion &); // La prueba de que deberia funcionar
