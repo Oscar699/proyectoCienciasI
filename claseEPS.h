@@ -9,33 +9,35 @@
 #include <iomanip>
 #include <fstream>
 #include "claseLaboratorios.h"
+
 using namespace std;
 
 #ifndef PROYECTOCIENCIAS_EPS_H
 #define PROYECTOCIENCIAS_EPS_H
 
-struct nodoIps{
+struct nodoIps {
     IPS ips;
     string claveAfiliado;
     int sigCiudad;
 };
 
-struct nodoVacEps{
+struct nodoVacEps {
     int indexLab;
     int numVacunas;
     string claveAfiliado;
 };
 
-struct nodoCiudad{
+struct nodoCiudad {
     string nombreCiudad;
     int clave;
     string claveAfiliado;
     int posIPS;
 };
 
-struct registroAfiliado{
+struct registroAfiliado {
     Persona *persona;
-    int  claveCiu;
+    string clave;
+    int claveCiu;
     fecha fechaDosis;
     int posLab;
     IPS *ips;
@@ -45,7 +47,7 @@ struct registroAfiliado{
     string sigLab;
 };
 
-class claseEPS{
+class claseEPS {
     string nombre;
     nodoIps cabeceraIPS[20];
     nodoCiudad cabeceraCiudad[20];
@@ -70,35 +72,56 @@ public:
 
     const nodoVacEps *getListaVacunas() const;
 
-    claseEPS(){
+    claseEPS() {
         poscabIPS = 0;
         poscabCiudad = 0;
         numAfiliados = 0;
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < 6; i++) {
             listaVacunas[i].indexLab = i;
             listaVacunas[i].numVacunas = 0;
             listaVacunas[i].claveAfiliado = "";
         }
+        for (int i = 0; i < 20; ++i) {
+            cabeceraIPS[i].sigCiudad = -1;
+            cabeceraIPS[i].claveAfiliado = "";
+            cabeceraCiudad[i].posIPS = -1;
+            cabeceraCiudad[i].claveAfiliado = "";
+        }
     }
+
     //~claseEPS();
     void agregarIPS(IPS ips, string ciudad);
+
     void eliminarIPS();
+
     void agregarCiudad(int clave, string n);
+
     void eliminarCiudad();
-    void agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fechaActual, string estado);
-    void vacunar(fecha f);
+
+    void agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaActual, string estado, bool tipo_insercion);
+
+    void vacunar(fecha);
+
     void agregarCargamentoVacunas(int, int);
+
     void repartirVacunas();
+
     int calcularAfiliados();
+
     bool existenciaVacunas();
 
     fecha generarFechaAleatoria(fecha, fecha);
+
     fecha agregarTiempoFecha(fecha, int);
+
     bool compararFechas(fecha, fecha);
-    inline bool verificarFechasIguales(fecha fecha1, fecha fecha2){
+
+    inline bool verificarFechasIguales(fecha fecha1, fecha fecha2) {
         return (fecha1.dia == fecha2.dia && fecha1.mes == fecha2.mes && fecha1.anio == fecha2.anio);
     }
+
     void imprimirCabeceraIPS();
+
     void imprirCabeceraCiudad();
 
     int getPoscabIps() const;
@@ -112,97 +135,110 @@ public:
 };
 
 //este metodo verifica si a la ips todavia le quedan vacunas
-bool  claseEPS::existenciaVacunas() {
-    int contador=0;
+bool claseEPS::existenciaVacunas() {
+    int contador = 0;
     nodoVacEps *vac_aux;
     for (int i = 0; i < 6; ++i) {
         vac_aux = &listaVacunas[i];
         contador = contador + vac_aux->numVacunas;
     }
-    return  contador>0;
+    return (contador > 0);
 }
 
 //metodo vacunar
 void claseEPS::vacunar(fecha f) {
+    // Iteraa sobre la cabecera de ciudades
     for (int i = 0; i < poscabCiudad; ++i) {
         nodoCiudad *ciudad_aux = &cabeceraCiudad[i];
         nodoIps *ips_aux = &cabeceraIPS[ciudad_aux->posIPS];
-        nodoVacEps *vac_aux;
-        int pos;
-        if (ips_aux->claveAfiliado != ""){
-            registroAfiliado *registro = arbolAfiliados.obtenerInfo(ips_aux->claveAfiliado);
-            registroAfiliado *registro_aux;
-            if (verificarFechasIguales(f, registro->fechaDosis)){
-                if (registro->estado == "CP"){
-                    do{
-                        srand(time(NULL)+rand());
-                        pos = rand() % 5;
-                        vac_aux = &listaVacunas[pos];
-                    } while (vac_aux->numVacunas == 0 & existenciaVacunas());
-                    if (pos == 2){
-                        vac_aux->numVacunas =  vac_aux->numVacunas--;
-                        registro->estado = "V";
-                        registro->posLab = vac_aux->indexLab;
+        //Itera sobre las IPS de la ciudad correspondiente a la iteracion
+        do {
+            nodoVacEps *vac_aux;
+            int pos;
+            if (ips_aux->claveAfiliado != "") {
+                registroAfiliado *registro = arbolAfiliados.obtenerInfo(ips_aux->claveAfiliado);
+                registroAfiliado *registro_aux;
+                while (registro != NULL){ // Mientras la IPS tenga mas afiliados
+                    if (verificarFechasIguales(f, registro->fechaDosis)){
+                        if (registro->estado == "CP") {
+                            do {
+                                srand(time(NULL) + rand());
+                                pos = rand() % 5;
+                                vac_aux = &listaVacunas[pos];
+                            } while (vac_aux->numVacunas == 0 && existenciaVacunas());
+                            if(!existenciaVacunas()) break;
+                            if (pos == 2) {
+                                vac_aux->numVacunas = vac_aux->numVacunas-1;
+                                registro->estado = "V";
+                                registro->posLab = vac_aux->indexLab;
 
-                        if (vac_aux->claveAfiliado == ""){
-                            vac_aux->claveAfiliado = registro->persona->getNumId();
-                        } else{
-                            registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
-                            while (registro_aux->sigLab != ""){
-                                registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
+                                if (vac_aux->claveAfiliado == "") {
+                                    vac_aux->claveAfiliado = registro->clave;
+                                } else {
+                                    registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
+                                    while (registro_aux->sigLab != "") {
+                                        registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
+                                    }
+                                    registro_aux->sigLab = registro->clave;
+                                }
+                            } else {
+                                vac_aux->numVacunas = vac_aux->numVacunas-1;
+                                registro->estado = "PD";
+                                registro->posLab = vac_aux->indexLab;
+
+                                if (vac_aux->claveAfiliado == "") {
+                                    vac_aux->claveAfiliado = registro->clave;
+                                } else {
+                                    registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
+                                    while (registro_aux->sigLab != "") {
+                                        registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
+                                    }
+                                    registro_aux->sigLab = registro->clave;
+                                }
+                                agregarRegistro(registro->persona, registro->claveCiu, registro->ips,
+                                                agregarTiempoFecha(f, 28), "CS", false);
                             }
-                            registro_aux->sigLab = registro->persona->getNumId();
+                        } else if (registro->estado == "CS") {
+                            vac_aux = &listaVacunas[registro->posLab];
+                            if (vac_aux->numVacunas > 0) {
+                                vac_aux->numVacunas = vac_aux->numVacunas-1;
+                                registro->estado = "V";
+                                registro->posLab = vac_aux->indexLab;
+
+                                registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
+                                while (registro_aux->sigLab != "") {
+                                    registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
+                                }
+                                registro_aux->sigLab = registro->clave;
+                            } else {
+                                registro->fechaDosis = agregarTiempoFecha(registro->fechaDosis, 14);
+                            }
                         }
+                        registro = arbolAfiliados.obtenerInfo(registro->sigIPS);
                     }else{
-                        vac_aux->numVacunas =  vac_aux->numVacunas--;
-                        registro->estado = "PD";
-                        registro->posLab = vac_aux->indexLab;
-
-                        if (vac_aux->claveAfiliado == ""){
-                            vac_aux->claveAfiliado = registro->persona->getNumId();
-                        } else{
-                            registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
-                            while (registro_aux->sigLab != ""){
-                                registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
-                            }
-                            registro_aux->sigLab = registro->persona->getNumId();
-                        }
-                        agregarRegistro(registro->persona,registro->claveCiu,registro->ips, agregarTiempoFecha(f,28),"CS");
+                        registro = arbolAfiliados.obtenerInfo(registro->sigIPS);
                     }
-
-                } else if(registro->estado == "CS"){
-                    vac_aux = &listaVacunas[registro->posLab];
-                    if(vac_aux->numVacunas > 0){
-                        vac_aux->numVacunas =  vac_aux->numVacunas--;
-                        registro->estado = "V";
-                        registro->posLab = vac_aux->indexLab;
-
-                        registro_aux = arbolAfiliados.obtenerInfo(vac_aux->claveAfiliado);
-                        while (registro_aux->sigLab != ""){
-                            registro_aux = arbolAfiliados.obtenerInfo(registro_aux->sigLab);
-                        }
-                        registro_aux->sigLab = registro->persona->getNumId();
-                    } else{
-                        registro->fechaDosis = agregarTiempoFecha(registro->fechaDosis,14);
-                    }
-
-
                 }
             }
-        }
-
-
+            if(ips_aux->sigCiudad != -1)
+            ips_aux = &cabeceraIPS[ips_aux->sigCiudad];
+        } while (ips_aux->sigCiudad != -1);
     }
+
 }
 
+
 // metodo temporal para testear la cabecera IPS
-void claseEPS::imprimirCabeceraIPS(){
-    for(int i=0; i<poscabIPS; i++){
+void claseEPS::imprimirCabeceraIPS() {
+    for (int i = 0; i < poscabIPS; i++) {
         nodoIps *aux = &cabeceraIPS[i];
-        registroAfiliado *regAux = arbolAfiliados.obtenerInfo( aux->claveAfiliado);
-        while(regAux != NULL){
-            cout<<aux->ips.getNombre()<<setw(10)<<regAux->persona->getNombre()<<setw(10)<<regAux->persona->getNumId()
-            <<setw(5)<<regAux->fechaDosis.dia<<"/"<<regAux->fechaDosis.mes<<"/"<<regAux->fechaDosis.anio<<endl;
+        registroAfiliado *regAux = arbolAfiliados.obtenerInfo(aux->claveAfiliado);
+        while (regAux != NULL) {
+            cout << aux->ips.getNombre() << setw(10) << regAux->persona->getNombre() << setw(10)
+                 << regAux->persona->getNumId() <<setw(5)<< regAux->persona->getEdad()
+                 << setw(5) << regAux->estado << setw(5)
+                 << regAux->fechaDosis.dia << "/" << regAux->fechaDosis.mes << "/" << regAux->fechaDosis.anio
+                 << endl;
             regAux = arbolAfiliados.obtenerInfo(regAux->sigIPS);
         }
     }
@@ -211,20 +247,20 @@ void claseEPS::imprimirCabeceraIPS(){
 //Genera aleatoriamente una fecha de vacunacion teniendo en cuenta un rango inferior y un rango superior de fechas
 fecha claseEPS::generarFechaAleatoria(fecha rangoInferior, fecha rangoSuperior) {
     fecha resultado;
-    srand(time(NULL)+rand());
-    int random, rangInfDias = 0, rangSupDias = 0, month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    srand(time(NULL) + rand());
+    int random, rangInfDias = 0, rangSupDias = 0, month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     rangInfDias += rangoInferior.dia;
-    for(int i=0; i<rangoInferior.mes-1; i++){
+    for (int i = 0; i < rangoInferior.mes - 1; i++) {
         rangInfDias += month[i];
     }
-    rangInfDias += rangoInferior.anio*365;
+    rangInfDias += rangoInferior.anio * 365;
 
     rangSupDias += rangoSuperior.dia;
-    for(int i=0; i<rangoSuperior.mes-1; i++){
+    for (int i = 0; i < rangoSuperior.mes - 1; i++) {
         rangSupDias += month[i];
     }
-    rangSupDias += rangoSuperior.anio*365;
+    rangSupDias += rangoSuperior.anio * 365;
 
     random = abs(rangSupDias - rangInfDias);
 
@@ -236,19 +272,19 @@ fecha claseEPS::generarFechaAleatoria(fecha rangoInferior, fecha rangoSuperior) 
 
 // Metodo que agrega x numero de dias dados a una fecha y dada
 fecha claseEPS::agregarTiempoFecha(fecha fechaCambiar, int numDias) {
-    int rangoDeManejo, month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int rangoDeManejo, month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    while(true){
-        if(fechaCambiar.mes > 12){
+    while (true) {
+        if (fechaCambiar.mes > 12) {
             fechaCambiar.mes = 1;
             fechaCambiar.anio++;
         }
         rangoDeManejo = month[fechaCambiar.mes - 1] - fechaCambiar.dia;
-        if(numDias > rangoDeManejo){
+        if (numDias > rangoDeManejo) {
             fechaCambiar.mes++;
             fechaCambiar.dia = 0;
-            numDias-=rangoDeManejo;
-        }else{
+            numDias -= rangoDeManejo;
+        } else {
             fechaCambiar.dia += numDias;
             break;
         }
@@ -259,17 +295,17 @@ fecha claseEPS::agregarTiempoFecha(fecha fechaCambiar, int numDias) {
 
 //Metodo que compara dos fechas, retornando true en caso de que lafechaAfiliado1 sea menor.
 bool claseEPS::compararFechas(fecha fechaAfiliado1, fecha fechaAfiliado2) {
-    if(fechaAfiliado1.anio > fechaAfiliado2.anio){
+    if (fechaAfiliado1.anio > fechaAfiliado2.anio) {
         return false;
-    }else if(fechaAfiliado1.anio < fechaAfiliado2.anio){
+    } else if (fechaAfiliado1.anio < fechaAfiliado2.anio) {
         return true;
-    }else{
-        if(fechaAfiliado1.mes > fechaAfiliado2.mes){
+    } else {
+        if (fechaAfiliado1.mes > fechaAfiliado2.mes) {
             return false;
-        }else if(fechaAfiliado1.mes < fechaAfiliado2.mes){
+        } else if (fechaAfiliado1.mes < fechaAfiliado2.mes) {
             return true;
-        }else{
-            if(fechaAfiliado1.dia > fechaAfiliado2.dia){
+        } else {
+            if (fechaAfiliado1.dia > fechaAfiliado2.dia) {
                 return false;
             }
             return true;
@@ -277,114 +313,128 @@ bool claseEPS::compararFechas(fecha fechaAfiliado1, fecha fechaAfiliado2) {
     }
 }
 
-void  claseEPS::agregarRegistro(Persona *p, int clave_ciu , IPS *ips, fecha fechaActual, string estado){
-    if(arbolAfiliados.obtenerInfo(p->getNumId()) == NULL ){
+void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaActual, string estado, bool tipo_insercion) {
+    if (arbolAfiliados.obtenerInfo(p->getNumId()) == NULL || !tipo_insercion) {
+        string clave;
         registroAfiliado *registroAux = new registroAfiliado, *registroAuxSig = new registroAfiliado, *registro = new registroAfiliado;
+        if(tipo_insercion){
+            clave = p->getNumId();
+        }else{
+            clave = p->getNumId() + "S";
+        }
+        registro->clave = clave;
         registro->persona = p;
         registro->ips = ips;
         registro->claveCiu = clave_ciu;
         registro->estado = estado;
-        registro->sigCiudad= "";
+        registro->sigCiudad = "";
         registro->sigIPS = "";
         registro->sigLab = "";
-        registro->posLab = -1;
-        registro->fechaDosis = fechaActual;
-        //registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 11));
+        if(tipo_insercion){
+            registro->posLab = -1;
+        }else{
+            registro->posLab = arbolAfiliados.obtenerInfo(registro->persona->getNumId())->posLab;
+        }
 
-        nodoIps* nodoAux;
-        nodoCiudad* nodoCiudadAux;
+        //registro->fechaDosis = fechaActual;
+        registro->fechaDosis = generarFechaAleatoria(fechaActual, agregarTiempoFecha(fechaActual, 11));
+
+        nodoIps *nodoAux;
+        nodoCiudad *nodoCiudadAux;
 
         // Arregla cabecera por IPS
-        for(int i=0; i<poscabIPS; i++){
+        for (int i = 0; i < poscabIPS; i++) {
             nodoAux = &cabeceraIPS[i];
-            if(nodoAux->ips.getNombre() == ips->getNombre()){
+            if (nodoAux->ips.getNombre() == ips->getNombre()) {
                 nodoAux->ips.setNumAfiliados(nodoAux->ips.getNumAfiliados() + 1);
                 break;
             }
         }
 
-        if(nodoAux->claveAfiliado == ""){
-            nodoAux->claveAfiliado = p->getNumId();
-        }else{
+        if (nodoAux->claveAfiliado == "") {
+            nodoAux->claveAfiliado = clave;
+        } else {
             // Agrega el registro a la cabecera por IPS y la ordena de menor a mayor por la fecha
             registroAux = arbolAfiliados.obtenerInfo(nodoAux->claveAfiliado);
-            if(!compararFechas(registroAux->fechaDosis, registro->fechaDosis)){
-                registro->sigIPS = registroAux->persona->getNumId();
-                nodoAux->claveAfiliado = p->getNumId();
-            }else{
-                if(numAfiliados > 1){
+            if (!compararFechas(registroAux->fechaDosis, registro->fechaDosis)) {
+                registro->sigIPS = registroAux->clave;
+                nodoAux->claveAfiliado = clave;
+            } else {
+                if (numAfiliados > 1) {
                     registroAuxSig = arbolAfiliados.obtenerInfo(registroAux->sigIPS);
                     int cont = 1;
-                    while (registroAuxSig->sigIPS != "" ) {
+                    while (registroAuxSig != NULL) {
                         if (!compararFechas(registroAuxSig->fechaDosis, registro->fechaDosis)) {
-                            registro->sigIPS = registroAuxSig->sigIPS;
-                            registroAux->sigIPS = registro->persona->getNumId();
-                        }else if(verificarFechasIguales(registroAuxSig->fechaDosis, registro->fechaDosis)){
-                            while(cont < 20 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis)){
+                            registro->sigIPS = registroAuxSig->clave;
+                            break;
+                        } else if (verificarFechasIguales(registroAuxSig->fechaDosis, registro->fechaDosis)) {
+                            while (cont < 2 && verificarFechasIguales(registro->fechaDosis, registroAuxSig->fechaDosis) ) {
                                 cont++;
-                                if(registroAuxSig->sigIPS == "") break;
                                 registroAux = registroAuxSig;
                                 registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
+                                if(registroAuxSig == NULL) break;
                             }
-                            if(cont == 20){
+                            if (cont == 2) {
                                 registro->fechaDosis = agregarTiempoFecha(registro->fechaDosis, 7);
                                 cont = 0;
                             }
-                        }else{
+                        } else {
                             registroAux = registroAuxSig;
                             registroAuxSig = arbolAfiliados.obtenerInfo(registroAuxSig->sigIPS);
                         }
                     }
-                    registroAuxSig->sigIPS = p->getNumId();
-                }else{
-                    registroAux->sigIPS = p->getNumId();
+                    registroAux->sigIPS = registro->clave;
+                } else {
+                    registroAux->sigIPS = registro->clave;
                 }
             }
         }
 
         // Arregla cabecera por ciudad
-        for(int i=0; i<poscabCiudad; i++){
+        for (int i = 0; i < poscabCiudad; i++) {
             nodoCiudadAux = &cabeceraCiudad[i];
-            if(nodoCiudadAux->clave == clave_ciu){
+            if (nodoCiudadAux->clave == clave_ciu) {
                 break;
             }
         }
 
         // Agrega el registro a la cabecera por ciudad
-        if(nodoCiudadAux->claveAfiliado == ""){
-            nodoCiudadAux->claveAfiliado = p->getNumId();
-        }else{
+        if (nodoCiudadAux->claveAfiliado == "") {
+            nodoCiudadAux->claveAfiliado = clave;
+        } else {
             registroAux = arbolAfiliados.obtenerInfo(nodoCiudadAux->claveAfiliado);
-            while(registroAux->sigCiudad != ""){
+            while (registroAux->sigCiudad != "") {
                 registroAux = arbolAfiliados.obtenerInfo(registroAux->sigCiudad);
             }
-            registroAux->sigCiudad = p->getNumId();
+            registroAux->sigCiudad = clave;
         }
-        arbolAfiliados.insertarNodo(p->getNumId(),*registro);
+
+            arbolAfiliados.insertarNodo(clave, *registro);
+
         numAfiliados++;
-    }else{
-        cout<<"La cedula ingresada ya ha sido registrada con anterioridad, por favor ingrese otra"<<endl;
+    } else {
+        cout << "La cedula ingresada ya ha sido registrada con anterioridad, por favor ingrese otra" << endl;
     }
 }
 
-void claseEPS::agregarCargamentoVacunas(int indexLab, int numVacunas){
+void claseEPS::agregarCargamentoVacunas(int indexLab, int numVacunas) {
     listaVacunas[indexLab].numVacunas = numVacunas;
 }
 
-void claseEPS::repartirVacunas(){
-    for(int i=0; i<6; i++){
-        for(int j=0; j<poscabIPS; j++){
+void claseEPS::repartirVacunas() {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < poscabIPS; j++) {
             listaVacunas[i].numVacunas = cabeceraIPS[j].ips.distribuirVacunas(i, listaVacunas[i].numVacunas);
         }
     }
 }
 
-void claseEPS::agregarIPS(IPS ips, string ciudad){
+void claseEPS::agregarIPS(IPS ips, string ciudad) {
     nodoCiudad *aux;
     for (int i = 0; i < poscabCiudad; ++i) {
         aux = &cabeceraCiudad[i];
-        if (aux->nombreCiudad == ciudad){
-            if(aux->posIPS == -1){
+        if (aux->nombreCiudad == ciudad) {
+            if (aux->posIPS == -1) {
                 aux->posIPS = poscabIPS;
             }
             nodoIps *nodoAux = &cabeceraIPS[aux->posIPS];
@@ -393,8 +443,8 @@ void claseEPS::agregarIPS(IPS ips, string ciudad){
             nuevo->claveAfiliado = "";
             nuevo->sigCiudad = -1;
             cabeceraIPS[poscabIPS] = *nuevo;
-            if(poscabIPS > 0){
-                while (nodoAux->sigCiudad != -1){
+            if (poscabIPS > 0 && nodoAux->sigCiudad != -1) {
+                while (nodoAux->sigCiudad != -1) {
                     nodoAux = &cabeceraIPS[nodoAux->sigCiudad];
                 }
                 nodoAux->sigCiudad = poscabIPS;
@@ -403,7 +453,7 @@ void claseEPS::agregarIPS(IPS ips, string ciudad){
         }
     }
 
-    if (poscabIPS < 20){
+    if (poscabIPS < 20) {
         poscabIPS++;
     }
 }
@@ -424,25 +474,25 @@ void claseEPS::setPoscabCiudad(int poscabCiudad) {
     claseEPS::poscabCiudad = poscabCiudad;
 }
 
-void claseEPS::eliminarIPS(){
-    if(poscabIPS > 0)
+void claseEPS::eliminarIPS() {
+    if (poscabIPS > 0)
         poscabIPS--;
 }
 
-void claseEPS::agregarCiudad(int clave, string n){
+void claseEPS::agregarCiudad(int clave, string n) {
     nodoCiudad *nuevo = new nodoCiudad();
     nuevo->nombreCiudad = n;
     nuevo->clave = clave;
     nuevo->posIPS = -1;
     cabeceraCiudad[poscabCiudad] = *nuevo;
 
-    if (poscabCiudad < 20){
+    if (poscabCiudad < 20) {
         poscabCiudad++;
     }
 }
 
-void claseEPS::eliminarCiudad(){
-    if(poscabCiudad > 0)
+void claseEPS::eliminarCiudad() {
+    if (poscabCiudad > 0)
         poscabCiudad--;
 }
 

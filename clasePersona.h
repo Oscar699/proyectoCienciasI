@@ -39,7 +39,7 @@ public:
     //Setters
 
 
-    void calcEdad(int, int, int);
+    void calcEdad(fecha);
     void setFechaNac(int, int, int);
 
     const string &getNombre() const;
@@ -144,23 +144,25 @@ private:
     Persona *sigEps;
 };
 //Método para hallar la edad de una persona
-void Persona::calcEdad(int diaActual, int mesAtual, int anioActual) {
+void Persona::calcEdad(fecha fechaActual) {
     //Se setean los meses del año
     int month[] = { 31, 28, 31, 30, 31, 30, 31,
                     31, 30, 31, 30, 31 };
 
     //Consigue los dias de nacido
-    if (this->fechaNac.dia > diaActual) {
-        diaActual = diaActual + month[this->fechaNac.mes - 1];
-        mesAtual = mesAtual - 1;
+    if (this->fechaNac.dia > fechaActual.dia) {
+        fechaActual.dia += month[this->fechaNac.mes - 1];
+        fechaActual.mes -= 1;
     }
     //Consigue los meses de nacido
-    if (this->fechaNac.mes > mesAtual) {
-        anioActual = anioActual - 1;
-        mesAtual = mesAtual + 12;
+    if (this->fechaNac.mes > fechaActual.mes) {
+        fechaActual.anio -= 1;
+        fechaActual.mes += 12;
     }
+
+
     //Consigue los años de nacido
-    this->edad = anioActual - this->fechaNac.anio;
+    this->edad = fechaActual.anio - this->fechaNac.anio;
 }
 
 void Persona::setFechaNac(int diaNac, int mesNac, int anioNac) {
