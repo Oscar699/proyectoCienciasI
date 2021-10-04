@@ -10,11 +10,9 @@
 
 class Simulacion{
     fecha FechaActual;
-    string caracteristica;
     ListaPersona listaPersonas;
 public:
     Simulacion(){ // Temporal
-        caracteristica = "Np hay cambios";
         calcularFechaActual();
     }
     const fecha &getFechaActual() const;
@@ -27,6 +25,8 @@ public:
     void atender(fecha);
     void mainSimulado();
 
+    void guardarArchivos();
+    void cargarArchivos();
 };
 
 void Simulacion::calcularFechaActual(){
@@ -46,42 +46,53 @@ void Simulacion::mainSimulado() {
     /* Codigo para hacer test a las clases que representan las estructuras */
     Simulacion test;
     Persona testPersona1, testPersona2;
-    claseEPS testEps;
+    claseEPS *testEps = new claseEPS, *testEps2 = new claseEPS;
     IPS testIPS1, testIPS2;
+    ListaPersona listaTest;
 
     testIPS1.setNombre("ipsTest1");
     testIPS1.setDireccion("Calle 11");
     testIPS2.setNombre("ipsTest2");
     testIPS2.setDireccion("Calle 21");
 
-    testEps.setNombre("testEps");
-    testEps.setNumAfiliados(0);
-    testEps.agregarCiudad(0, "ciudadTest1");
-    testEps.agregarCiudad(1, "ciudadTest2");
-    testEps.agregarIPS(testIPS1, "ciudadTest1");
-    testEps.agregarIPS(testIPS2, "ciudadTest2");
+    testEps->setNombre("testEps");
+    testEps->setNumAfiliados(0);
+    testEps->agregarCiudad(0, "ciudadTest1");
+    testEps->agregarCiudad(1, "ciudadTest2");
+    testEps->agregarIPS(testIPS1, "ciudadTest1");
+    testEps->agregarIPS(testIPS2, "ciudadTest2");
 
-    testPersona1.setNombre("Fulano");
+    testEps2->setNombre("testEps2");
+    testEps2->setNumAfiliados(0);
+    testEps2->agregarCiudad(0, "ciudadTest1");
+    testEps2->agregarCiudad(1, "ciudadTest2");
+
+    listaTest.agregarEPS(testEps);
+    listaTest.agregarEPS(testEps2);
+
+
+    testPersona1.setNombre("Santiago");
     testPersona1.setApellido("Dulcano");
     testPersona1.setTipoId("CC");
-    testPersona1.setNumId("101010101");
+    testPersona1.setNumId("101010111");
     testPersona1.setSexo('M');
     testPersona1.setTelCelular("4000000");
     testPersona1.setTelFijo("30000");
     testPersona1.setEmail("fulano@test.com");
-    testPersona1.setFechaNac(01, 1, 2001);
+    testPersona1.setFechaNac(15, 4, 1980);
     testPersona1.setCiudadNac("ciudadNac");
     testPersona1.setPaisNac("paisNac");
     testPersona1.setCiudadRes("ciudadTest1");
     testPersona1.setDirec("Calle_01");
     testPersona1.setBarrio("barrioTest1");
     testPersona1.setActivLab("Filosofia");
-    testPersona1.setNombreEps(testEps.getNombre());
+    testPersona1.setNombreEps(testEps->getNombre());
+    testPersona1.calcEdad(FechaActual);
 
-    testPersona2.setNombre("Sultana");
+    testPersona2.setNombre("Elena");
     testPersona2.setApellido("Delana");
     testPersona2.setTipoId("CC");
-    testPersona2.setNumId("101010100");
+    testPersona2.setNumId("101010200");
     testPersona2.setSexo('F');
     testPersona2.setTelCelular("4000001");
     testPersona2.setTelFijo("30001");
@@ -93,25 +104,30 @@ void Simulacion::mainSimulado() {
     testPersona2.setDirec("Calle_221");
     testPersona2.setBarrio("barrioTest2");
     testPersona2.setActivLab("Artes");
-    testPersona2.setNombreEps(testEps.getNombre());
+    testPersona2.setNombreEps(testEps->getNombre());
+    testPersona2.calcEdad(FechaActual);
 
     test.calcularFechaActual();
     fecha testFecha1, testFecha2;
-    testFecha1.dia = 25;
-    testFecha1.mes = 12;
+    testFecha1.dia = 9;
+    testFecha1.mes = 10;
     testFecha1.anio = 2021;
-    //testEps.agregarRegistro(&testPersona1, 0, &testIPS1, testFecha1, "CP", true);
-    testFecha1.dia = 24;
-    //testEps.agregarRegistro(&testPersona2, 0, &testIPS1, testFecha1, "CP", true);
+    listaTest.agregarPersona(testPersona1);
+    testEps->agregarRegistro(listaTest.obtenerPersona(testPersona1.getNumId()), 0, &testIPS2, testFecha1, "CP", true);
+    testFecha2.dia = 11;
+    testFecha2.mes = 10;
+    testFecha2.anio = 2021;
+    listaTest.agregarPersona(testPersona2);
+    testEps->agregarRegistro(listaTest.obtenerPersona(testPersona2.getNumId()), 1, &testIPS2, testFecha2, "CP", true);
 
-    //testEps.agregarCargamentoVacunas(0, 17);
-    //testEps.agregarCargamentoVacunas(1, 18);
-    testEps.agregarCargamentoVacunas(2, 1000);
+    testEps->agregarCargamentoVacunas(0, 500);
+    testEps->agregarCargamentoVacunas(1, 500);
+    testEps->agregarCargamentoVacunas(2, 500);
 
-    testEps.repartirVacunas();
+    testEps->repartirVacunas();
 
-    testIPS1 = testEps.getCabeceraIps()[0].ips;
-    testIPS2 = testEps.getCabeceraIps()[1].ips;
+    testIPS1 = testEps->getCabeceraIps()[0].ips;
+    testIPS2 = testEps->getCabeceraIps()[1].ips;
 
     ofstream archsalida1("personaTest.csv", ios::out|ios::trunc);
     ofstream archsalida2("IPSTest.csv", ios::out|ios::trunc);
@@ -147,7 +163,7 @@ void Simulacion::mainSimulado() {
 
 
     // Escribe en el archivo EPSTest.csv la informacion de un objeto claseEPS llamado testEPS
-    archsalida3<<setw(10)<<testEps.getNombre()<<setw(10)<<testEps.getNumAfiliados()<<endl;
+    archsalida3<<setw(10)<<testEps->getNombre()<<setw(10)<<testEps->getNumAfiliados()<<endl;
 
 
 
@@ -165,7 +181,7 @@ void Simulacion::mainSimulado() {
         exit(1);
     }
 
-    ListaPersona listaTest;
+
     int edad, dia, mes, anio;
     string nombre, apellido, tipoId, numId, telCelular, telFijo, email, ciudadNac, paisNac, ciudadRes, direc, barrio, activLab, nombreEps;
     char sexo;
@@ -209,31 +225,28 @@ void Simulacion::mainSimulado() {
         testPersona3.setNombreEps(nombreEps);
         testPersona3.calcEdad(this->FechaActual);
         listaTest.agregarPersona(testPersona3);
-        testEps.agregarRegistro(listaTest.obtenerPersona(0), 0, &testIPS1, this->FechaActual, "CP", true);
+        testEps->agregarRegistro(listaTest.obtenerPersona(testPersona3.getNumId()), 0, &testIPS1, this->FechaActual, "CP", true);
     }
 
     testFecha1 = FechaActual;
-    testFecha2 = testEps.agregarTiempoFecha(testFecha1, 60);
-    while(testEps.compararFechas(testFecha1, testFecha2)){
-        testEps.vacunar(testFecha1);
-        testFecha1 = testEps.agregarTiempoFecha(testFecha1, 1);
+    testFecha2 = testEps->agregarTiempoFecha(testFecha1, 80);
+    while(testEps->compararFechas(testFecha1, testFecha2)){
+        testEps->vacunar(testFecha1);
+        testFecha1 = testEps->agregarTiempoFecha(testFecha1, 1);
     }
-    testEps.imprimirCabeceraIPS();
+    //testEps.imprimirCabeceraIPS();
+    listaTest.imprimirCabeceras();
 
 
     archEntrada.close();
-    cout << "Hello, World!" << endl; // Texto para saber que algo hace xd
 }
 
-const string &Simulacion::getCaracteristica() const {
-    return caracteristica;
-}
-
-void Simulacion::setCaracteristica(const string &caracteristica) {
-    Simulacion::caracteristica = caracteristica;
-}
 
 void Simulacion::atender(fecha fechaA ) {
+
+}
+
+void Simulacion::guardarArchivos() {
 
 }
 

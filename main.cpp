@@ -8,6 +8,8 @@
 #include "clasePersona.h"
 #include "claseSimulacion.h"
 
+// Creando rama
+
 using namespace std;
 
 void cambiarCaracteristcia(Simulacion &); // La prueba de que deberia funcionar
@@ -57,10 +59,6 @@ int main() {
     return 0;
 }
 
-void cambiarCaracteristcia(Simulacion &testSimulacion){
-    testSimulacion.setCaracteristica("Hay cambios");
-    cout<<testSimulacion.getCaracteristica()<<endl;
-}
 
 void modificarInformacion(Simulacion &testSimulacion){
     char opcionUsuario = 0;
