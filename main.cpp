@@ -50,6 +50,8 @@ int main() {
                 break;
             case '5':
                 cout<<"Saliend de la app..."<<endl;
+                testSimulacion.mainSimulado();
+                testSimulacion.guardarArchivos();
                 break;
             default:
                 cout<<"La opcion ingresada es invalida por favor ingrese otra"<<endl;

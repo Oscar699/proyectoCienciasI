@@ -234,7 +234,7 @@ void Simulacion::mainSimulado() {
         testEps->vacunar(testFecha1);
         testFecha1 = testEps->agregarTiempoFecha(testFecha1, 1);
     }
-    //testEps.imprimirCabeceraIPS();
+    //testEps->imprimirCabeceraIPS();
     listaTest.imprimirCabeceras();
 
 
@@ -247,7 +247,9 @@ void Simulacion::atender(fecha fechaA ) {
 }
 
 void Simulacion::guardarArchivos() {
-
+    string *clavesArbol;
+    clavesArbol = listaPersonas.obtenerClaves();
+    //ofstream archsalida1("personaGuardada.txt", ios::out|ios::trunc);
 }
 
 #endif //PROYECTOCIENCIAS_CLASESIMULACION_H
