@@ -6,6 +6,7 @@
 #define PROYECTOCIENCIAS_ARBOLRN_H
 #include <iostream>
 #include <string>
+#include "listaSimple.h"
 
 using namespace std;
 
@@ -28,6 +29,8 @@ public:
     ArbolRN(){
         raiz = new Nodo<T>;
         raiz->padre = raiz;
+        raiz->nulo = true;
+        raiz->color = false;
         raiz->clave = "-1";
         crearNulos(raiz);
     }
@@ -50,6 +53,7 @@ public:
     void inorden(Nodo<T> *);
     void destruir (Nodo<T> *p);
     T * obtenerInfo(string);
+    Lista<string> obtenerClavesArbol();
     ~ArbolRN( );
 };
 
@@ -350,13 +354,20 @@ void ArbolRN<T>::ajustarSupresionRN(Nodo<T> *x) {
 }
 
 template <class T>
-void ArbolRN<T>::inorden(Nodo<T> *p){
+void ArbolRN<T>::inorden(Nodo<T> *p) {
     if (!p->nulo){
         inorden(p->hijoIzq);
         cout<<p->clave<<" "<<p->color<<endl;
         inorden(p->hijoDer);
     }
 }
+
+template<class T>
+Lista<string> ArbolRN<T>::obtenerClavesArbol() {
+
+}
+
+
 
 template <class T>
 T *ArbolRN<T>::obtenerInfo(string clave){
