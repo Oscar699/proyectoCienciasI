@@ -27,7 +27,13 @@ public:
 
     void guardarArchivos();
     void cargarArchivos();
+
+    ListaPersona &getListaPersonas();
 };
+
+
+
+
 
 void Simulacion::calcularFechaActual(){
     time_t tiempo = time(NULL);

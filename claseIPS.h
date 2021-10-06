@@ -80,4 +80,5 @@ void IPS::setNumAfiliados(int numAfiliados) {
     IPS::numAfiliados = numAfiliados;
 }
 
+
 #endif //PROYECTOCIENCIAS_CLASEIPS_H
