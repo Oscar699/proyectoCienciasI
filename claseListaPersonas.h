@@ -6,6 +6,7 @@
 #include "listaSimple.h"
 #include "claseEPS.h"
 #include "pila.h"
+#include "listaSimple.h"
 
 using namespace std;
 
@@ -386,52 +387,100 @@ void ListaPersona::calculoConsulta8(int lab, string eps) {
     }
 }
 
-/*void ListaPersona::calculoConsulta9(fecha f) {
-    pila<int *> conteo_lab, conteo_aux;
-    pila<string> nombre_ips, nombre_ips_aux, nombre_ciudad, nombre_ciudad_aux, nombre_eps;
-    pila<int> num_ips, num_ips_aux, num_ciudades, num_ciudades_aux, cont_pacientes_ciu,
-    cont_pacientes_ips, cont;
-    int contador_ips;
+void ListaPersona::calculoConsulta9(fecha f) {
+    pila<Lista<int>> conteo_ips, conteo_ciudad, conteo_eps;
+   pila<int> num_ips, num_ciudad;
+   pila<string> nombre_ips, nombre_ciudad, nombre_eps;
+   Lista<int> *lab_ciu, *lab_eps, *lab_ips;
+   int cont_eps=0, cont_ips;
+   int lab_total[6]={0,0,0,0,0,0};
     for (int i = 0; i < poscabEPS; ++i) {
+        cont_eps++;
+        lab_eps = new Lista<int>;
+        for (int k = 0; k < 6; ++k) {
+            lab_eps->insertar_inicio(0);
+        }
         nodoEps *nodo_eps = cabeceraEPS[i];
         claseEPS *eps_aux = nodo_eps->eps;
+        ArbolRN<registroAfiliado> *arbol = eps_aux->getArbolAfiliados();
         for (int j = 0; j < eps_aux->getPoscabCiudad(); ++j) {
-            ArbolRN<registroAfiliado> *arbol = eps_aux->getArbolAfiliados();
+            cont_ips=0;
+            lab_ciu = new Lista<int>;
+            for (int k = 0; k < 6; ++k) {
+                lab_ciu->insertar_inicio(0);
+            }
             nodoCiudad ciudad = eps_aux->getCabeceraCiudad()[j];
-            if (ciudad.posIPS == -1) {
-                nombre_ciudad.Push(ciudad.nombreCiudad);
+            if (ciudad.posIPS == -1){
                 num_ips.Push(0);
+                nombre_ciudad.Push(ciudad.nombreCiudad);
+                conteo_ciudad.Push(*lab_ciu);
                 continue;
-            } else {
-                nodoIps nodo_ips = eps_aux->getCabeceraIps()[ciudad.posIPS];
-                contador_ips = 0;
-                while (nodo_ips.ips != NULL) {
-                    registroAfiliado *registro = arbol->obtenerInfo(nodo_ips.claveAfiliado);
-                    contador_ips++;
-                    int conteo[6] = {0, 0, 0, 0, 0, 0};
-                    while (registro != NULL) {
-                        if (eps_aux->verificarFechasIguales(registro->fechaDosis, f)) {
-                            conteo[registro->posLab]++;
+            } else{
+                nodoIps ips = eps_aux->getCabeceraIps()[ciudad.posIPS];
+                cont_ips++;
+                lab_ips = new Lista<int>;
+                for (int k = 0; k < 6; ++k) {
+                    lab_ips->insertar_inicio(0);
+                }
+                while (true){
+                    registroAfiliado *registro = arbol->obtenerInfo(ips.claveAfiliado);
+                    while (registro != NULL){
+                        if (eps_aux->verificarFechasIguales(registro->fechaDosis,f)){
+                            lab_ips->modificar(*lab_ips->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_ciu->modificar(*lab_ciu->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_eps->modificar(*lab_eps->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_total[registro->posLab]++;
                         }
                         registro = arbol->obtenerInfo(registro->sigIPS);
                     }
-                    conteo_lab.Push(conteo);
-                    nombre_ips.Push(nodo_ips.ips->getNombre());
-                    if (nodo_ips.sigCiudad == -1) break;
-                    nodo_ips = eps_aux->getCabeceraIps()[nodo_ips.sigCiudad];
+                    conteo_ips.Push(*lab_ips);
+                    nombre_ips.Push(ips.ips->getNombre());
+                    if (ips.sigCiudad == -1) break;
+                    ips = eps_aux->getCabeceraIps()[ips.sigCiudad];
                 }
-                num_ips.Push(contador_ips);
+                num_ips.Push(cont_ips);
                 nombre_ciudad.Push(ciudad.nombreCiudad);
+                conteo_ciudad.Push(*lab_ciu);
             }
-            num_ciudades.Push(eps_aux->getPoscabCiudad());
-            nombre_ciudad.Push(eps_aux->getNombre());
+
+        }
+        num_ciudad.Push(eps_aux->getPoscabCiudad());
+        nombre_eps.Push(eps_aux->getNombre());
+        conteo_eps.Push(*lab_eps);
+    }
+    string vacunas[6] = {"Pfizer", "Moderna", "Jhonsson", "Astrazeneca", "Sputnik", "Sinovac"};
+    for (int i = 0; i < 6; ++i) {
+        cout<<vacunas[i]<<": "<<lab_total[i]<<"\t";
+    }
+    cout<<endl;
+    while (!nombre_eps.PilaVacia()){
+        cout<<"\tEPS: "<<nombre_eps.Pop()<<endl;
+        Lista<int> vacunas_eps = conteo_eps.Pop();
+        for (int i = 0; i < 6; ++i) {
+            cout<<"\t"<<vacunas[i]<<": "<<*vacunas_eps.obtenerDato(i)<<"\t";
+        }
+        cout<<endl;
+        int lim_ciu = num_ciudad.Pop();
+        for (int i = 0; i < lim_ciu; ++i) {
+            cout<<"\t\tCiudad: "<<nombre_ciudad.Pop()<<endl;
+            Lista<int> vacunas_ciudad = conteo_ciudad.Pop();
+            for (int i = 0; i < 6; ++i) {
+                cout<<"\t\t"<<vacunas[i]<<": "<<*vacunas_ciudad.obtenerDato(i)<<"\t";
+            }
+            cout<<endl;
+            int lim_ips = num_ips.Pop();
+            for (int j = 0; j < lim_ips; ++j) {
+                cout<<"\t\t\tIPS: "<<nombre_ips.Pop()<<endl;
+                Lista<int> vacunas_ips = conteo_ips.Pop();
+                for (int i = 0; i < 6; ++i) {
+                    cout<<"\t\t\t"<<vacunas[i]<<": "<<*vacunas_ips.obtenerDato(i)<<"\t";
+                }
+                cout<<endl;
+            }
         }
     }
-    for (int i = 0; i < 6; ++i) {
-        while ()
-    }
 }
-*/
+
 void ListaPersona::agregarPais(string nombrePais) {
     nodoP *aux = new nodoP;
     aux->clave = nombrePais;
