@@ -105,7 +105,52 @@ public:
         }
     }
 
+    string* obtenerClaves();
+
+    const ArbolRN<Persona> &getPersonas() const;
+
+    Persona *const *getCabeceraSexo() const;
+
+    Persona *const *getCabeceraEdad() const;
+
+    Persona *const *getCabeceraActividad();
+
+    nodoEps *const *getCabeceraEps() const;
+
+    Lista<nodoP> &getCabeceraPais();
+
+    Lista<nodoCiudadListaP> &getCabeceraCiudadRes();
+
+    int getPoscabEps() const;
+
+    nodoEps *const *getCabeceraEps() const;
 };
+
+const ArbolRN<Persona> &ListaPersona::getPersonas() const {
+    return personas;
+}
+
+Persona *const *ListaPersona::getCabeceraSexo() const {
+    return cabeceraSexo;
+}
+
+Persona *const *ListaPersona::getCabeceraEdad() const {
+    return cabeceraEdad;
+}
+
+Persona *const *ListaPersona::getCabeceraActividad() const {
+    return cabeceraActividad;
+}
+
+nodoEps *const *ListaPersona::getCabeceraEps() const {
+    return cabeceraEPS;
+}
+
+
+
+int ListaPersona::getPoscabEps() const {
+    return poscabEPS;
+}
 
 void ListaPersona::calculoConsulta1(string nombreEPS) {
     int contPersonas = 0;
@@ -1234,9 +1279,14 @@ void ListaPersona::imprimirCabeceras() {
             cout << subCont++ << setw(10) << aux->getNombre() << setw(10) << aux->getNumId() << endl;
             aux = aux->getSigEps();
         }
-
     }
 
+}
+
+string* ListaPersona::obtenerClaves() {
+    int pos = 0;
+    string *arrClaves;
+    personas.obtenerClavesArbol(personas.raiz_arbol(), arrClaves, pos);
 }
 
 #endif //PROYECTOCIENCIAS_CLASELISTAPERSONAS_H

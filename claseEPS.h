@@ -16,7 +16,7 @@ using namespace std;
 #ifndef PROYECTOCIENCIAS_EPS_H
 #define PROYECTOCIENCIAS_EPS_H
 
-struct nodoIps {
+struct nodoIps { //IPS asociadas
     IPS *ips;
     string claveAfiliado;
     int sigCiudad;
@@ -122,6 +122,8 @@ public:
 
     bool compararFechas(fecha, fecha);
 
+
+
     inline bool verificarFechasIguales(fecha fecha1, fecha fecha2) {
         return (fecha1.dia == fecha2.dia && fecha1.mes == fecha2.mes && fecha1.anio == fecha2.anio);
     }
@@ -138,7 +140,15 @@ public:
 
     void setPoscabCiudad(int poscabCiudad);
 
+    ArbolRN<registroAfiliado> *getArbolAfiliados();
+
+
+
 };
+
+ArbolRN<struct registroAfiliado> * claseEPS::getArbolAfiliados() {
+    return &arbolAfiliados;
+}
 
 //este metodo verifica si a la ips todavia le quedan vacunas
 bool claseEPS::existenciaVacunas() {
@@ -538,5 +548,6 @@ const nodoVacEps *claseEPS::getListaVacunas() const {
 ArbolRN<struct registroAfiliado> * claseEPS::getArbolAfiliados() {
     return &arbolAfiliados;
 }
+
 
 #endif //PROYECTOCIENCIAS_EPS_H
