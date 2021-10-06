@@ -17,7 +17,7 @@ using namespace std;
 #define PROYECTOCIENCIAS_EPS_H
 
 struct nodoIps {
-    IPS ips;
+    IPS *ips;
     string claveAfiliado;
     int sigCiudad;
 };
@@ -49,6 +49,7 @@ struct registroAfiliado {
 };
 
 class claseEPS {
+private:
     string nombre;
     nodoIps cabeceraIPS[20];
     nodoCiudad cabeceraCiudad[20];
@@ -59,6 +60,8 @@ class claseEPS {
     ArbolRN<registroAfiliado> arbolAfiliados;
     claseLaboratorios labs;
 public:
+    ArbolRN<registroAfiliado> *getArbolAfiliados();
+
     const string &getNombre() const;
 
     void setNombre(const string nombre);
@@ -86,6 +89,7 @@ public:
         for (int i = 0; i < 20; ++i) {
             cabeceraIPS[i].sigCiudad = -1;
             cabeceraIPS[i].claveAfiliado = "";
+            cabeceraIPS[i].ips = NULL;
             cabeceraCiudad[i].posIPS = -1;
             cabeceraCiudad[i].claveAfiliado = "";
         }
@@ -223,7 +227,7 @@ void claseEPS::vacunar(fecha f) {
                 }
             }
             if(ips_aux->sigCiudad != -1)
-            ips_aux = &cabeceraIPS[ips_aux->sigCiudad];
+                ips_aux = &cabeceraIPS[ips_aux->sigCiudad];
         } while (ips_aux->sigCiudad != -1);
     }
 
@@ -236,7 +240,7 @@ void claseEPS::imprimirCabeceraIPS() {
         nodoIps *aux = &cabeceraIPS[i];
         registroAfiliado *regAux = arbolAfiliados.obtenerInfo(aux->claveAfiliado);
         while (regAux != NULL) {
-            cout << aux->ips.getNombre() << setw(10) << regAux->persona->getNombre() << setw(10)
+            cout << aux->ips->getNombre() << setw(10) << regAux->persona->getNombre() << setw(10)
                  << regAux->persona->getNumId() <<setw(8)<< regAux->persona->getEdad()
                  << setw(5) << regAux->estado << setw(5)
                  << regAux->fechaDosis.dia << "/" << regAux->fechaDosis.mes << "/" << regAux->fechaDosis.anio
@@ -347,8 +351,11 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
         // Arregla cabecera por IPS
         for (int i = 0; i < poscabIPS; i++) {
             nodoAux = &cabeceraIPS[i];
-            if (nodoAux->ips.getNombre() == ips->getNombre()) {
-                nodoAux->ips.setNumAfiliados(nodoAux->ips.getNumAfiliados() + 1);
+            if (nodoAux->ips->getNombre() == ips->getNombre()) {
+                if(tipo_insercion){
+                    nodoAux->ips->setNumAfiliados(nodoAux->ips->getNumAfiliados() + 1);
+                }
+
                 break;
             }
         }
@@ -411,7 +418,7 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
             registroAux->sigCiudad = clave;
         }
 
-            arbolAfiliados.insertarNodo(clave, *registro);
+        arbolAfiliados.insertarNodo(clave, *registro);
 
         if(tipo_insercion){
             numAfiliados++;
@@ -428,7 +435,7 @@ void claseEPS::agregarCargamentoVacunas(int indexLab, int numVacunas) {
 void claseEPS::repartirVacunas() {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < poscabIPS; j++) {
-            listaVacunas[i].numVacunas = cabeceraIPS[j].ips.distribuirVacunas(i, listaVacunas[i].numVacunas);
+            listaVacunas[i].numVacunas = cabeceraIPS[j].ips->distribuirVacunas(i, listaVacunas[i].numVacunas);
         }
     }
 }
@@ -443,7 +450,7 @@ void claseEPS::agregarIPS(IPS ips, string ciudad) {
             }
             nodoIps *nodoAux = &cabeceraIPS[aux->posIPS];
             nodoIps *nuevo = new nodoIps();
-            nuevo->ips = ips;
+            nuevo->ips = &ips;
             nuevo->claveAfiliado = "";
             nuevo->sigCiudad = -1;
             cabeceraIPS[poscabIPS] = *nuevo;
@@ -528,5 +535,8 @@ const nodoVacEps *claseEPS::getListaVacunas() const {
     return listaVacunas;
 }
 
+ArbolRN<struct registroAfiliado> * claseEPS::getArbolAfiliados() {
+    return &arbolAfiliados;
+}
 
 #endif //PROYECTOCIENCIAS_EPS_H
