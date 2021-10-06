@@ -169,9 +169,8 @@ void ejecutarConsulta(Simulacion &testSimulacion){
                 cin>>pos1;
                 cout<<"Escoja la actividad laboral por medio de su posición en lista: ";
                 cin>>pos2;
-                Persona *rangoEdadSel = testSimulacion.getListaPersonas().getCabeceraEdad()[pos1];
                 Persona *actLabSel = testSimulacion.getListaPersonas().getCabeceraActividad()[pos2];
-                testSimulacion.getListaPersonas().calculoConsulta6(rangoEdadSel->getEdad(), actLabSel->getActivLab());
+                testSimulacion.getListaPersonas().calculoConsulta6(pos1, actLabSel->getActivLab());
                 break;
             }
             case '7':{
@@ -189,12 +188,11 @@ void ejecutarConsulta(Simulacion &testSimulacion){
                 cout<<"Escoja el rango de edad por medio de su posición en lista: ";
                 cin>>pos2;
                 claseEPS *epsSel = testSimulacion.getListaPersonas().getCabeceraEps()[pos1]->eps;
-                Persona *rangoEdadSel = testSimulacion.getListaPersonas().getCabeceraEdad()[pos1];
-                testSimulacion.getListaPersonas().calculoConsulta7(rangoEdadSel->getEdad(), epsSel->getNombre());
+                testSimulacion.getListaPersonas().calculoConsulta7(pos2, epsSel->getNombre());
                 break;
             }
             case '8':{
-                cout<<"Estas son las laboratorios: "<<endl;
+                cout<<"Estos son las laboratorios: "<<endl;
                 for (int i = 0; i < 6; i++) {
                     cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEps()[i]->eps->getListaVacunas()->indexLab<<endl;
                 }

@@ -264,6 +264,7 @@ void Simulacion::mainSimulado() {
     cout<<"-------------------------------------------------------"<<endl;
     fecha f;
     f.anio = 2021; f.mes=10; f.dia=7;
+    cout<<"-------------------------------------------------------"<<endl;
     listaTest.calculoConsulta9(f);
     archEntrada.close();
 }

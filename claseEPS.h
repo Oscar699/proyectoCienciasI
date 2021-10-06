@@ -545,9 +545,5 @@ const nodoVacEps *claseEPS::getListaVacunas() const {
     return listaVacunas;
 }
 
-ArbolRN<struct registroAfiliado> * claseEPS::getArbolAfiliados() {
-    return &arbolAfiliados;
-}
-
 
 #endif //PROYECTOCIENCIAS_EPS_H
