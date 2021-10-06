@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <ctime>
 #include <sstream>
+#include <string>
 
 class Simulacion{
     fecha FechaActual;
@@ -52,7 +53,7 @@ const fecha &Simulacion::getFechaActual() const {
 
 void Simulacion::mainSimulado() {
     /* Codigo para hacer test a las clases que representan las estructuras */
-    Simulacion test;
+    /*Simulacion test;
     Persona testPersona1, testPersona2;
     claseEPS *testEps = new claseEPS, *testEps2 = new claseEPS;
     IPS testIPS1, testIPS2, testIPS3, testIPS4;
@@ -216,27 +217,32 @@ void Simulacion::mainSimulado() {
         listaPersonas.agregarPersona(testPersona3);
         testEps->agregarRegistro(listaPersonas.obtenerPersona(testPersona3.getNumId()), 0, &testIPS2, this->FechaActual, "CP", true);
     }
+     */
 
     fecha testFecha1, testFecha2;
     testFecha1 = FechaActual;
-    testFecha2 = testEps->agregarTiempoFecha(testFecha1, 80);
-    while(testEps->compararFechas(testFecha1, testFecha2)){
-        testEps->vacunar(testFecha1);
-        testEps2->vacunar(testFecha1);
-        testFecha1 = testEps->agregarTiempoFecha(testFecha1, 1);
-    }
-    cout<<testEps->getNombre()<<endl;
+    testFecha2 = listaPersonas.obtenerEPS(0)->agregarTiempoFecha(testFecha1, 80);
+    /*while(listaPersonas.obtenerEPS(0)->compararFechas(testFecha1, testFecha2)){
+        listaPersonas.obtenerEPS(0)->vacunar(testFecha1);
+        listaPersonas.obtenerEPS(1)->vacunar(testFecha1);
+        testFecha1 = listaPersonas.obtenerEPS(0)->agregarTiempoFecha(testFecha1, 1);
+    }*/
+    cout<<listaPersonas.obtenerEPS(0)->getNombre()<<endl;
     cout<<"============================="<<endl;
-    testEps->imprimirCabeceraIPS();
+    listaPersonas.obtenerEPS(0)->imprimirCabeceraIPS();
     cout<<"============================="<<endl;
-    cout<<testEps2->getNombre()<<endl;
+    cout<<listaPersonas.obtenerEPS(1)->getNombre()<<endl;
     cout<<"============================="<<endl;
-    testEps2->imprimirCabeceraIPS();
+    listaPersonas.obtenerEPS(1)->imprimirCabeceraIPS();
     cout<<"============================="<<endl;
     listaPersonas.imprimirCabeceras();
 
 
-    archEntrada.close();
+    //archEntrada.close();
+
+
+
+    cout<<"Aca fue"<<endl;
 }
 
 
@@ -339,6 +345,8 @@ void Simulacion::cargarListaPersonas() {
         getline(registro, clave, delimitador);
         listaPersonas.agregarCiudadRes(stoi(clave), nombre);
     }
+    // Se lee la primera entrada para descartar a las cabeceras
+    getline(archEntradaPaises, entrada);
     // Guarda los paises encontrados en el archivo
     while(!archEntradaPaises.eof()){
         getline(archEntradaPaises, entrada);
@@ -377,9 +385,7 @@ void Simulacion::cargarLasEPS() {
         getline(registro, poscabIPS, delimitador);
         epsPlantilla->setPoscabIps(stoi(poscabIPS, nullptr));
         listaPersonas.agregarEPS(epsPlantilla);
-        break;
     }
-    getline(archEntradaEPS, entrada);
 }
 
 void Simulacion::conectarPersonasAEPS(claseEPS &auxEPS) {
@@ -395,8 +401,8 @@ void Simulacion::conectarPersonasAEPS(claseEPS &auxEPS) {
             auxRegistro = auxEPS.obtenerRegistro(clave);
             auxRegistro->persona = listaPersonas.obtenerPersona(clave);
         }else{
-            clave = clave.substr(0, pos);
             auxRegistro = auxEPS.obtenerRegistro(clave);
+            clave = clave.substr(0, pos);
             auxRegistro->persona = listaPersonas.obtenerPersona(clave);
         }
     }
@@ -435,42 +441,45 @@ void Simulacion::cargarInfoEPS() {
         }
 
         string indexLab, numVacunas, claveAfiliado;
-        nodoVacEps *auxVacEPS = const_cast<nodoVacEps *>(auxEPS->getListaVacunas());
+        nodoVacEps *auxVacEPS;
         for(int j=0; j<6; j++){
+            auxVacEPS = auxEPS->obtenervacunas(j);
             getline(archEntradaVacunasEPS, entrada);
             stringstream registro(entrada);
             getline(registro, indexLab, delimitador);
-            auxVacEPS[j].indexLab = stoi(indexLab, nullptr);
+            auxVacEPS->indexLab = stoi(indexLab, nullptr);
             getline(registro, numVacunas, delimitador);
-            auxVacEPS[j].numVacunas = stoi(numVacunas, nullptr);
+            auxVacEPS->numVacunas = stoi(numVacunas, nullptr);
             getline(registro, claveAfiliado, delimitador);
-            auxVacEPS[j].claveAfiliado = claveAfiliado;
+            auxVacEPS->claveAfiliado = claveAfiliado;
         }
 
         // Carga la informacion de las ciudades de una EPS
         getline(archEntradaCiudadEPS, entrada); // Nombre de la eps
         string nombre, clave, posIPS;
-        nodoCiudad *auxCiudadEPS = const_cast<nodoCiudad *>(auxEPS->getCabeceraCiudad());
+        nodoCiudad *auxCiudadEPS = new nodoCiudad;
         for(int j=0; j<auxEPS->getPoscabCiudad(); j++){
+            auxCiudadEPS = auxEPS->obtenerCiudad(j);
             getline(archEntradaCiudadEPS, entrada);
             stringstream registro(entrada);
             getline(registro, nombre, delimitador);
-            auxCiudadEPS[j].nombreCiudad = nombre;
+            auxCiudadEPS->nombreCiudad = nombre;
             getline(registro, clave, delimitador);
-            auxCiudadEPS[j].clave = stoi(clave, nullptr);
+            auxCiudadEPS->clave = stoi(clave, nullptr);
             getline(registro, claveAfiliado, delimitador);
-            auxCiudadEPS[j].claveAfiliado = claveAfiliado;
+            auxCiudadEPS->claveAfiliado = claveAfiliado;
             getline(registro, posIPS, delimitador);
-            auxCiudadEPS[j].posIPS = stoi(posIPS, nullptr);
+            auxCiudadEPS->posIPS = stoi(posIPS, nullptr);
         }
 
         // Carga la informacion de las IPS de una EPS
         string direccion, numAfiliados, sigCiudad;
         getline(archEntradaIPS, entrada); // Nombre de la eps
-        getline(archEntradaVacunasIPS, entrada); // Nombre de la eps
-        nodoIps *nodoAuxIPS = const_cast<nodoIps *>(auxEPS->getCabeceraIps());
+        getline(archEntradaVacunasIPS, entrada); // Nombre de la ips
+        nodoIps *nodoAuxIPS = new nodoIps;
         IPS *auxIPS;
         for(int j=0; j<auxEPS->getPoscabIps(); j++){
+            nodoAuxIPS = auxEPS->obtenerIps(j);
             auxIPS = new IPS;
             getline(archEntradaIPS, entrada);
             stringstream registro(entrada);
@@ -484,18 +493,18 @@ void Simulacion::cargarInfoEPS() {
             getline(archEntradaVacunasIPS, entrada); // Nombre de la ips
             // Guarda la inforamcion de las vacunas de las IPS
             string subEntrada;
-            nodoV *auxVacIPS = const_cast<nodoV *>(auxIPS->getListaVacunas());
+            nodoV *auxVacIPS = new nodoV;
             for(int k=0; k<6; k++){
+                auxVacIPS = auxIPS->obtenerVacunas(k);
                 getline(archEntradaVacunasIPS, subEntrada);
-                stringstream subRegistro(entrada);
+                stringstream subRegistro(subEntrada);
                 getline(subRegistro, indexLab, delimitador);
-                auxVacIPS[k].indexLab = stoi(indexLab, nullptr);
+                auxVacIPS->indexLab = stoi(indexLab, nullptr);
                 getline(subRegistro, numVacunas, delimitador);
-                auxVacIPS[k].numVacunas = stoi(numVacunas, nullptr);
-
+                auxVacIPS->numVacunas = stoi(numVacunas, nullptr);
             }
 
-            nodoAuxIPS[j].ips = *auxIPS;
+            nodoAuxIPS->ips = *auxIPS;
             getline(registro, claveAfiliado, delimitador);
             nodoAuxIPS->claveAfiliado = claveAfiliado;
             getline(registro, sigCiudad, delimitador);
@@ -503,12 +512,14 @@ void Simulacion::cargarInfoEPS() {
         }
 
         // Carga la informacion de los afiliados de una EPS
-        string numNodosArbol, claveCiu, fDosisDia, fDosisMes, fDosisAnio, sigIPS, estado, sigLAB, fechaDosisStr;
+        string NodosArbol, claveCiu, fDosisDia, fDosisMes, fDosisAnio, sigIPS, estado, sigLAB, fechaDosisStr;
         getline(archEntradaAfiliados, entrada);
         stringstream valorControl(entrada);
-        getline(valorControl, numNodosArbol, delimitador);
+        getline(valorControl, NodosArbol, delimitador); // Salta el nombre de la eps
+        getline(valorControl, NodosArbol, delimitador);
         registroAfiliado *auxRegistroArbol;
-        for(int j=0; j<stoi(numNodosArbol, nullptr); j++){
+        int numNodosArbol = stoi(NodosArbol, nullptr);
+        for(int j=0; j<numNodosArbol; j++){
             auxRegistroArbol = new registroAfiliado;
             getline(archEntradaAfiliados, entrada);
             stringstream registro(entrada);
@@ -541,6 +552,7 @@ void Simulacion::cargarInfoEPS() {
             auxRegistroArbol->estado = estado;
             getline(registro, sigLAB, delimitador);
             auxRegistroArbol->sigLab = sigLAB;
+            auxEPS->cargarRegistro(*auxRegistroArbol);
         }
         // Conecta los afiliados de la eps con la lista de personas
         conectarPersonasAEPS(*auxEPS);
@@ -550,7 +562,6 @@ void Simulacion::cargarInfoEPS() {
 
 void Simulacion::guardarArchivos() {
     Lista<string> listaClaves;
-    Lista<string> listaClavesAfiliados;
     listaPersonas.obtenerClaves(listaClaves);
 
     ofstream archsalidaPersonas("personaTestSalida.txt", ios::out|ios::trunc);
@@ -586,7 +597,7 @@ void Simulacion::guardarArchivos() {
 
     archsalidaVacunasIPS<<"Index LAB"<<','<<"N° Vacunas"<<endl;
 
-    archsalidaAfiliados<<"Nombre EPS"<<','<<"Doc Afiliado"<<','<<"Clave Ciudad"<<','<<"Sig Ciudad"<<','<<"Fecha Dosis"<<','<<"Pos LAB"<<','<<"Nombre IPS"<<','
+    archsalidaAfiliados<<"Doc Afiliado"<<','<<"Clave Ciudad"<<','<<"Sig Ciudad"<<','<<"Fecha Dosis"<<','<<"Pos LAB"<<','<<"Nombre IPS"<<','
     <<"Sig IPS"<<','<<"Estado"<<','<<"Sig LAB"<<endl;
 
     // Guarda la informacion de las personas
@@ -649,6 +660,7 @@ void Simulacion::guardarArchivos() {
     // Guarda la informacion de las EPS
     for(int i=0; i<listaPersonas.getPoscabEps(); i++){
         claseEPS *auxEPS = listaPersonas.obtenerEPS(i);
+        Lista<string> listaClavesAfiliados;
         auxEPS->obtenerClaves(listaClavesAfiliados);
         nodoVacEps *auxVacEps;
         if(i != 0){

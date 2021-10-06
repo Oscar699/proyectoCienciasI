@@ -143,7 +143,8 @@ public:
 
     registroAfiliado* obtenerRegistro(string clave);
 
-    void conectarPersonasConArbol();
+    void cargarRegistro(registroAfiliado registro);
+
 
 };
 
@@ -479,6 +480,10 @@ void claseEPS::obtenerClaves(Lista<string> &listaClaves) {
 
 registroAfiliado* claseEPS::obtenerRegistro(string clave){
     return arbolAfiliados.obtenerInfo(clave);
+}
+
+void claseEPS::cargarRegistro(registroAfiliado registro) {
+    arbolAfiliados.insertarNodo(registro.clave, registro);
 }
 
 int claseEPS::getPoscabIps() const {

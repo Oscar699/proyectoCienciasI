@@ -1,12 +1,13 @@
 //
 // Created by oscar on 24/09/2021.
 //
-#include <string>
-#include <cstdlib>
-using namespace std;
 
 #ifndef PROYECTOCIENCIAS_CLASEIPS_H
 #define PROYECTOCIENCIAS_CLASEIPS_H
+
+#include <string>
+#include <cstdlib>
+using namespace std;
 
 struct nodoV{
     int indexLab;
@@ -54,6 +55,9 @@ public:
 
     int distribuirVacunas(int, int);
 
+    nodoV* obtenerVacunas(int pos);
+
+
     //~IPS();
 
 };
@@ -78,6 +82,10 @@ int IPS::getNumAfiliados() const {
 
 void IPS::setNumAfiliados(int numAfiliados) {
     IPS::numAfiliados = numAfiliados;
+}
+
+nodoV *IPS::obtenerVacunas(int pos){
+    return &listaVacunas[pos];
 }
 
 #endif //PROYECTOCIENCIAS_CLASEIPS_H

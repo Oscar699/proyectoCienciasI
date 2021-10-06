@@ -35,10 +35,9 @@ class Persona{
     string activLab;
     string nombreEps;
 public:
+    Persona();
 
     //Setters
-
-
     void calcEdad(fecha);
     void setFechaNac(int, int, int);
 
@@ -143,6 +142,16 @@ private:
     Persona *sigActivLab;
     Persona *sigEps;
 };
+
+Persona::Persona() {
+    sigSexo = NULL;
+    sigEdad = NULL;
+    sigPaisNac = NULL;
+    sigCiudadRes = NULL;
+    sigActivLab = NULL;
+    sigEps = NULL;
+}
+
 //Método para hallar la edad de una persona
 void Persona::calcEdad(fecha fechaActual) {
     //Se setean los meses del año
@@ -244,7 +253,7 @@ void Persona::setFechaNac1(const fecha &fechaNac) {
 }
 
 int Persona::getEdad() const {
-    return edad;
+    return this->edad;
 }
 
 void Persona::setEdad(int edad) {

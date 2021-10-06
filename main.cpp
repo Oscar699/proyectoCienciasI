@@ -3,16 +3,12 @@
 #include <fstream>
 #include <iomanip>
 #include "claseEPS.h"
-#include "claseLaboratorios.h"
 #include "claseListaPersonas.h"
-#include "clasePersona.h"
 #include "claseSimulacion.h"
 
-// Creando rama
 
 using namespace std;
 
-void cambiarCaracteristcia(Simulacion &); // La prueba de que deberia funcionar
 
 void modificarInformacion(Simulacion &);
 void ejecutarConsulta(Simulacion &);
@@ -20,12 +16,14 @@ void simularVacunacion(Simulacion &);
 void generarEstadisticas(Simulacion &);
 
 int main() {
+    cout<<"Hello world"<<endl;
     Simulacion testSimulacion;
     char opcionUsuario = 0;
-    //Simula lo que antes estaba en el main
-    testSimulacion.mainSimulado();
+    testSimulacion.cargarArchivos();
 
-    //testSimulacion.cargarArchivos();
+    //Simula lo que antes estaba en el main
+
+
     while (opcionUsuario != '5'){
         cout<<"¿Que desea hacer?"<<endl;
         cout<<"1-> Realizar cambios en la iformacion."<<endl;
@@ -134,7 +132,7 @@ void ejecutarConsulta(Simulacion &testSimulacion){
 }
 
 void simularVacunacion(Simulacion &testSimulacion){
-
+    testSimulacion.mainSimulado();
 }
 
 void generarEstadisticas(Simulacion &testSimulacion){
