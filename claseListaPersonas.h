@@ -5,6 +5,8 @@
 #include <string>
 #include "listaSimple.h"
 #include "claseEPS.h"
+#include "pila.h"
+#include "listaSimple.h"
 
 using namespace std;
 
@@ -13,65 +15,91 @@ using namespace std;
 
 //Creación de estructuras base
 
-struct nodoP{
+struct nodoP {
     string clave;
     Persona *persona;
 };
 
-struct nodoCiudadListaP{
+struct nodoCiudadListaP {
     string nombreCiudad;
     int clave;
     Persona *persona;
 };
 
-struct nodoEps{
+struct nodoEps {
     claseEPS *eps;
     Persona *persona;
 };
 
 //Definición de la clase
 
-class ListaPersona{
+class ListaPersona {
     ArbolRN<Persona> personas;
     Persona *cabeceraSexo[2]; // 0 ->M  1-> F
     Persona *cabeceraEdad[8];
     Persona *cabeceraActividad[5];
     nodoEps *cabeceraEPS[20];
     Lista<nodoP> cabeceraPais;
-    Lista<nodoCiudadListaP> cabeceraCiudad;
+    Lista<nodoCiudadListaP> cabeceraCiudadRes;
     int poscabEPS;
 
 
-
 public:
-    ListaPersona(){
+    ListaPersona() {
         poscabEPS = 0;
-        for (int i=0; i<2; i++){
+        for (int i = 0; i < 2; i++) {
             cabeceraSexo[i] = NULL;
         }
-        for (int i= 0; i< 8; i++){
+        for (int i = 0; i < 8; i++) {
             cabeceraEdad[i] = NULL;
         }
         for (int i = 0; i < 5; ++i) {
             cabeceraActividad[i] = NULL;
         }
-        for (int i = 0; i<20; i++){
+        for (int i = 0; i < 20; i++) {
             cabeceraEPS[i] = NULL;
         }
     }
-    void agregarEPS(claseEPS* eps);
+
+    void agregarEPS(claseEPS *eps);
+
+    void agregarPais(string nombrePais);
+
+    void agregarCiudadRes(int clave, string nombreCiudad);
+
     void quitarIPS();
+
     void agregarPersona(Persona p);
+
     void eliminarPersona(Persona p);
-    void atender(fecha);
+
     void imprimirCabeceras();
-    Persona *obtenerPersona(string clave){
+
+    void calculoConsulta1(string nombreEPS);
+
+    void calculoConsulta2(string pais);
+
+    void calculoConsulta3(int clave);
+
+    void calculoConsulta4(int numAfiliados);
+
+    void calculoConsulta5();
+
+    void calculoConsulta6(int rangoEdad, string actividadLaboral);
+
+    void calculoConsulta7(int rangoEdad, string eps);
+
+    void calculoConsulta8(int lab, string eps);
+
+    void calculoConsulta9(fecha f);
+
+    Persona *obtenerPersona(string clave) {
         return personas.obtenerInfo(clave);
     }
 
-    claseEPS *obtenerEPS(string nombreEPS){
-        for(int i=0; i<poscabEPS; i++){
-            if(nombreEPS == cabeceraEPS[i]->eps->getNombre()){
+    claseEPS *obtenerEPS(string nombreEPS) {
+        for (int i = 0; i < poscabEPS; i++) {
+            if (nombreEPS == cabeceraEPS[i]->eps->getNombre()) {
                 return cabeceraEPS[i]->eps;
             }
         }
@@ -81,15 +109,401 @@ public:
 
 };
 
-void ListaPersona::atender(fecha f) {
+void ListaPersona::calculoConsulta1(string nombreEPS) {
+    int contPersonas = 0;
+    for (int i = 0; i < 8; i++) {
+        Persona *aux = cabeceraEdad[i];
+        while (aux != NULL) {
+            if (aux->getNombreEps() == nombreEPS) {
+                contPersonas++;
+            }
+            aux = aux->getSigEdad();
+        }
+        if (i == 0) {
+            cout << "Menos de 20 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 1) {
+            cout << "Entre 20 y 30 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 2) {
+            cout << "Entre 30 y 40 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 3) {
+            cout << "Entre 40 y 50 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 4) {
+            cout << "Entre 50 y 60 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 5) {
+            cout << "Entre 60 y 70 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 6) {
+            cout << "Entre 70 y 80 años: " << contPersonas << endl;
+            contPersonas = 0;
+        } else if (i == 7) {
+            cout << "Mas de 80 años: " << contPersonas << endl;
+            contPersonas = 0;
+        }
+    }
 }
 
-void ListaPersona::agregarEPS(claseEPS* eps) {
+void ListaPersona::calculoConsulta2(string pais) {
+    cout << "Nombre\tApellido\tCiudad\tEps" << endl;
+    for (int i = 0; i < cabeceraPais.lista_size(); ++i) {
+        Persona *aux = cabeceraPais.obtenerDato(i)->persona;
+        while (aux != NULL) {
+            if (cabeceraPais.obtenerDato(i)->clave == pais) {
+                cout << aux->getNombre() << "\t" << aux->getApellido() << "\t\t" << aux->getCiudadRes() <<
+                     "\t" << aux->getNombreEps() << endl;
+            }
+            aux = aux->getSigPaisNac();
+        }
+
+
+    }
+}
+
+void ListaPersona::calculoConsulta3(int clave) {
+    cout << "Nombre\tApellido\tEPS\tActividad Laboral" << endl;
+    for (int i = 0; i < cabeceraCiudadRes.lista_size(); i++) {
+        Persona *aux = cabeceraCiudadRes.obtenerDato(i)->persona;
+        while (aux != NULL) {
+            if (cabeceraCiudadRes.obtenerDato(i)->clave == clave) {
+                cout << aux->getNombre() << "\t" << aux->getApellido() << "\t\t" << aux->getNombreEps() << "\t"
+                     << aux->getActivLab() << endl;
+            }
+            aux = aux->getSigCiudadRes();
+        }
+    }
+}
+
+void ListaPersona::calculoConsulta4(int numAfiliados) {
+    pila<int> cont;
+    pila<int> num_ips;
+    pila<int> num_ciu;
+    pila<string> nombres_ips;
+    pila<string> nombres_ciudad;
+    pila<claseEPS *> nombres_eps;
+    int cont_eps = 0;
+    nodoEps *nodo_eps;
+    for (int i = 0; i < poscabEPS; ++i) {
+        int cont_num_ciu = 0;
+        nodo_eps = cabeceraEPS[i];
+        claseEPS *eps = nodo_eps->eps;
+        nodoIps nodo_ips;
+        if (eps->getNumAfiliados() >= numAfiliados) {
+            cont_eps++;
+            ArbolRN<registroAfiliado> *arbol = eps->getArbolAfiliados();
+            for (int j = 0; j < eps->getPoscabCiudad(); ++j) {
+                cont_num_ciu++;
+                int cont_ciudad = 0;
+                if (eps->getCabeceraCiudad()[j].posIPS == -1) {
+                    cont.Push(cont_ciudad);
+                    nombres_ciudad.Push(eps->getCabeceraCiudad()[j].nombreCiudad);
+                    num_ips.Push(0);
+                    continue;
+                }
+                nodo_ips = eps->getCabeceraIps()[eps->getCabeceraCiudad()[j].posIPS];
+                int cont_ips = 0;
+                while (nodo_ips.ips != NULL) {
+                    cont_ips++;
+                    cont_ciudad = cont_ciudad + nodo_ips.ips->getNumAfiliados();
+                    cont.Push(nodo_ips.ips->getNumAfiliados());
+                    nombres_ips.Push(nodo_ips.ips->getNombre());
+                    if (nodo_ips.sigCiudad == -1) break;
+                    nodo_ips = eps->getCabeceraIps()[nodo_ips.sigCiudad];
+                }
+                cont.Push(cont_ciudad);
+                num_ips.Push(cont_ips);
+                nombres_ciudad.Push(eps->getCabeceraCiudad()[j].nombreCiudad);
+            }
+            num_ciu.Push(cont_num_ciu);
+            nombres_eps.Push(eps);
+        }
+
+    }
+    cout << "# EPS's: " << cont_eps << endl;
+    while (!nombres_eps.PilaVacia()) {
+        claseEPS *aux_eps = nombres_eps.Pop();
+        cout << aux_eps->getNombre() << ":" << aux_eps->getNumAfiliados() << endl;
+        int lim_ciu = num_ciu.Pop();
+        for (int j = 0; j < lim_ciu; ++j) {
+            cout << "\t" << nombres_ciudad.Pop() << ":" << cont.Pop() << endl;
+            int lim = num_ips.Pop();
+            for (int i = 0; i < lim; ++i) {
+                cout << "\t\t" << nombres_ips.Pop() << ":" << cont.Pop() << endl;
+            }
+        }
+    }
+}
+
+void ListaPersona::calculoConsulta5() {
+    for (int i = 0; i < poscabEPS; ++i) {
+        nodoEps *nodo_eps = cabeceraEPS[i];
+        claseEPS *eps = nodo_eps->eps;
+        ArbolRN<registroAfiliado> *arbol = eps->getArbolAfiliados();
+        pila<Persona *> mujeres;
+        pila<Persona *> hombres;
+        pila<int> eps_conteo_hombres;
+        pila<int> eps_conteo_mujeres;
+        pila<int> ciu_ips;
+        pila<string> ips_nombres;
+        pila<string> ciu_nombres;
+        pila<string> eps_nombres;
+        nodoIps nodo_ips;
+        int num_hombres = 0;
+        int num_mujeres = 0;
+        for (int j = 0; j < eps->getPoscabCiudad(); ++j) {
+            int contadorCiudadM = 0;
+            int contadorCiudadH = 0;
+            int cont_num_ips = 0;
+            if (eps->getCabeceraCiudad()[j].posIPS == -1) {
+                eps_conteo_hombres.Push(contadorCiudadH);
+                eps_conteo_mujeres.Push(contadorCiudadM);
+                ciu_nombres.Push(eps->getCabeceraCiudad()[j].nombreCiudad);
+                ciu_ips.Push(0);
+                break;
+            }
+            nodo_ips = eps->getCabeceraIps()[eps->getCabeceraCiudad()[j].posIPS];
+            while (nodo_ips.ips != NULL) {
+                int contadorIpsM = 0;
+                int contadorIpsH = 0;
+                registroAfiliado *aux = arbol->obtenerInfo(nodo_ips.claveAfiliado);
+                while (aux != NULL) {
+                    if (aux->persona->getSexo() == 'M' && aux->estado == "V") {
+                        hombres.Push(aux->persona);
+                    } else if (aux->persona->getSexo() == 'F' && aux->estado == "V") {
+                        mujeres.Push(aux->persona);
+                    }
+                    aux = arbol->obtenerInfo(aux->sigIPS);
+                }
+                while (!hombres.PilaVacia()) {
+                    num_hombres++;
+                    contadorIpsH++;
+                    contadorCiudadH++;
+                    hombres.Pop();
+                }
+                while (!mujeres.PilaVacia()) {
+                    num_mujeres++;
+                    contadorIpsM++;
+                    contadorCiudadM++;
+                    mujeres.Pop();
+                }
+                cont_num_ips++;
+                eps_conteo_hombres.Push(contadorIpsH);
+                eps_conteo_mujeres.Push(contadorIpsM);
+                ciu_ips.Push(cont_num_ips);
+                ips_nombres.Push(nodo_ips.ips->getNombre());
+                if (nodo_ips.sigCiudad == -1) break;
+                nodo_ips = eps->getCabeceraIps()[nodo_ips.sigCiudad];
+
+            }
+            eps_conteo_hombres.Push(contadorCiudadH);
+            eps_conteo_mujeres.Push(contadorCiudadM);
+            ciu_nombres.Push(eps->getCabeceraCiudad()[j].nombreCiudad);
+        }
+        eps_nombres.Push(eps->getNombre());
+        cout << "Hombres: " << num_hombres << endl;
+        cout << "Mujeres: " << num_mujeres << endl;
+        while (!eps_nombres.PilaVacia()) {
+            cout << "\tEps: " << eps_nombres.Pop() << endl;
+            while (!ciu_nombres.PilaVacia()) {
+                cout << "\t\t" << ciu_nombres.Pop() << ":" << endl;
+                cout << "\t\t\t" << "Hombres: " << eps_conteo_hombres.Pop() << endl;
+                cout << "\t\t\t" << "Mujeres: " << eps_conteo_mujeres.Pop() << endl;
+
+                int lim = ciu_ips.Pop();
+                for (int j = 0; j < lim; ++j) {
+                    if (ips_nombres.PilaVacia()) break;
+                    cout << "\t\t\t" << ips_nombres.Pop() << ":" << endl;
+                    cout << "\t\t\t\t" << "Hombres: " << eps_conteo_hombres.Pop() << endl;
+                    cout << "\t\t\t\t" << "Mujeres: " << eps_conteo_mujeres.Pop() << endl;
+                }
+
+
+            }
+        }
+        num_hombres = 0;
+        num_mujeres = 0;
+    }
+}
+
+void ListaPersona::calculoConsulta6(int rangoEdad, string actividadLaboral) {
+    cout << "Nombre\tApellido\tEPS\tCiudad" << endl;
+
+    Persona *aux = cabeceraEdad[rangoEdad];
+
+    while (aux->getSigEdad() != NULL) {
+        if (aux->getActivLab() == actividadLaboral) {
+            cout << aux->getNombre() << "\t" << aux->getApellido() << "\t\t" << aux->getNombreEps() << "\t"
+                 << aux->getCiudadRes() << endl;
+        }
+        aux = aux->getSigEdad();
+    }
+
+
+}
+
+void ListaPersona::calculoConsulta7(int rangoEdad, string eps) {
+
+    Persona *aux = cabeceraEdad[rangoEdad];
+    cout << "Nombre\tApellido\tIPS\tCiudad" << endl;
+    while (aux != NULL) {
+        if (aux->getNombreEps() == eps) {
+            for (int j = 0; j < poscabEPS; ++j) {
+                nodoEps *nodo_eps = cabeceraEPS[j];
+                if (nodo_eps->eps->getNombre() == eps) {
+                    ArbolRN<registroAfiliado> *arbol = nodo_eps->eps->getArbolAfiliados();
+                    registroAfiliado *registro = arbol->obtenerInfo(aux->getNumId());
+                    if (registro->estado == "PD") {
+                        cout << aux->getNombre() << "\t" << aux->getApellido() << "\t\t" << registro->ips->getNombre()
+                             << "\t" << aux->getCiudadRes() << endl;
+                    }
+                }
+
+            }
+        }
+        aux = aux->getSigEdad();
+    }
+}
+
+void ListaPersona::calculoConsulta8(int lab, string eps) {
+    nodoEps *nodo_eps;
+    for (int i = 0; i < poscabEPS; ++i) {
+        nodo_eps = cabeceraEPS[i];
+        if (nodo_eps->eps->getNombre() == eps) break;
+    }
+    claseEPS *eps_aux = nodo_eps->eps;
+
+    cout << "Nombre\tApellido\tEdad\tIPS\tCiudad" << endl;
+    ArbolRN<registroAfiliado> *arbol = eps_aux->getArbolAfiliados();
+    nodoVacEps nodo_lab = eps_aux->getListaVacunas()[lab];
+    registroAfiliado *registro = arbol->obtenerInfo(nodo_lab.claveAfiliado);
+    while (registro != NULL) {
+        if (registro->estado == "CS" || registro->estado == "V") {
+            cout << registro->persona->getNombre() << "\t" << registro->persona->getApellido() << "\t\t"
+                 << registro->persona->getEdad()
+                 << "\t\t" << registro->ips->getNombre() << "\t" << registro->persona->getCiudadRes() << endl;
+        }
+        registro = arbol->obtenerInfo(registro->sigLab);
+    }
+}
+
+void ListaPersona::calculoConsulta9(fecha f) {
+    pila<Lista<int>> conteo_ips, conteo_ciudad, conteo_eps;
+   pila<int> num_ips, num_ciudad;
+   pila<string> nombre_ips, nombre_ciudad, nombre_eps;
+   Lista<int> *lab_ciu, *lab_eps, *lab_ips;
+   int cont_eps=0, cont_ips;
+   int lab_total[6]={0,0,0,0,0,0};
+    for (int i = 0; i < poscabEPS; ++i) {
+        cont_eps++;
+        lab_eps = new Lista<int>;
+        for (int k = 0; k < 6; ++k) {
+            lab_eps->insertar_inicio(0);
+        }
+        nodoEps *nodo_eps = cabeceraEPS[i];
+        claseEPS *eps_aux = nodo_eps->eps;
+        ArbolRN<registroAfiliado> *arbol = eps_aux->getArbolAfiliados();
+        for (int j = 0; j < eps_aux->getPoscabCiudad(); ++j) {
+            cont_ips=0;
+            lab_ciu = new Lista<int>;
+            for (int k = 0; k < 6; ++k) {
+                lab_ciu->insertar_inicio(0);
+            }
+            nodoCiudad ciudad = eps_aux->getCabeceraCiudad()[j];
+            if (ciudad.posIPS == -1){
+                num_ips.Push(0);
+                nombre_ciudad.Push(ciudad.nombreCiudad);
+                conteo_ciudad.Push(*lab_ciu);
+                continue;
+            } else{
+                nodoIps ips = eps_aux->getCabeceraIps()[ciudad.posIPS];
+                cont_ips++;
+                lab_ips = new Lista<int>;
+                for (int k = 0; k < 6; ++k) {
+                    lab_ips->insertar_inicio(0);
+                }
+                while (true){
+                    registroAfiliado *registro = arbol->obtenerInfo(ips.claveAfiliado);
+                    while (registro != NULL){
+                        if (eps_aux->verificarFechasIguales(registro->fechaDosis,f)){
+                            lab_ips->modificar(*lab_ips->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_ciu->modificar(*lab_ciu->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_eps->modificar(*lab_eps->obtenerDato(registro->posLab)+1,registro->posLab);
+                            lab_total[registro->posLab]++;
+                        }
+                        registro = arbol->obtenerInfo(registro->sigIPS);
+                    }
+                    conteo_ips.Push(*lab_ips);
+                    nombre_ips.Push(ips.ips->getNombre());
+                    if (ips.sigCiudad == -1) break;
+                    ips = eps_aux->getCabeceraIps()[ips.sigCiudad];
+                }
+                num_ips.Push(cont_ips);
+                nombre_ciudad.Push(ciudad.nombreCiudad);
+                conteo_ciudad.Push(*lab_ciu);
+            }
+
+        }
+        num_ciudad.Push(eps_aux->getPoscabCiudad());
+        nombre_eps.Push(eps_aux->getNombre());
+        conteo_eps.Push(*lab_eps);
+    }
+    string vacunas[6] = {"Pfizer", "Moderna", "Jhonsson", "Astrazeneca", "Sputnik", "Sinovac"};
+    for (int i = 0; i < 6; ++i) {
+        cout<<vacunas[i]<<": "<<lab_total[i]<<"\t";
+    }
+    cout<<endl;
+    while (!nombre_eps.PilaVacia()){
+        cout<<"\tEPS: "<<nombre_eps.Pop()<<endl;
+        Lista<int> vacunas_eps = conteo_eps.Pop();
+        for (int i = 0; i < 6; ++i) {
+            cout<<"\t"<<vacunas[i]<<": "<<*vacunas_eps.obtenerDato(i)<<"\t";
+        }
+        cout<<endl;
+        int lim_ciu = num_ciudad.Pop();
+        for (int i = 0; i < lim_ciu; ++i) {
+            cout<<"\t\tCiudad: "<<nombre_ciudad.Pop()<<endl;
+            Lista<int> vacunas_ciudad = conteo_ciudad.Pop();
+            for (int i = 0; i < 6; ++i) {
+                cout<<"\t\t"<<vacunas[i]<<": "<<*vacunas_ciudad.obtenerDato(i)<<"\t";
+            }
+            cout<<endl;
+            int lim_ips = num_ips.Pop();
+            for (int j = 0; j < lim_ips; ++j) {
+                cout<<"\t\t\tIPS: "<<nombre_ips.Pop()<<endl;
+                Lista<int> vacunas_ips = conteo_ips.Pop();
+                for (int i = 0; i < 6; ++i) {
+                    cout<<"\t\t\t"<<vacunas[i]<<": "<<*vacunas_ips.obtenerDato(i)<<"\t";
+                }
+                cout<<endl;
+            }
+        }
+    }
+}
+
+void ListaPersona::agregarPais(string nombrePais) {
+    nodoP *aux = new nodoP;
+    aux->clave = nombrePais;
+    aux->persona = NULL;
+    cabeceraPais.insertar_inicio(*aux);
+}
+
+void ListaPersona::agregarCiudadRes(int clave, string nombreCiudad) {
+    nodoCiudadListaP *aux = new nodoCiudadListaP;
+    aux->clave = clave;
+    aux->nombreCiudad = nombreCiudad;
+    aux->persona = NULL;
+    cabeceraCiudadRes.insertar_inicio(*aux);
+}
+
+void ListaPersona::agregarEPS(claseEPS *eps) {
     nodoEps *nuevo = new nodoEps;
     nuevo->eps = eps;
     nuevo->persona = NULL;
     cabeceraEPS[poscabEPS] = nuevo;
-    if( poscabEPS < 20)
+    if (poscabEPS < 20)
         poscabEPS++;
 }
 
@@ -113,31 +527,31 @@ void ListaPersona::agregarPersona(Persona per) {
 
     Persona *p = personas.obtenerInfo(per.getNumId());
 
-    if (p->getSexo() == 'M'){
-        if (cabeceraSexo[0] == NULL){
+    if (p->getSexo() == 'M') {
+        if (cabeceraSexo[0] == NULL) {
             cabeceraSexo[0] = p;
-        } else{
+        } else {
             aux = cabeceraSexo[0];
-            while (aux->getSigSexo() != NULL){
+            while (aux->getSigSexo() != NULL) {
                 aux = aux->getSigSexo();
             }
             aux->setSigSexo(p);
         }
 
-    } else{
-        if (cabeceraSexo[1] == NULL){
+    } else {
+        if (cabeceraSexo[1] == NULL) {
             cabeceraSexo[1] = p;
-        } else{
+        } else {
             aux = cabeceraSexo[1];
-            while (aux->getSigSexo() != NULL){
+            while (aux->getSigSexo() != NULL) {
                 aux = aux->getSigSexo();
             }
             aux->setSigSexo(p);
         }
     }
 
-    if(p->getEdad() < 20){
-        if (cabeceraEdad[0] == NULL){
+    if (p->getEdad() < 20) {
+        if (cabeceraEdad[0] == NULL) {
             cabeceraEdad[0] = p;
         } else {
             aux = cabeceraEdad[0];
@@ -146,8 +560,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigEdad(p);
         }
-    }else if (p->getEdad() >= 20 && p->getEdad() < 30){
-        if (cabeceraEdad[1] == NULL){
+    } else if (p->getEdad() >= 20 && p->getEdad() < 30) {
+        if (cabeceraEdad[1] == NULL) {
             cabeceraEdad[1] = p;
         } else {
             aux = cabeceraEdad[1];
@@ -156,8 +570,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigEdad(p);
         }
-    } else if (p->getEdad() >= 30 && p->getEdad() < 40){
-        if (cabeceraEdad[2] == NULL){
+    } else if (p->getEdad() >= 30 && p->getEdad() < 40) {
+        if (cabeceraEdad[2] == NULL) {
             cabeceraEdad[2] = p;
         } else {
             aux = cabeceraEdad[2];
@@ -166,8 +580,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigEdad(p);
         }
-    }else if (p->getEdad() >= 40 && p->getEdad() < 50){
-        if (cabeceraEdad[3] == NULL){
+    } else if (p->getEdad() >= 40 && p->getEdad() < 50) {
+        if (cabeceraEdad[3] == NULL) {
             cabeceraEdad[3] = p;
         } else {
             aux = cabeceraEdad[3];
@@ -177,8 +591,8 @@ void ListaPersona::agregarPersona(Persona per) {
             aux->setSigEdad(p);
         }
 
-    }else if (p->getEdad() >= 50 && p->getEdad() < 60){
-        if (cabeceraEdad[4] == NULL){
+    } else if (p->getEdad() >= 50 && p->getEdad() < 60) {
+        if (cabeceraEdad[4] == NULL) {
             cabeceraEdad[4] = p;
         } else {
             aux = cabeceraEdad[4];
@@ -188,8 +602,8 @@ void ListaPersona::agregarPersona(Persona per) {
             aux->setSigEdad(p);
         }
 
-    }else if (p->getEdad() >= 60 && p->getEdad() < 70){
-        if (cabeceraEdad[5] == NULL){
+    } else if (p->getEdad() >= 60 && p->getEdad() < 70) {
+        if (cabeceraEdad[5] == NULL) {
             cabeceraEdad[5] = p;
         } else {
             aux = cabeceraEdad[5];
@@ -198,8 +612,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigEdad(p);
         }
-    }else if (p->getEdad() >= 70 && p->getEdad() < 80){
-        if (cabeceraEdad[6] == NULL){
+    } else if (p->getEdad() >= 70 && p->getEdad() < 80) {
+        if (cabeceraEdad[6] == NULL) {
             cabeceraEdad[6] = p;
         } else {
             aux = cabeceraEdad[6];
@@ -208,8 +622,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigEdad(p);
         }
-    } else{
-        if (cabeceraEdad[7] == NULL){
+    } else {
+        if (cabeceraEdad[7] == NULL) {
             cabeceraEdad[7] = p;
         } else {
             aux = cabeceraEdad[7];
@@ -221,8 +635,8 @@ void ListaPersona::agregarPersona(Persona per) {
 
     }
 
-    if(p->getActivLab() == "ARTES"){
-        if (cabeceraActividad[0] == NULL){
+    if (p->getActivLab() == "ARTES") {
+        if (cabeceraActividad[0] == NULL) {
             cabeceraActividad[0] = p;
         } else {
             aux = cabeceraActividad[0];
@@ -231,8 +645,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigActivLab(p);
         }
-    }else if(p->getActivLab() == "TECNICO"){
-        if (cabeceraActividad[1] == NULL){
+    } else if (p->getActivLab() == "TECNICO") {
+        if (cabeceraActividad[1] == NULL) {
             cabeceraActividad[1] = p;
         } else {
             aux = cabeceraActividad[1];
@@ -241,8 +655,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigActivLab(p);
         }
-    }else if(p->getActivLab() == "INGENIERO"){
-        if (cabeceraActividad[2] == NULL){
+    } else if (p->getActivLab() == "INGENIERO") {
+        if (cabeceraActividad[2] == NULL) {
             cabeceraActividad[2] = p;
         } else {
             aux = cabeceraActividad[2];
@@ -251,8 +665,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigActivLab(p);
         }
-    }else if(p->getActivLab() == "SOCIALES"){
-        if (cabeceraActividad[3] == NULL){
+    } else if (p->getActivLab() == "SOCIALES") {
+        if (cabeceraActividad[3] == NULL) {
             cabeceraActividad[3] = p;
         } else {
             aux = cabeceraActividad[3];
@@ -261,8 +675,8 @@ void ListaPersona::agregarPersona(Persona per) {
             }
             aux->setSigActivLab(p);
         }
-    }else if(p->getActivLab() == "FILOSOFIA"){
-        if (cabeceraActividad[4] == NULL){
+    } else if (p->getActivLab() == "FILOSOFIA") {
+        if (cabeceraActividad[4] == NULL) {
             cabeceraActividad[4] = p;
         } else {
             aux = cabeceraActividad[4];
@@ -275,13 +689,13 @@ void ListaPersona::agregarPersona(Persona per) {
 
     for (int i = 0; i < cabeceraPais.lista_size(); ++i) {
         nodo = cabeceraPais.obtenerDato(i);
-        if (p->getPaisNac() == nodo->clave){
-            if (nodo->persona == NULL){
+        if (p->getPaisNac() == nodo->clave) {
+            if (nodo->persona == NULL) {
                 nodo->persona = p;
-                cabeceraPais.modificar(*nodo,i);
-            } else{
+                cabeceraPais.modificar(*nodo, i);
+            } else {
                 aux = nodo->persona;
-                while (aux->getSigPaisNac() != NULL){
+                while (aux->getSigPaisNac() != NULL) {
                     aux = aux->getSigPaisNac();
                 }
                 aux->setSigPaisNac(p);
@@ -290,15 +704,15 @@ void ListaPersona::agregarPersona(Persona per) {
 
     }
 
-    for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP *nodo =cabeceraCiudad.obtenerDato(i);
-        if (p->getCiudadRes() == nodo->nombreCiudad){
-            if (nodo->persona == NULL){
+    for (int i = 0; i < cabeceraCiudadRes.lista_size(); ++i) {
+        nodoCiudadListaP *nodo = cabeceraCiudadRes.obtenerDato(i);
+        if (p->getCiudadRes() == nodo->nombreCiudad) {
+            if (nodo->persona == NULL) {
                 nodo->persona = p;
-                cabeceraCiudad.modificar(*nodo,i);
-            } else{
+                cabeceraCiudadRes.modificar(*nodo, i);
+            } else {
                 aux = nodo->persona;
-                while (aux->getSigCiudadRes() != NULL){
+                while (aux->getSigCiudadRes() != NULL) {
                     aux = aux->getSigCiudadRes();
                 }
                 aux->setSigCiudadRes(p);
@@ -308,12 +722,12 @@ void ListaPersona::agregarPersona(Persona per) {
 
     for (int i = 0; i < poscabEPS; ++i) {
         nodoEps = cabeceraEPS[i];
-        if (p->getNombreEps() == nodoEps->eps->getNombre()){
-            if (nodoEps->persona == NULL){
+        if (p->getNombreEps() == nodoEps->eps->getNombre()) {
+            if (nodoEps->persona == NULL) {
                 nodoEps->persona = p;
-            } else{
+            } else {
                 aux = nodoEps->persona;
-                while (aux->getSigEps() != NULL){
+                while (aux->getSigEps() != NULL) {
                     aux = aux->getSigEps();
                 }
                 aux->setSigEps(p);
@@ -330,49 +744,49 @@ void ListaPersona::eliminarPersona(Persona persona) {
     Persona *aux1;
     Persona *aux2;
     Persona *p = &persona;
-    if (p->getSexo() == 'M'){ //Borrado en Cabecera Sexo
-        if(cabeceraSexo[0] == p){
+    if (p->getSexo() == 'M') { //Borrado en Cabecera Sexo
+        if (cabeceraSexo[0] == p) {
             cabeceraSexo[0] = p->getSigSexo();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraSexo[0];
             aux2 = aux1->getSigEdad();
 
-            while (aux2->getSigSexo() != NULL){
-                if ( aux2 == p )
+            while (aux2->getSigSexo() != NULL) {
+                if (aux2 == p)
                     break;
                 aux1 = aux2;
                 aux2 = aux2->getSigSexo();
             }
 
-            if ( aux2->getSigSexo() == NULL ){
+            if (aux2->getSigSexo() == NULL) {
                 aux1->setSigSexo(NULL);
                 delete p;
-            }else {
+            } else {
                 aux1->setSigSexo(aux2->getSigSexo());
                 delete p;
             }
         }
 
-    }else{ //Borrado en Cabecera Sexo
-        if(cabeceraSexo[1] == p){
-            cabeceraSexo[1] =p->getSigSexo();
+    } else { //Borrado en Cabecera Sexo
+        if (cabeceraSexo[1] == p) {
+            cabeceraSexo[1] = p->getSigSexo();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraSexo[1];
             aux2 = aux1->getSigEdad();
 
-            while (aux2->getSigSexo() != NULL){
-                if ( aux2 == p )
+            while (aux2->getSigSexo() != NULL) {
+                if (aux2 == p)
                     break;
                 aux1 = aux1->getSigSexo();
                 aux2 = aux2->getSigSexo();
             }
 
-            if (aux2->getSigSexo() == NULL ){
+            if (aux2->getSigSexo() == NULL) {
                 aux1->setSigSexo(NULL);
                 delete p;
-            }else {
+            } else {
                 aux1->setSigSexo(aux2->getSigSexo());
                 delete p;
             }
@@ -380,370 +794,370 @@ void ListaPersona::eliminarPersona(Persona persona) {
         }
 
     }
-    if(p->getEdad()<20){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[0] == p){
+    if (p->getEdad() < 20) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[0] == p) {
             cabeceraEdad[0] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[0];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=20 && p->getEdad()<30){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[1] == p){
+    } else if (p->getEdad() >= 20 && p->getEdad() < 30) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[1] == p) {
             cabeceraEdad[1] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[1];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=30 && p->getEdad()<40){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[2] == p){
+    } else if (p->getEdad() >= 30 && p->getEdad() < 40) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[2] == p) {
             cabeceraEdad[2] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[2];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=40 && p->getEdad()<50){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[3] == p){
+    } else if (p->getEdad() >= 40 && p->getEdad() < 50) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[3] == p) {
             cabeceraEdad[3] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[3];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=50 && p->getEdad()<60){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[4] == p){
+    } else if (p->getEdad() >= 50 && p->getEdad() < 60) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[4] == p) {
             cabeceraEdad[4] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[4];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=60 && p->getEdad()<70){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[5] == p){
+    } else if (p->getEdad() >= 60 && p->getEdad() < 70) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[5] == p) {
             cabeceraEdad[5] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[5];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else if(p->getEdad()>=70 && p->getEdad()<80){ //Borrado en Cabecera Edad
-        if(cabeceraEdad[6] == p){
+    } else if (p->getEdad() >= 70 && p->getEdad() < 80) { //Borrado en Cabecera Edad
+        if (cabeceraEdad[6] == p) {
             cabeceraEdad[6] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[6];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
-    }else{ //Borrado en Cabecera Edad
-        if(cabeceraEdad[7] == p){
+    } else { //Borrado en Cabecera Edad
+        if (cabeceraEdad[7] == p) {
             cabeceraEdad[7] = p->getSigEdad();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraEdad[7];
             aux2 = aux1->getSigEdad();
 
-            while(aux2->getSigEdad() != NULL){
-                if(aux2 == p){
+            while (aux2->getSigEdad() != NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigEdad();
                 }
             }
-            if(aux2->getSigEdad() == NULL){
+            if (aux2->getSigEdad() == NULL) {
                 aux1->setSigEdad(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigEdad(p->getSigEdad());
                 delete p;
             }
         }
     }
-    if(p->getActivLab() == "ARTES"){ //Borrado en Cabecera ActLaboral
-        if(cabeceraActividad[0] == p){
+    if (p->getActivLab() == "ARTES") { //Borrado en Cabecera ActLaboral
+        if (cabeceraActividad[0] == p) {
             cabeceraActividad[0] = p->getSigActivLab();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraActividad[0];
             aux2 = aux1->getSigActivLab();
 
-            while(aux2->getSigActivLab()!=NULL){
-                if(aux2 = p){
+            while (aux2->getSigActivLab() != NULL) {
+                if (aux2 = p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigActivLab();
                 }
             }
-            if(aux2->getSigActivLab() == NULL){
+            if (aux2->getSigActivLab() == NULL) {
                 aux1->setSigActivLab(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigActivLab(p->getSigActivLab());
                 delete p;
             }
         }
-    }else if(p->getActivLab() == "TECNICO"){ //Borrado en Cabecera ActLaboral
-        if(cabeceraActividad[1] == p){
+    } else if (p->getActivLab() == "TECNICO") { //Borrado en Cabecera ActLaboral
+        if (cabeceraActividad[1] == p) {
             cabeceraActividad[1] = p->getSigActivLab();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraActividad[1];
             aux2 = aux1->getSigActivLab();
 
-            while(aux2->getSigActivLab()!=NULL){
-                if(aux2 = p){
+            while (aux2->getSigActivLab() != NULL) {
+                if (aux2 = p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigActivLab();
                 }
             }
-            if(aux2->getSigActivLab() == NULL){
+            if (aux2->getSigActivLab() == NULL) {
                 aux1->setSigActivLab(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigActivLab(p->getSigActivLab());
                 delete p;
             }
         }
-    }else if(p->getActivLab() == "INGENIERO"){ //Borrado en Cabecera ActLaboral
-        if(cabeceraActividad[2] == p){
+    } else if (p->getActivLab() == "INGENIERO") { //Borrado en Cabecera ActLaboral
+        if (cabeceraActividad[2] == p) {
             cabeceraActividad[2] = p->getSigActivLab();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraActividad[2];
             aux2 = aux1->getSigActivLab();
 
-            while(aux2->getSigActivLab()!=NULL){
-                if(aux2 = p){
+            while (aux2->getSigActivLab() != NULL) {
+                if (aux2 = p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigActivLab();
                 }
             }
-            if(aux2->getSigActivLab() == NULL){
+            if (aux2->getSigActivLab() == NULL) {
                 aux1->setSigActivLab(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigActivLab(p->getSigActivLab());
                 delete p;
             }
         }
-    }else if(p->getActivLab() == "SOCIALES"){ //Borrado en Cabecera ActLaboral
-        if(cabeceraActividad[3] == p){
+    } else if (p->getActivLab() == "SOCIALES") { //Borrado en Cabecera ActLaboral
+        if (cabeceraActividad[3] == p) {
             cabeceraActividad[3] = p->getSigActivLab();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraActividad[3];
             aux2 = aux1->getSigActivLab();
 
-            while(aux2->getSigActivLab()!=NULL){
-                if(aux2 = p){
+            while (aux2->getSigActivLab() != NULL) {
+                if (aux2 = p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigActivLab();
                 }
             }
-            if(aux2->getSigActivLab() == NULL){
+            if (aux2->getSigActivLab() == NULL) {
                 aux1->setSigActivLab(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigActivLab(p->getSigActivLab());
                 delete p;
             }
         }
-    }else if(p->getActivLab() == "FILOSOFIA"){ //Borrado en Cabecera ActLaboral
-        if(cabeceraActividad[4] == p){
+    } else if (p->getActivLab() == "FILOSOFIA") { //Borrado en Cabecera ActLaboral
+        if (cabeceraActividad[4] == p) {
             cabeceraActividad[4] = p->getSigActivLab();
             delete p;
-        }else{
+        } else {
             aux1 = cabeceraActividad[4];
             aux2 = aux1->getSigActivLab();
 
-            while(aux2->getSigActivLab()!=NULL){
-                if(aux2 = p){
+            while (aux2->getSigActivLab() != NULL) {
+                if (aux2 = p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigActivLab();
                 }
             }
-            if(aux2->getSigActivLab() == NULL){
+            if (aux2->getSigActivLab() == NULL) {
                 aux1->setSigActivLab(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigActivLab(p->getSigActivLab());
                 delete p;
             }
         }
     }
-    for(int i = 0; i<cabeceraPais.lista_size(); i++){  //Borrado en Cabecera Pais
+    for (int i = 0; i < cabeceraPais.lista_size(); i++) {  //Borrado en Cabecera Pais
         nodoP *aux = cabeceraPais.obtenerDato(i);;
-        if(aux->clave == p->getPaisNac()){
+        if (aux->clave == p->getPaisNac()) {
             aux->persona = p->getSigPaisNac();
             cabeceraPais.modificar(*aux, i);
             delete p;
-        }else{
+        } else {
             aux1 = aux->persona;
             aux2 = aux1->getSigPaisNac();
 
-            while(aux2->getSigPaisNac() == NULL){
-                if(aux2 == p){
+            while (aux2->getSigPaisNac() == NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigPaisNac();
                 }
             }
-            if(aux2->getSigPaisNac() == NULL){
+            if (aux2->getSigPaisNac() == NULL) {
                 aux1->setSigPaisNac(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigPaisNac(p->getSigPaisNac());
                 delete p;
             }
         }
     }
 
-    for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP *aux = cabeceraCiudad.obtenerDato(i);
-        if(aux->nombreCiudad == p->getCiudadRes()){
+    for (int i = 0; i < cabeceraCiudadRes.lista_size(); ++i) {
+        nodoCiudadListaP *aux = cabeceraCiudadRes.obtenerDato(i);
+        if (aux->nombreCiudad == p->getCiudadRes()) {
             aux->persona = p->getSigCiudadRes();
-            cabeceraCiudad.modificar(*aux, i);
+            cabeceraCiudadRes.modificar(*aux, i);
             delete p;
-        }else{
+        } else {
             aux1 = aux->persona;
             aux2 = aux1->getSigCiudadRes();
 
-            while(aux2->getSigCiudadRes() == NULL){
-                if(aux2 == p){
+            while (aux2->getSigCiudadRes() == NULL) {
+                if (aux2 == p) {
                     break;
-                }else{
+                } else {
                     aux1 = aux2;
                     aux2 = aux2->getSigCiudadRes();
                 }
             }
-            if(aux2->getSigCiudadRes() == NULL){
+            if (aux2->getSigCiudadRes() == NULL) {
                 aux1->setSigCiudadRes(NULL);
                 delete p;
-            }else{
+            } else {
                 aux1->setSigCiudadRes(p->getSigPaisNac());
                 delete p;
             }
@@ -752,23 +1166,23 @@ void ListaPersona::eliminarPersona(Persona persona) {
 
     for (int i = 0; i < poscabEPS; ++i) {
         nodoEps *eps = cabeceraEPS[i];
-        if (eps->persona == p){
+        if (eps->persona == p) {
             eps->persona = p->getSigEps();
             cabeceraEPS[i] = eps;
-        } else{
+        } else {
             aux1 = eps->persona;
             aux2 = aux1->getSigEps();
-            while (aux2->getSigEps() != NULL){
-                if (aux2 == p){
+            while (aux2->getSigEps() != NULL) {
+                if (aux2 == p) {
                     break;
                 }
                 aux1 = aux2;
                 aux2 = aux2->getSigEps();
             }
-            if (aux2->getSigEps() == NULL){
+            if (aux2->getSigEps() == NULL) {
                 aux1->setSigEps(NULL);
                 delete p;
-            } else{
+            } else {
                 aux1->setSigEps(p->getSigEps());
                 delete p;
             }
@@ -777,49 +1191,53 @@ void ListaPersona::eliminarPersona(Persona persona) {
 }
 
 void ListaPersona::imprimirCabeceras() {
-    cout<<"Cabecera por sexo"<<endl;
+    cout << "Cabecera por sexo" << endl;
     Persona *aux;
     int cont = 1;
-    for(int i=0; i<2; i++){
+    for (int i = 0; i < 2; i++) {
         aux = cabeceraSexo[i];
-        while(aux != NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getSexo()<<setw(10)<<aux->getNumId()<<endl;
+        while (aux != NULL) {
+            cout << cont++ << setw(10) << aux->getNombre() << setw(10) << aux->getSexo() << setw(10) << aux->getNumId()
+                 << endl;
             aux = aux->getSigSexo();
         }
     }
-    cout<<"\nCabecera por Edad"<<endl;
+    cout << "\nCabecera por Edad" << endl;
     cont = 1;
-    for(int i=0; i<8; i++){
+    for (int i = 0; i < 8; i++) {
         aux = cabeceraEdad[i];
-        while(aux != NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getEdad()<<setw(10)<<aux->getNumId()<<endl;
+        while (aux != NULL) {
+            cout << cont++ << setw(10) << aux->getNombre() << setw(10) << aux->getEdad() << setw(10) << aux->getNumId()
+                 << endl;
             aux = aux->getSigEdad();
         }
     }
-    cout<<"\nCabeza por Actividad Laboral"<<endl;
+    cout << "\nCabeza por Actividad Laboral" << endl;
     cont = 1;
-    for(int i=0; i<5; i++){
+    for (int i = 0; i < 5; i++) {
         aux = cabeceraActividad[i];
-        while(aux!= NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getActivLab()<<setw(10)<<aux->getNumId()<<endl;
+        while (aux != NULL) {
+            cout << cont++ << setw(10) << aux->getNombre() << setw(10) << aux->getActivLab() << setw(10)
+                 << aux->getNumId() << endl;
             aux = aux->getSigActivLab();
         }
     }
 
-    cout<<"\nCabecera por EPS"<<endl;
+    cout << "\nCabecera por EPS" << endl;
     nodoEps *auxEps;
     int subCont;
     cont = 1;
-    for(int i=0; i<poscabEPS; i++){
+    for (int i = 0; i < poscabEPS; i++) {
         auxEps = cabeceraEPS[i];
-        cout<<cont++<<setw(10)<<auxEps->eps->getNombre()<<setw(10)<<auxEps->eps->getNumAfiliados()<<endl;
+        cout << cont++ << setw(10) << auxEps->eps->getNombre() << setw(10) << auxEps->eps->getNumAfiliados() << endl;
         aux = auxEps->persona;
         subCont = 1;
-        while (aux!= NULL){
-            cout<<subCont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getNumId()<<endl;
+        while (aux != NULL) {
+            cout << subCont++ << setw(10) << aux->getNombre() << setw(10) << aux->getNumId() << endl;
             aux = aux->getSigEps();
         }
     }
+
 }
 
 string* ListaPersona::obtenerClaves() {

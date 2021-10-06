@@ -49,7 +49,11 @@ void Simulacion::mainSimulado() {
     claseEPS *testEps = new claseEPS, *testEps2 = new claseEPS;
     IPS testIPS1, testIPS2;
     ListaPersona listaTest;
-
+    listaTest.agregarPais("paisNac1");
+    listaTest.agregarPais("paisNac2");
+    listaTest.agregarPais("paisNac3");
+    listaTest.agregarCiudadRes(0, "ciudadTest1");
+    listaTest.agregarCiudadRes(1, "ciudadTest2");
     testIPS1.setNombre("ipsTest1");
     testIPS1.setDireccion("Calle 11");
     testIPS2.setNombre("ipsTest2");
@@ -126,8 +130,8 @@ void Simulacion::mainSimulado() {
 
     testEps->repartirVacunas();
 
-    testIPS1 = testEps->getCabeceraIps()[0].ips;
-    testIPS2 = testEps->getCabeceraIps()[1].ips;
+    testIPS1 = *testEps->getCabeceraIps()[0].ips;
+    testIPS2 = *testEps->getCabeceraIps()[1].ips;
 
     ofstream archsalida1("personaTest.csv", ios::out|ios::trunc);
     ofstream archsalida2("IPSTest.csv", ios::out|ios::trunc);
@@ -236,8 +240,25 @@ void Simulacion::mainSimulado() {
     }
     //testEps->imprimirCabeceraIPS();
     listaTest.imprimirCabeceras();
-
-
+    listaTest.calculoConsulta1("testEps");
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta2("paisNac3");
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta3(1);
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta4(0);
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta5();
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta6(1,"Artes");
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta7(1,"testEps");
+    cout<<"-------------------------------------------------------"<<endl;
+    listaTest.calculoConsulta8(1,"testEps");
+    cout<<"-------------------------------------------------------"<<endl;
+    fecha f;
+    f.anio = 2021; f.mes=10; f.dia=7;
+    listaTest.calculoConsulta9(f);
     archEntrada.close();
 }
 

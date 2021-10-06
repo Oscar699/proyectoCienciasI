@@ -3,4 +3,4 @@ project(ProyectoCiencias)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ProyectoCiencias main.cpp listaSimple.h clasePersona.h claseIPS.h claseLaboratorios.h claseEPS.h claseListaPersonas.h arbolRN.h claseSimulacion.h)
+add_executable(ProyectoCiencias main.cpp listaSimple.h clasePersona.h claseIPS.h claseLaboratorios.h claseEPS.h claseListaPersonas.h arbolRN.h claseSimulacion.h pila.h)
