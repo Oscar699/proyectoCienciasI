@@ -3,14 +3,12 @@
 #include <fstream>
 #include <iomanip>
 #include "claseEPS.h"
-#include "claseLaboratorios.h"
 #include "claseListaPersonas.h"
-#include "clasePersona.h"
 #include "claseSimulacion.h"
+
 
 using namespace std;
 
-void cambiarCaracteristcia(Simulacion &); // La prueba de que deberia funcionar
 
 void modificarInformacion(Simulacion &);
 void ejecutarConsulta(Simulacion &);
@@ -18,10 +16,13 @@ void simularVacunacion(Simulacion &);
 void generarEstadisticas(Simulacion &);
 
 int main() {
+    cout<<"Hello world"<<endl;
     Simulacion testSimulacion;
     char opcionUsuario = 0;
+    testSimulacion.cargarArchivos();
+
     //Simula lo que antes estaba en el main
-    testSimulacion.mainSimulado();
+
 
     while (opcionUsuario != '5'){
         cout<<"¿Que desea hacer?"<<endl;
@@ -48,6 +49,7 @@ int main() {
                 break;
             case '5':
                 cout<<"Saliend de la app..."<<endl;
+                testSimulacion.guardarArchivos();
                 break;
             default:
                 cout<<"La opcion ingresada es invalida por favor ingrese otra"<<endl;
@@ -57,10 +59,6 @@ int main() {
     return 0;
 }
 
-void cambiarCaracteristcia(Simulacion &testSimulacion){
-    testSimulacion.setCaracteristica("Hay cambios");
-    cout<<testSimulacion.getCaracteristica()<<endl;
-}
 
 void modificarInformacion(Simulacion &testSimulacion){
     char opcionUsuario = 0;
@@ -134,7 +132,7 @@ void ejecutarConsulta(Simulacion &testSimulacion){
 }
 
 void simularVacunacion(Simulacion &testSimulacion){
-
+    testSimulacion.mainSimulado();
 }
 
 void generarEstadisticas(Simulacion &testSimulacion){
