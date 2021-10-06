@@ -38,7 +38,7 @@ class ListaPersona{
     Persona *cabeceraActividad[5];
     nodoEps *cabeceraEPS[20];
     Lista<nodoP> cabeceraPais;
-    Lista<nodoCiudadListaP> cabeceraCiudad;
+    Lista<nodoCiudadListaP> cabeceraCiudadRes;
     int poscabEPS;
 
 
@@ -60,6 +60,8 @@ public:
         }
     }
     void agregarEPS(claseEPS* eps);
+    void agregarPais(string nombrePais);
+    void agregarCiudadRes(int clave, string nombreCiudad);
     void quitarIPS();
     void agregarPersona(Persona p);
     void eliminarPersona(Persona p);
@@ -67,6 +69,14 @@ public:
     void imprimirCabeceras();
     Persona *obtenerPersona(string clave){
         return personas.obtenerInfo(clave);
+    }
+
+    nodoCiudadListaP *obtenerCiudadP(int pos){
+        return cabeceraCiudadRes.obtenerDato(pos);
+    }
+
+    nodoP *obtenerPais(int pos){
+        return cabeceraPais.obtenerDato(pos);
     }
 
     claseEPS *obtenerEPS(string nombreEPS){
@@ -77,11 +87,41 @@ public:
         }
     }
 
-    string* obtenerClaves();
+    void obtenerClaves(Lista<string> &);
+
+    claseEPS *obtenerEPS(int pos){
+        return cabeceraEPS[pos]->eps;
+    }
+
+    inline int getNumCiudades(){
+        return cabeceraCiudadRes.lista_size();
+    }
+
+    inline int getNumPaises(){
+        return cabeceraPais.lista_size();
+    }
+
+
+    int getPoscabEps() const;
 
 };
 
 void ListaPersona::atender(fecha f) {
+}
+
+void ListaPersona::agregarPais(string nombrePais) {
+    nodoP *aux = new nodoP;
+    aux->clave = nombrePais;
+    aux->persona = NULL;
+    cabeceraPais.insertar_inicio(*aux);
+}
+
+void ListaPersona::agregarCiudadRes(int clave, string nombreCiudad) {
+    nodoCiudadListaP *aux = new nodoCiudadListaP;
+    aux->clave = clave;
+    aux->nombreCiudad = nombreCiudad;
+    aux->persona = NULL;
+    cabeceraCiudadRes.insertar_inicio(*aux);
 }
 
 void ListaPersona::agregarEPS(claseEPS* eps) {
@@ -275,30 +315,29 @@ void ListaPersona::agregarPersona(Persona per) {
 
     for (int i = 0; i < cabeceraPais.lista_size(); ++i) {
         nodo = cabeceraPais.obtenerDato(i);
-        if (p->getPaisNac() == nodo->clave){
-            if (nodo->persona == NULL){
+        if (p->getPaisNac() == nodo->clave) {
+            if (nodo->persona == NULL) {
                 nodo->persona = p;
-                cabeceraPais.modificar(*nodo,i);
-            } else{
+                cabeceraPais.modificar(*nodo, i);
+            } else {
                 aux = nodo->persona;
-                while (aux->getSigPaisNac() != NULL){
+                while (aux->getSigPaisNac() != NULL) {
                     aux = aux->getSigPaisNac();
                 }
                 aux->setSigPaisNac(p);
             }
         }
-
     }
 
-    for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP *nodo =cabeceraCiudad.obtenerDato(i);
-        if (p->getCiudadRes() == nodo->nombreCiudad){
-            if (nodo->persona == NULL){
+    for (int i = 0; i < cabeceraCiudadRes.lista_size(); ++i) {
+        nodoCiudadListaP *nodo = cabeceraCiudadRes.obtenerDato(i);
+        if (p->getCiudadRes() == nodo->nombreCiudad) {
+            if (nodo->persona == NULL) {
                 nodo->persona = p;
-                cabeceraCiudad.modificar(*nodo,i);
-            } else{
+                cabeceraCiudadRes.modificar(*nodo, i);
+            } else {
                 aux = nodo->persona;
-                while (aux->getSigCiudadRes() != NULL){
+                while (aux->getSigCiudadRes() != NULL) {
                     aux = aux->getSigCiudadRes();
                 }
                 aux->setSigCiudadRes(p);
@@ -308,12 +347,12 @@ void ListaPersona::agregarPersona(Persona per) {
 
     for (int i = 0; i < poscabEPS; ++i) {
         nodoEps = cabeceraEPS[i];
-        if (p->getNombreEps() == nodoEps->eps->getNombre()){
-            if (nodoEps->persona == NULL){
+        if (p->getNombreEps() == nodoEps->eps->getNombre()) {
+            if (nodoEps->persona == NULL) {
                 nodoEps->persona = p;
-            } else{
+            } else {
                 aux = nodoEps->persona;
-                while (aux->getSigEps() != NULL){
+                while (aux->getSigEps() != NULL) {
                     aux = aux->getSigEps();
                 }
                 aux->setSigEps(p);
@@ -722,11 +761,11 @@ void ListaPersona::eliminarPersona(Persona persona) {
         }
     }
 
-    for (int i = 0; i < cabeceraCiudad.lista_size(); ++i) {
-        nodoCiudadListaP *aux = cabeceraCiudad.obtenerDato(i);
+    for (int i = 0; i < cabeceraCiudadRes.lista_size(); ++i) {
+        nodoCiudadListaP *aux = cabeceraCiudadRes.obtenerDato(i);
         if(aux->nombreCiudad == p->getCiudadRes()){
             aux->persona = p->getSigCiudadRes();
-            cabeceraCiudad.modificar(*aux, i);
+            cabeceraCiudadRes.modificar(*aux, i);
             delete p;
         }else{
             aux1 = aux->persona;
@@ -783,7 +822,7 @@ void ListaPersona::imprimirCabeceras() {
     for(int i=0; i<2; i++){
         aux = cabeceraSexo[i];
         while(aux != NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getSexo()<<setw(10)<<aux->getNumId()<<endl;
+            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getSexo()<<setw(20)<<aux->getNumId()<<endl;
             aux = aux->getSigSexo();
         }
     }
@@ -792,7 +831,7 @@ void ListaPersona::imprimirCabeceras() {
     for(int i=0; i<8; i++){
         aux = cabeceraEdad[i];
         while(aux != NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getEdad()<<setw(10)<<aux->getNumId()<<endl;
+            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getEdad()<<setw(20)<<aux->getNumId()<<endl;
             aux = aux->getSigEdad();
         }
     }
@@ -801,8 +840,32 @@ void ListaPersona::imprimirCabeceras() {
     for(int i=0; i<5; i++){
         aux = cabeceraActividad[i];
         while(aux!= NULL){
-            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getActivLab()<<setw(10)<<aux->getNumId()<<endl;
+            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getActivLab()<<setw(20)<<aux->getNumId()<<endl;
             aux = aux->getSigActivLab();
+        }
+    }
+
+    cout<<"\nCabeza por pais de nacimiento"<<endl;
+    cont = 1;
+    nodoP *auxP;
+    for(int i=0; i<cabeceraPais.lista_size(); i++){
+        auxP = cabeceraPais.obtenerDato(i);
+        aux = auxP->persona;
+        while (aux != NULL){
+            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getPaisNac()<<endl;
+            aux = aux->getSigPaisNac();
+        }
+    }
+
+    cout<<"\nCabeza por ciudad de residencia"<<endl;
+    cont = 1;
+    nodoCiudadListaP *auxCP;
+    for(int i=0; i<cabeceraCiudadRes.lista_size(); i++){
+        auxCP = cabeceraCiudadRes.obtenerDato(i);
+        aux = auxCP->persona;
+        while (aux != NULL){
+            cout<<cont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getCiudadRes()<<endl;
+            aux = aux->getSigCiudadRes();
         }
     }
 
@@ -816,16 +879,20 @@ void ListaPersona::imprimirCabeceras() {
         aux = auxEps->persona;
         subCont = 1;
         while (aux!= NULL){
-            cout<<subCont++<<setw(10)<<aux->getNombre()<<setw(10)<<aux->getNumId()<<endl;
+            cout<<subCont++<<setw(10)<<aux->getNombre()<<setw(20)<<aux->getNumId()<<endl;
             aux = aux->getSigEps();
         }
     }
 }
 
-string* ListaPersona::obtenerClaves() {
-    int pos = 0;
-    string *arrClaves;
-    personas.obtenerClavesArbol(personas.raiz_arbol(), arrClaves, pos);
+void ListaPersona::obtenerClaves(Lista<string> &listaClaves) {
+    personas.obtenerClavesArbol(personas.raiz_arbol(), listaClaves);
 }
+
+
+int ListaPersona::getPoscabEps() const {
+    return poscabEPS;
+}
+
 
 #endif //PROYECTOCIENCIAS_CLASELISTAPERSONAS_H

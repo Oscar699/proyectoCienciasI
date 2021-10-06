@@ -133,6 +133,18 @@ public:
 
     void setPoscabCiudad(int poscabCiudad);
 
+    nodoCiudad *obtenerCiudad(int pos);
+
+    nodoIps *obtenerIps(int pos);
+
+    nodoVacEps *obtenervacunas(int pos);
+
+    void obtenerClaves(Lista<string> &);
+
+    registroAfiliado* obtenerRegistro(string clave);
+
+    void conectarPersonasConArbol();
+
 };
 
 //este metodo verifica si a la ips todavia le quedan vacunas
@@ -235,7 +247,7 @@ void claseEPS::imprimirCabeceraIPS() {
         nodoIps *aux = &cabeceraIPS[i];
         registroAfiliado *regAux = arbolAfiliados.obtenerInfo(aux->claveAfiliado);
         while (regAux != NULL) {
-            cout << aux->ips.getNombre() << setw(10) << regAux->persona->getNombre() << setw(10)
+            cout << aux->ips.getNombre() << setw(10) << regAux->persona->getNombre() << setw(15)
                  << regAux->persona->getNumId() <<setw(8)<< regAux->persona->getEdad()
                  << setw(5) << regAux->estado << setw(5)
                  << regAux->fechaDosis.dia << "/" << regAux->fechaDosis.mes << "/" << regAux->fechaDosis.anio
@@ -325,7 +337,6 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
         }
         registro->clave = clave;
         registro->persona = p;
-        registro->ips = ips;
         registro->claveCiu = clave_ciu;
         registro->estado = estado;
         registro->sigCiudad = "";
@@ -347,6 +358,7 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
         for (int i = 0; i < poscabIPS; i++) {
             nodoAux = &cabeceraIPS[i];
             if (nodoAux->ips.getNombre() == ips->getNombre()) {
+                registro->ips = &nodoAux->ips;
                 nodoAux->ips.setNumAfiliados(nodoAux->ips.getNumAfiliados() + 1);
                 break;
             }
@@ -461,6 +473,14 @@ void claseEPS::agregarIPS(IPS ips, string ciudad) {
     }
 }
 
+void claseEPS::obtenerClaves(Lista<string> &listaClaves) {
+    arbolAfiliados.obtenerClavesArbol(arbolAfiliados.raiz_arbol(), listaClaves);
+}
+
+registroAfiliado* claseEPS::obtenerRegistro(string clave){
+    return arbolAfiliados.obtenerInfo(clave);
+}
+
 int claseEPS::getPoscabIps() const {
     return poscabIPS;
 }
@@ -494,6 +514,18 @@ void claseEPS::agregarCiudad(int clave, string n) {
     }
 }
 
+nodoCiudad *claseEPS::obtenerCiudad(int pos){
+    return &cabeceraCiudad[pos];
+}
+
+nodoIps *claseEPS::obtenerIps(int pos){
+    return &cabeceraIPS[pos];
+}
+
+nodoVacEps *claseEPS::obtenervacunas(int pos){
+    return &listaVacunas[pos];
+}
+
 void claseEPS::eliminarCiudad() {
     if (poscabCiudad > 0)
         poscabCiudad--;
@@ -512,7 +544,7 @@ int claseEPS::getNumAfiliados() const {
 }
 
 void claseEPS::setNumAfiliados(int numAfiliados) {
-    numAfiliados = numAfiliados;
+    this->numAfiliados = numAfiliados;
 }
 
 const nodoIps *claseEPS::getCabeceraIps() const {

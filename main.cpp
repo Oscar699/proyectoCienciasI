@@ -25,6 +25,7 @@ int main() {
     //Simula lo que antes estaba en el main
     testSimulacion.mainSimulado();
 
+    //testSimulacion.cargarArchivos();
     while (opcionUsuario != '5'){
         cout<<"¿Que desea hacer?"<<endl;
         cout<<"1-> Realizar cambios en la iformacion."<<endl;
@@ -50,7 +51,6 @@ int main() {
                 break;
             case '5':
                 cout<<"Saliend de la app..."<<endl;
-                testSimulacion.mainSimulado();
                 testSimulacion.guardarArchivos();
                 break;
             default:
