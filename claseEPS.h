@@ -16,7 +16,7 @@ using namespace std;
 #define PROYECTOCIENCIAS_EPS_H
 
 struct nodoIps {
-    IPS ips;
+    IPS *ips;
     string claveAfiliado;
     int sigCiudad;
 };
@@ -58,6 +58,8 @@ class claseEPS {
     ArbolRN<registroAfiliado> arbolAfiliados;
     claseLaboratorios labs;
 public:
+    ArbolRN<registroAfiliado> *getArbolAfiliados();
+
     const string &getNombre() const;
 
     void setNombre(const string nombre);
@@ -147,6 +149,10 @@ public:
 
 
 };
+
+ArbolRN<struct registroAfiliado> * claseEPS::getArbolAfiliados() {
+    return &arbolAfiliados;
+}
 
 //este metodo verifica si a la ips todavia le quedan vacunas
 bool claseEPS::existenciaVacunas() {
@@ -248,7 +254,7 @@ void claseEPS::imprimirCabeceraIPS() {
         nodoIps *aux = &cabeceraIPS[i];
         registroAfiliado *regAux = arbolAfiliados.obtenerInfo(aux->claveAfiliado);
         while (regAux != NULL) {
-            cout << aux->ips.getNombre() << setw(10) << regAux->persona->getNombre() << setw(15)
+            cout << aux->ips->getNombre() << setw(10) << regAux->persona->getNombre() << setw(15)
                  << regAux->persona->getNumId() <<setw(8)<< regAux->persona->getEdad()
                  << setw(5) << regAux->estado << setw(5)
                  << regAux->fechaDosis.dia << "/" << regAux->fechaDosis.mes << "/" << regAux->fechaDosis.anio
@@ -358,9 +364,9 @@ void claseEPS::agregarRegistro(Persona *p, int clave_ciu, IPS *ips, fecha fechaA
         // Arregla cabecera por IPS
         for (int i = 0; i < poscabIPS; i++) {
             nodoAux = &cabeceraIPS[i];
-            if (nodoAux->ips.getNombre() == ips->getNombre()) {
-                registro->ips = &nodoAux->ips;
-                nodoAux->ips.setNumAfiliados(nodoAux->ips.getNumAfiliados() + 1);
+            if (nodoAux->ips->getNombre() == ips->getNombre()) {
+                registro->ips = nodoAux->ips;
+                nodoAux->ips->setNumAfiliados(nodoAux->ips->getNumAfiliados() + 1);
                 break;
             }
         }
@@ -440,7 +446,7 @@ void claseEPS::agregarCargamentoVacunas(int indexLab, int numVacunas) {
 void claseEPS::repartirVacunas() {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < poscabIPS; j++) {
-            listaVacunas[i].numVacunas = cabeceraIPS[j].ips.distribuirVacunas(i, listaVacunas[i].numVacunas);
+            listaVacunas[i].numVacunas = cabeceraIPS[j].ips->distribuirVacunas(i, listaVacunas[i].numVacunas);
         }
     }
 }
@@ -455,7 +461,7 @@ void claseEPS::agregarIPS(IPS ips, string ciudad) {
             }
             nodoIps *nodoAux = &cabeceraIPS[aux->posIPS];
             nodoIps *nuevo = new nodoIps();
-            nuevo->ips = ips;
+            nuevo->ips = &ips;
             nuevo->claveAfiliado = "";
             nuevo->sigCiudad = -1;
             cabeceraIPS[poscabIPS] = *nuevo;

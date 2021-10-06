@@ -5,6 +5,7 @@
 #include <string>
 #include "listaSimple.h"
 #include "claseEPS.h"
+#include "pila.h"
 
 using namespace std;
 
@@ -121,6 +122,19 @@ public:
         return cabeceraPais.lista_size();
     }
 
+    const ArbolRN<Persona> &getPersonas() const;
+
+    Persona *const *getCabeceraSexo() const;
+
+    Persona *const *getCabeceraEdad() const;
+
+    Persona *const *getCabeceraActividad();
+
+    nodoEps *const *getCabeceraEps() const;
+
+    Lista<nodoP> &getCabeceraPais();
+
+    Lista<nodoCiudadListaP> &getCabeceraCiudadRes();
 
     int getPoscabEps() const;
 
@@ -1287,6 +1301,33 @@ void ListaPersona::obtenerClaves(Lista<string> &listaClaves) {
 
 int ListaPersona::getPoscabEps() const {
     return poscabEPS;
+}
+
+const ArbolRN<Persona> &ListaPersona::getPersonas() const {
+    return personas;
+}
+
+Persona *const *ListaPersona::getCabeceraSexo() const {
+    return cabeceraSexo;
+}
+
+Persona *const *ListaPersona::getCabeceraEdad() const {
+    return cabeceraEdad;
+}
+
+Persona *const *ListaPersona::getCabeceraActividad(){
+    return cabeceraActividad;
+}
+
+nodoEps *const *ListaPersona::getCabeceraEps() const {
+    return cabeceraEPS;
+}
+
+Lista<nodoP> &ListaPersona::getCabeceraPais()  {
+    return cabeceraPais;
+}
+Lista<nodoCiudadListaP> &ListaPersona::getCabeceraCiudadRes()  {
+    return cabeceraCiudadRes;
 }
 
 

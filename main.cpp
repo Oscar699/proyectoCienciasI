@@ -11,7 +11,7 @@ using namespace std;
 
 
 void modificarInformacion(Simulacion &);
-void ejecutarConsulta(Simulacion &);
+void ejecutarConsulta(Simulacion *);
 void simularVacunacion(Simulacion &);
 void generarEstadisticas(Simulacion &);
 
@@ -39,7 +39,7 @@ int main() {
                 modificarInformacion(testSimulacion);
                 break;
             case '2':
-                ejecutarConsulta(testSimulacion);
+                ejecutarConsulta(&testSimulacion);
                 break;
             case '3':
                 simularVacunacion(testSimulacion);
@@ -99,7 +99,7 @@ void modificarInformacion(Simulacion &testSimulacion){
 }
 
 
-void ejecutarConsulta(Simulacion &testSimulacion){
+void ejecutarConsulta(Simulacion *testSimulacion){
     char opcionUsuario = -1;
     while(opcionUsuario != '0'){
         cout<<"Ingrese el numero de la consulta que quiere realizar:"<<endl;
@@ -107,40 +107,40 @@ void ejecutarConsulta(Simulacion &testSimulacion){
         switch (opcionUsuario) {
             case '1':{
                 cout<<"Estas son las EPS: "<<endl;
-                for (int i = 0; i < testSimulacion.getListaPersonas().getPoscabEps(); i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEps()[i]->eps->getNombre()<<endl;
+                for (int i = 0; i < testSimulacion->getListaPersonas()->getPoscabEps(); i++) {
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEps()[i]->eps->getNombre()<<endl;
                 }
                 int pos;
                 cout<<"Escoja la EPS por medio de su posición en lista: ";
                 cin>>pos;
-                claseEPS *epsSel= testSimulacion.getListaPersonas().getCabeceraEps()[pos]->eps;
-                testSimulacion.getListaPersonas().calculoConsulta1(epsSel->getNombre());
+                claseEPS *epsSel= testSimulacion->getListaPersonas()->getCabeceraEps()[pos]->eps;
+                testSimulacion->getListaPersonas()->calculoConsulta1(epsSel->getNombre());
                 break;
             }
 
             case '2':{
                 cout<<"Estos son los paises de nacimiento: "<<endl;
-                for (int i = 0; i < testSimulacion.getListaPersonas().getCabeceraPais().lista_size(); i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraPais().obtenerDato(i)<<endl;
+                for (int i = 0; i < testSimulacion->getListaPersonas()->getCabeceraPais().lista_size(); i++) {
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraPais().obtenerDato(i)->clave<<endl;
                 }
                 int pos;
                 cout<<"Escoja el pais por medio de su posición en lista: ";
                 cin>>pos;
-                nodoP *paisSel = testSimulacion.getListaPersonas().getCabeceraPais().obtenerDato(pos);
-                testSimulacion.getListaPersonas().calculoConsulta2(paisSel->clave);
+                nodoP *paisSel = testSimulacion->getListaPersonas()->getCabeceraPais().obtenerDato(pos);
+                testSimulacion->getListaPersonas()->calculoConsulta2(paisSel->clave);
                 break;
             }
 
             case '3':{
                 cout<<"Estas son las ciudades: "<<endl;
-                for (int i = 0; i < testSimulacion.getListaPersonas().getCabeceraCiudadRes().lista_size(); i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraCiudadRes().obtenerDato(i)<<endl;
+                for (int i = 0; i < testSimulacion->getListaPersonas()->getCabeceraCiudadRes().lista_size(); i++) {
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraCiudadRes().obtenerDato(i)->nombreCiudad<<endl;
                 }
                 int pos;
                 cout<<"Escoja la ciudad por medio de su posición en lista: ";
                 cin>>pos;
-                nodoCiudadListaP *ciuSel = testSimulacion.getListaPersonas().getCabeceraCiudadRes().obtenerDato(pos);
-                testSimulacion.getListaPersonas().calculoConsulta3(ciuSel->clave);
+                nodoCiudadListaP *ciuSel = testSimulacion->getListaPersonas()->getCabeceraCiudadRes().obtenerDato(pos);
+                testSimulacion->getListaPersonas()->calculoConsulta3(ciuSel->clave);
                 break;
             }
 
@@ -148,66 +148,66 @@ void ejecutarConsulta(Simulacion &testSimulacion){
                 int cantidad = 0;
                 cout<<"Ingrese la cantidad de personas: ";
                 cin>>cantidad;
-                testSimulacion.getListaPersonas().calculoConsulta4(cantidad);
+                testSimulacion->getListaPersonas()->calculoConsulta4(cantidad);
                 break;
             }
             case '5':{
-                testSimulacion.getListaPersonas().calculoConsulta5();
+                testSimulacion->getListaPersonas()->calculoConsulta5();
                 break;
             }
             case '6':{
                 cout<<"Estos son los rangos de edades: "<<endl;
                 for (int i = 0; i < 8; i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEdad()[i]->getEdad()<<endl;
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEdad()[i]->getEdad()<<endl;
                 }
                 cout<<"Estas son las actividades laborales: "<<endl;
                 for (int i = 0; i < 6; i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraActividad()[i]->getActivLab()<<endl;
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraActividad()[i]->getActivLab()<<endl;
                 }
                 int pos1, pos2;
                 cout<<"Escoja el rango de edad por medio de su posición en lista: ";
                 cin>>pos1;
                 cout<<"Escoja la actividad laboral por medio de su posición en lista: ";
                 cin>>pos2;
-                Persona *actLabSel = testSimulacion.getListaPersonas().getCabeceraActividad()[pos2];
-                testSimulacion.getListaPersonas().calculoConsulta6(pos1, actLabSel->getActivLab());
+                Persona *actLabSel = testSimulacion->getListaPersonas()->getCabeceraActividad()[pos2];
+                testSimulacion->getListaPersonas()->calculoConsulta6(pos1, actLabSel->getActivLab());
                 break;
             }
             case '7':{
                 cout<<"Estas son las EPS: "<<endl;
-                for (int i = 0; i < testSimulacion.getListaPersonas().getPoscabEps(); i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEps()[i]->eps->getNombre()<<endl;
+                for (int i = 0; i < testSimulacion->getListaPersonas()->getPoscabEps(); i++) {
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEps()[i]->eps->getNombre()<<endl;
                 }
                 cout<<"Estas son los rangos de edades: "<<endl;
                 for (int i = 0; i < 8; i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEdad()[i]->getEdad()<<endl;
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEdad()[i]->getEdad()<<endl;
                 }
                 int pos1, pos2;
                 cout<<"Escoja la EPS por medio de su posición en lista: ";
                 cin>>pos1;
                 cout<<"Escoja el rango de edad por medio de su posición en lista: ";
                 cin>>pos2;
-                claseEPS *epsSel = testSimulacion.getListaPersonas().getCabeceraEps()[pos1]->eps;
-                testSimulacion.getListaPersonas().calculoConsulta7(pos2, epsSel->getNombre());
+                claseEPS *epsSel = testSimulacion->getListaPersonas()->getCabeceraEps()[pos1]->eps;
+                testSimulacion->getListaPersonas()->calculoConsulta7(pos2, epsSel->getNombre());
                 break;
             }
             case '8':{
                 cout<<"Estos son las laboratorios: "<<endl;
                 for (int i = 0; i < 6; i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEps()[i]->eps->getListaVacunas()->indexLab<<endl;
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEps()[i]->eps->getListaVacunas()->indexLab<<endl;
                 }
                 cout<<"Estas son las EPS: "<<endl;
-                for (int i = 0; i < testSimulacion.getListaPersonas().getPoscabEps(); i++) {
-                    cout<<i<<"."<<testSimulacion.getListaPersonas().getCabeceraEps()[i]->eps->getNombre()<<endl;
+                for (int i = 0; i < testSimulacion->getListaPersonas()->getPoscabEps(); i++) {
+                    cout<<i<<"."<<testSimulacion->getListaPersonas()->getCabeceraEps()[i]->eps->getNombre()<<endl;
                 }
                 int pos1, pos2;
                 cout<<"Escoja el laboratorio por medio de su posición en lista: ";
                 cin>>pos1;
                 cout<<"Escoja la EPS por medio de su posición en lista: ";
                 cin>>pos2;
-                nodoVacEps *labSel = const_cast<nodoVacEps *>(testSimulacion.getListaPersonas().getCabeceraEps()[pos1]->eps->getListaVacunas());
-                claseEPS *epsSel = testSimulacion.getListaPersonas().getCabeceraEps()[pos1]->eps;
-                testSimulacion.getListaPersonas().calculoConsulta8(labSel->indexLab, epsSel->getNombre());
+                nodoVacEps *labSel = const_cast<nodoVacEps *>(testSimulacion->getListaPersonas()->getCabeceraEps()[pos1]->eps->getListaVacunas());
+                claseEPS *epsSel = testSimulacion->getListaPersonas()->getCabeceraEps()[pos1]->eps;
+                testSimulacion->getListaPersonas()->calculoConsulta8(labSel->indexLab, epsSel->getNombre());
                 break;
             }
             case '9':
@@ -218,7 +218,7 @@ void ejecutarConsulta(Simulacion &testSimulacion){
                 cin>>f.mes;
                 cout<<"Ingrese un Anio: ";
                 cin>>f.anio;
-                testSimulacion.getListaPersonas().calculoConsulta9(f);
+                testSimulacion->getListaPersonas()->calculoConsulta9(f);
                 break;
             case '0':
                 cout<<"Regresando al menu anterior..."<<endl;

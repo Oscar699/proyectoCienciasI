@@ -36,6 +36,7 @@ public:
     void conectarPersonasAEPS(claseEPS &);
     void guardarArchivos();
     void traducirCabsPersonas(string (&)[6], Persona &);
+    ListaPersona* getListaPersonas();
 };
 
 void Simulacion::calcularFechaActual(){
@@ -504,7 +505,7 @@ void Simulacion::cargarInfoEPS() {
                 auxVacIPS->numVacunas = stoi(numVacunas, nullptr);
             }
 
-            nodoAuxIPS->ips = *auxIPS;
+            nodoAuxIPS->ips = auxIPS;
             getline(registro, claveAfiliado, delimitador);
             nodoAuxIPS->claveAfiliado = claveAfiliado;
             getline(registro, sigCiudad, delimitador);
@@ -541,8 +542,8 @@ void Simulacion::cargarInfoEPS() {
             auxRegistroArbol->posLab = stoi(indexLab, nullptr);
             getline(registro, nombre, delimitador);
             for(int k=0; k<auxEPS->getPoscabIps(); k++){
-                if(nombre == nodoAuxIPS[k].ips.getNombre()){
-                    auxIPS = &nodoAuxIPS[k].ips;
+                if(nombre == nodoAuxIPS->ips->getNombre()){
+                    auxIPS = nodoAuxIPS->ips;
                 }
             }
             auxRegistroArbol->ips = auxIPS;
@@ -700,12 +701,12 @@ void Simulacion::guardarArchivos() {
                 archsalidaIPS<<"\n";
                 archsalidaVacunasIPS<<"\n";
             }
-            archsalidaIPS<<auxIPS->ips.getNombre()<<','<<auxIPS->ips.getDireccion()<<','<<
-            auxIPS->ips.getNumAfiliados()<<','<<auxIPS->claveAfiliado<<','<<auxIPS->sigCiudad;
+            archsalidaIPS<<auxIPS->ips->getNombre()<<','<<auxIPS->ips->getDireccion()<<','<<
+            auxIPS->ips->getNumAfiliados()<<','<<auxIPS->claveAfiliado<<','<<auxIPS->sigCiudad;
 
             // Guarda la informacion de las vacunas de una IPS
-            archsalidaVacunasIPS<<auxIPS->ips.getNombre()<<"\n";
-            nodoV *auxVacIPS = const_cast<nodoV *>(auxIPS->ips.getListaVacunas());
+            archsalidaVacunasIPS<<auxIPS->ips->getNombre()<<"\n";
+            nodoV *auxVacIPS = const_cast<nodoV *>(auxIPS->ips->getListaVacunas());
             for(int k=0; k<6; k++){
                 if(k != 0) archsalidaVacunasIPS<<"\n";
                 archsalidaVacunasIPS<<auxVacIPS[k].indexLab<<','<<auxVacIPS[k].numVacunas;
@@ -769,6 +770,10 @@ void Simulacion::traducirCabsPersonas(string (& arrayClaves)[6], Persona &aux) {
         arrayClaves[5] = aux.getSigEps()->getNumId();
     }
 
+}
+
+ ListaPersona *Simulacion::getListaPersonas()  {
+    return &listaPersonas;
 }
 
 #endif //PROYECTOCIENCIAS_CLASESIMULACION_H
